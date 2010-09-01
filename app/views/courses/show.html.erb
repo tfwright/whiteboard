@@ -2,7 +2,11 @@
 
 <div>
   <h3>Course files</h3>
+  <% @course.uploads.each do |upload| %>
+    <%= upload.name %><br/>
+  <% end %>
   <div>No files have been posted yet.</div>
+  <div><%= link_to "Upload file", new_course_upload_path(@course) %></div>
 </div>
 
 <div>

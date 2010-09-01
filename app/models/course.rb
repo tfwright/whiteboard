@@ -1,4 +1,6 @@
 class Course < ActiveRecord::Base
+  has_many :uploads
+  
   validates :title, :presence => true
   validates :code, :presence => true
   validates :begins_on, :presence => true

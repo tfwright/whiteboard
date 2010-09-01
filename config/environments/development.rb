@@ -26,3 +26,5 @@ Whiteboard::Application.configure do
   config.action_mailer.default_url_options = { :host => 'localhost:3000' }
 end
 
+PAPERCLIP_OPTIONS = {:storage => :filesystem, :path => ":rails_root/tmp/:attachment/:id/:style.:extension"}
+
