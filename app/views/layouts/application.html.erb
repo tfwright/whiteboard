@@ -2,7 +2,7 @@
 <html>
 <head>
   <title>Whiteboard</title>
-  <%= stylesheet_link_tag :flutie %>
+  <%= stylesheet_link_tag :flutie, "buttons" %>
   <%= javascript_include_tag :defaults %>
   <%= csrf_meta_tag %>
   <style type="text/css"> 
@@ -49,7 +49,7 @@
           <li><%= link_to "Sign out", destroy_user_session_path %>
         </ul>
       <% else %>
-        <div>Currently in private beta.</div>
+        <div>Currently in private alpha.</div>
       <% end %>
     </div>
     <div style="padding-left:160px"><%= yield %></div>

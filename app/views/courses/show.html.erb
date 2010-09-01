@@ -1,15 +1,84 @@
+<style>
+  .filelist {
+    padding: 20px 0 0 20px;
+  }
+  .filelist dd {
+    margin-left: 40px;
+  }
+  .filelist dd.top {
+    padding: 5px 0 0 10px;
+  }
+  .filelist dd.bottom {
+    padding: 0 0 5px 10px;
+  }
+  .filelist dt {
+    font-size:15px;
+    font-weight:bold;
+    font-variant:small-caps;
+    text-align:center;
+  	clear: left;
+  	float: left;
+  	width: 30px;
+  	height:30px;
+  	margin: 0;
+  	padding: 5px;
+  }
+  
+  .filelist dt a {
+    font-size:15px;
+    font-weight:bold;
+    font-variant:small-caps;
+    text-decoration:none;
+    color:#fff;
+  }
+  
+  .filelist dt a:hover {
+    color:#fff;
+  }
+  
+  .filelist dt a:visited {
+    color:#fff;
+  }
+  
+  .doc {
+    background-color:#1E90FF;
+  }
+  .pdf {
+    background-color:#B22222;
+  }
+</style>
+
 <h1 style="display:inline"><%= @course.title %></h1> (<tt style="display:inline"><%= @course.code %></tt>)
 
-<div>
+<div style="margin-top:20px">
   <h3>Course files</h3>
-  <% @course.uploads.each do |upload| %>
-    <%= upload.name %><br/>
+  <% if @course.uploads.any? %>
+    <dl class="filelist">
+    <% @course.uploads.each do |upload| %>
+      <% ext = File.extname(upload.attached.original_filename).gsub(/^\.+/, "") %>
+      <dt class="<%= ext %>">
+        <%= link_to ext, upload.attached.url %>
+      </dt>
+      <dd class="top">
+        <h4 style="display:inline"><%= upload.name %></h4>
+      </dd>
+      <dd class="bottom">
+        <span style="color:#D8D8D8;"><%= upload.description %></span>
+      </dd>
+    <% end %>
+    </dl>
+    <div style="clear:both">&nbsp;</div>
+  <% else %>
+    <div>No files have been posted yet.</div>
   <% end %>
-  <div>No files have been posted yet.</div>
-  <div><%= link_to "Upload file", new_course_upload_path(@course) %></div>
+  <div>
+    <%= link_to new_course_upload_path(@course), :class => "green-button pcb" do %>
+      <span>Upload a file</span>
+    <% end %>
+  </div>
 </div>
 
-<div>
+<div style="margin-top:20px">
   <h3>Recent announcements</h3>
   <div>No announcements have been posted yet.</div>
 </div>
