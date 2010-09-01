@@ -34,6 +34,23 @@
     text-align:left;
     margin:auto;
   }
+  #sitenav {
+    list-style:none;
+  }
+  #sitenav li {
+    margin:10px;
+  }
+  #sitenav a {
+    text-decoration:none;
+    background-color:#222;
+    color:#fff;
+    padding:5px;
+  }
+  #sitenav a:hover {
+    background-color:#fff;
+    color:#222;
+    border:solid 1px #222;
+  }
   </style>
 </head>
 <body>
@@ -44,7 +61,7 @@
     <div style="display:block;clear:both">&nbsp;</div>
     <div style="float:left;width:150px">
       <% if user_signed_in? %>
-        <ul>
+        <ul id="sitenav">
           <li><%= link_to "Your courses", courses_path %>
           <li><%= link_to "Sign out", destroy_user_session_path %>
         </ul>
