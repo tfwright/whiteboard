@@ -13,6 +13,7 @@
     background: #fff;
     padding: 40px;
     margin: 40px auto;
+    margin-bottom:5px;
     width: 880px;
     -moz-border-radius: 24px;
     -webkit-border-radius: 24px;
@@ -27,6 +28,12 @@
     width: 880px;
     text-align:center;
   }
+  #footer {
+    color:#ccc;
+    width:880px;
+    text-align:left;
+    margin:auto;
+  }
   </style>
 </head>
 <body>
@@ -34,7 +41,19 @@
   <div class="content">
     <% if notice %><div class="notice"><%= notice %></div><% end %>
     <% if alert %><div class="error"><%= alert %></div><% end %>
-    <%= yield %>
+    <div style="display:block;clear:both">&nbsp;</div>
+    <div style="float:left;width:150px">
+      <% if user_signed_in? %>
+        <ul>
+          <li><%= link_to "Your courses", courses_path %>
+          <li><%= link_to "Sign out", destroy_user_session_path %>
+        </ul>
+      <% else %>
+        <div>Currently in private beta.</div>
+      <% end %>
+    </div>
+    <div style="padding-left:160px"><%= yield %></div>
   </div>
+  <div id="footer">ABOUT // FAQ // LEGAL</div>
 </body>
 </html>
