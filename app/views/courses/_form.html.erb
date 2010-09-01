@@ -3,6 +3,9 @@
   <% if @course.errors.any? %>
     <div class="error">
       <h2><%= pluralize(@course.errors.count, "error") %> prevented this course from being saved:</h2>
+      <% @course.errors[:base].each do |error| %>
+        <%= error %>
+      <% end %>
     </div>
   <% end %>
   
@@ -26,7 +29,7 @@
     </li>
   
     <li class="date required" id="course_begins_on"> 
-      <h5 class="legend"><span class="label">Start date<abbr title="required">*</abbr></span></h5> 
+      <h5 class="legend"><span class="label">Start date</span></h5> 
       <%= f.date_select :begins_on %>
       <% @course.errors[:begins_on].each do |error| %>
          <p class="inline-errors"><%= error %></p> 
@@ -34,7 +37,7 @@
     </li>
       
     <li class="date required" id="course_ends_on"> 
-      <h5 class="legend"><span class="label">End date<abbr title="required">*</abbr></span></h5> 
+      <h5 class="legend"><span class="label">End date</span></h5> 
       <%= f.date_select :ends_on %>
       <% @course.errors[:ends_on].each do |error| %>
          <p class="inline-errors"><%= error %></p> 
