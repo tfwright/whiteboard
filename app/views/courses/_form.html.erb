@@ -2,7 +2,7 @@
 <%= form_for(@course) do |f| %>
   <% if @course.errors.any? %>
     <div class="error">
-      <h2><%= pluralize(@course.errors.count, "error") %> prevented this course from being saved:</h2>
+      <h3><%= pluralize(@course.errors.count, "error") %> prevented this course from being saved:</h3>
       <% @course.errors[:base].each do |error| %>
         <%= error %>
       <% end %>
