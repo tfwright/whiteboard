@@ -3,6 +3,7 @@ source 'http://rubygems.org'
 gem 'rails', '3.0.0'
 gem 'sqlite3-ruby', :require => 'sqlite3'
 gem 'flutie', '1.0.3'
+gem 'devise', '1.1.2'
 
 # Use unicorn as the web server
 # gem 'unicorn'
