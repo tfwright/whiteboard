@@ -31,6 +31,10 @@
 </head>
 <body>
   <div id="masthead">WHITEBOARD</div>
-  <div class="content"><%= yield %></div>
+  <div class="content">
+    <% if notice %><div class="notice"><%= notice %></div><% end %>
+    <% if alert %><div class="error"><%= alert %></div><% end %>
+    <%= yield %>
+  </div>
 </body>
 </html>
