@@ -1,6 +1,6 @@
 <%= render :partial => "courses/header" %>
 
-<h3>New student</h3>
+<h3 style="margin-top:15px">New student</h3>
 
 <%= form_for(@student, :url => course_students_path(Course.find(params[:course_id]))) do |f| %>
   <% if @student.errors.any? %>
@@ -24,5 +24,20 @@
 
   <div class="actions">
     <%= f.submit %>
+  </div>
+<% end %>
+
+<h3 style="margin-top:15px">Import student roster</h3>
+
+<%= form_tag import_course_students_path(Course.find(params[:course_id])), :multipart => true do %>
+  <ol>
+    <li class="file required"> 
+      <%= label :roster, raw("Roster<abbr>*</abbr>") %><br />
+      <%= file_field_tag "roster" %>
+      <p class="inline-hints">csv file containing a list of students to add</p> 
+    </li>
+  </ol>
+  <div class="actions">
+    <%= submit_tag "Submit" %>
   </div>
 <% end %>

@@ -2,7 +2,12 @@ Whiteboard::Application.routes.draw do
   devise_for :users
   
   resources :courses do 
-    resources :uploads, :announcements, :links, :students
+    resources :uploads, :announcements, :links
+    resources :students do
+      collection do
+        post 'import'
+      end
+    end
   end
 
   # The priority is based upon order of creation:

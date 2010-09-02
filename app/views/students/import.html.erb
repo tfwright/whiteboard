@@ -1,0 +1,48 @@
+<style>
+  .selected {
+    background-color:#FFFF66;
+  }
+</style>
+<%= render :partial => "courses/header" %>
+
+<h3 style="margin-top:15px">Import students from roster</h3>
+<p>All Whiteboard needs is an email for each student to be imported.  Confirm the field with the correct email is highlighted and click 'Import'. </p>
+<div style="width:100%;height:650px;overflow:scroll">
+  <table>
+    <tr>
+      <% @roster.headers.each do |header| %>
+        <th class="<%= "selected" if header == @selected_column %>"><%= header %></th>
+      <% end %>
+    </tr>
+    <% @roster.each_with_index do |row, index| %>
+      <tr>
+        <% row.each do |field| %>
+          <% if @roster.headers.index(field[0]) == @roster.headers.index(@selected_column) %>
+          <td class="selected">
+            <%= field[1] %>
+            <% form_for :user, :url => course_students_path(Course.find(params[:course_id])), :remote => true, :html => {:id => "import-user-#{index}"} do |f| %>
+              <%= f.hidden_field :email, :value => field[1] %>
+              <%= f.submit "Import" %>
+            <% end %>
+            <script>
+              jQuery(function($) {
+                var toggleLoading = function() { $("#import-user-<%= index %>").toggle() };
+                $("#import-user-<%= index %>")
+                  .bind("ajax:loading",  toggleLoading)
+                  .bind("ajax:success", function(data, status, xhr) {
+                    $($("#import-user-<%= index %>").parents("tr")[0]).remove();
+                    alert("Added student!");
+                  });
+              });
+            </script>
+          </td>
+          <% else %>
+            <td>
+              <%= field[1] %>
+            </td>
+          <% end %>
+        <% end %>
+      </tr>
+    <% end %>    
+  </table>
+</div>
