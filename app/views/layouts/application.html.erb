@@ -66,7 +66,9 @@
           <li><%= link_to "Sign out", destroy_user_session_path %>
         </ul>
       <% else %>
-        <div>Currently in private alpha.</div>
+        <div style="margin-top:5px">
+          <p>This is is currently in "private alpha mode," which sounds cool but pretty much means there is no way to register.  You have to already have an account.</p>
+        </div>
       <% end %>
     </div>
     <div style="padding-left:160px"><%= yield %></div>
