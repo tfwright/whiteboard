@@ -7,6 +7,7 @@ gem 'devise', '1.1.2'
 gem 'paperclip', '2.3.3'
 gem 'aws-s3', :require => 'aws/s3'
 gem 'truncate_html', '0.4.0'
+gem 'fastercsv'
 
 
 # Use unicorn as the web server

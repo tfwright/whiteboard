@@ -1,5 +1,3 @@
-require 'csv'
-
 class StudentsController < ApplicationController
   
   def index
@@ -25,8 +23,8 @@ class StudentsController < ApplicationController
   end
   
   def import
-    @roster = CSV.table(params[:roster])
-    @selected_column = @roster.headers.detect{|h| h.match(/email/) }
+    @roster = FasterCSV.table(params[:roster].path)
+    @selected_column = @roster.headers.detect{|h| h.to_s.match(/email/) }
   end
   
 end
