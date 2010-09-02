@@ -51,6 +51,25 @@
 <h1 style="display:inline"><%= @course.title %></h1> (<tt style="display:inline"><%= @course.code %></tt>)
 
 <div style="margin-top:20px">
+  <h3>Recent announcements</h3>
+  <% if @course.announcements.any? %>
+    <dl style="padding:15px">
+      <% @course.announcements.each do |announcement| %>
+        <dt><%= announcement.subject %></dt>
+        <dd><%= truncate_html(announcement.body, :length => 200, :omission => "... "+link_to("(More)", course_announcement_path(@course, announcement))) %>
+      <% end %>
+    </dl>
+  <% else %>
+    <div style="margin:20px 50px">No announcements have been posted yet.</div>
+  <% end %>
+  <div>
+    <%= link_to new_course_announcement_path(@course), :class => "green-button pcb" do %>
+      <span>Make an announcement</span>
+    <% end %>
+  </div>
+</div>
+
+<div style="margin-top:20px">
   <h3>Course files</h3>
   <% if @course.uploads.any? %>
     <dl class="filelist">
@@ -93,25 +112,6 @@
   <div>
     <%= link_to new_course_link_path(@course), :class => "green-button pcb" do %>
       <span>Post a link</span>
-    <% end %>
-  </div>
-</div>
-
-<div style="margin-top:20px">
-  <h3>Recent announcements</h3>
-  <% if @course.announcements.any? %>
-    <dl style="padding:15px">
-      <% @course.announcements.each do |announcement| %>
-        <dt><%= announcement.subject %></dt>
-        <dd><%= truncate_html(announcement.body, :length => 200, :omission => "... "+link_to("(More)", course_announcement_path(@course, announcement))) %>
-      <% end %>
-    </dl>
-  <% else %>
-    <div style="margin:20px 50px">No announcements have been posted yet.</div>
-  <% end %>
-  <div>
-    <%= link_to new_course_announcement_path(@course), :class => "green-button pcb" do %>
-      <span>Make an announcement</span>
     <% end %>
   </div>
 </div>
