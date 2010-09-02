@@ -1,0 +1,33 @@
+<%= form_for(@announcement, :url => course_announcements_path(Course.find(params[:course_id]))) do |f| %>
+  <% if @announcement.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@announcement.errors.count, "error") %> prevented this announcement from being saved:</h2>
+
+      <ul>
+      <% @announcement.errors[:base].each do |error| %>
+        <li><%= error %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <ol> 
+    <li class="string required <%= "error" if @announcement.errors[:subject].any? %>"> 
+      <label for="announcement_title">Subject<abbr title="required">*</abbr></label> 
+      <%= f.text_field :subject %>
+      <% @announcement.errors[:subject].each do |error| %>
+         <p class="inline-errors"><%= error %></p> 
+      <% end %>
+    </li> 
+    
+    <li class="string required <%= "error" if @announcement.errors[:body].any? %>"> 
+      <label for="announcement_body">Body<abbr title="required">*</abbr></label> 
+      <%= f.text_area :body %>
+      <% @announcement.errors[:body].each do |error| %>
+         <p class="inline-errors"><%= error %></p> 
+      <% end %>
+    </li>
+  </ol>  
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

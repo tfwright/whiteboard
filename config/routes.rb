@@ -2,7 +2,7 @@ Whiteboard::Application.routes.draw do
   devise_for :users
   
   resources :courses do 
-    resources :uploads
+    resources :uploads, :announcements
   end
 
   # The priority is based upon order of creation:

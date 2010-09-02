@@ -80,5 +80,19 @@
 
 <div style="margin-top:20px">
   <h3>Recent announcements</h3>
-  <div>No announcements have been posted yet.</div>
+  <% if @course.announcements.any? %>
+    <% @course.announcements.each do |announcement| %>
+    <dl>
+      <dt><%= announcement.subject %></dt>
+      <dd><%= truncate_html(announcement.body, :length => 200, :omission => "... "+link_to("(More)", course_announcement_path(@course, announcement))) %>
+    </dl>
+    <% end %>
+  <% else %>
+    <div style="margin:20px 50px">No announcements have been posted yet.</div>
+  <% end %>
+  <div>
+    <%= link_to new_course_announcement_path(@course), :class => "green-button pcb" do %>
+      <span>Make an announcement</span>
+    <% end %>
+  </div>
 </div>
