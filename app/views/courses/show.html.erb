@@ -50,6 +50,8 @@
 
 <h1 style="display:inline"><%= @course.title %></h1> (<tt style="display:inline"><%= @course.code %></tt>)
 
+<div style="margin-top:5px"><%= link_to "Students", course_students_path(@course) %></div>
+
 <div style="margin-top:20px">
   <h3>Recent announcements</h3>
   <% if @course.announcements.any? %>

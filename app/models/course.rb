@@ -2,6 +2,7 @@ class Course < ActiveRecord::Base
   has_many :uploads
   has_many :announcements
   has_many :links
+  has_and_belongs_to_many :students, :class_name => "User"
   
   validates :title, :presence => true
   validates :code, :presence => true

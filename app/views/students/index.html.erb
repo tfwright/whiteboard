@@ -1,0 +1,5 @@
+<h1>Enrolled students</h1>
+
+<%= link_to new_course_student_path(Course.find(params[:course_id])), :class => "green-button pcb" do %>
+  <span>Add students to this course</span>
+<% end %>

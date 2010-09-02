@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100902041624) do
+ActiveRecord::Schema.define(:version => 20100902044856) do
 
   create_table "announcements", :force => true do |t|
     t.integer  "course_id"
@@ -28,6 +28,11 @@ ActiveRecord::Schema.define(:version => 20100902041624) do
     t.date     "ends_on"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "courses_users", :id => false, :force => true do |t|
+    t.integer "course_id"
+    t.integer "user_id"
   end
 
   create_table "links", :force => true do |t|
