@@ -1,6 +1,7 @@
 class Course < ActiveRecord::Base
   has_many :uploads
   has_many :announcements
+  has_many :links
   
   validates :title, :presence => true
   validates :code, :presence => true

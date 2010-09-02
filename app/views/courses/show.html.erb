@@ -79,6 +79,25 @@
 </div>
 
 <div style="margin-top:20px">
+  <h3>Course links</h3>
+  <% if @course.links.any? %>
+    <dl style="padding:15px">
+      <% @course.links.each do |link| %>
+        <dt><%= link_to link.name, link.url %></dt>
+        <dd><%= link.description %></dd>
+      <% end %>
+    </dl>
+  <% else %>
+    <div style="margin:20px 50px">No links have been posted yet.</div>
+  <% end %>
+  <div>
+    <%= link_to new_course_link_path(@course), :class => "green-button pcb" do %>
+      <span>Post a link</span>
+    <% end %>
+  </div>
+</div>
+
+<div style="margin-top:20px">
   <h3>Recent announcements</h3>
   <% if @course.announcements.any? %>
     <dl style="padding:15px">

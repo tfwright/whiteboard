@@ -1,0 +1,39 @@
+<%= form_for(@link, :url => course_links_path(Course.find(params[:course_id]))) do |f| %>
+  <% if @link.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@link.errors.count, "error") %> prohibited this link from being saved:</h2>
+
+      <ul>
+        <% @link.errors[:base].each do |error| %>
+          <%= error %>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <ol>
+    <li class="string required <%= "error" if @link.errors[:name].any? %>"> 
+      <%= f.label :name, raw("Name<abbr>*</abbr>") %><br />
+      <%= f.text_field :name %>
+      <% @link.errors[:name].each do |error| %>
+         <p class="inline-errors"><%= error %></p> 
+      <% end %>
+    </li>
+    <li class="string required <%= "error" if @link.errors[:description].any? %>"> 
+      <%= f.label :description, raw("Description<abbr>*</abbr>") %><br />
+      <%= f.text_field :description %>
+      <% @link.errors[:description].each do |error| %>
+         <p class="inline-errors"><%= error %></p> 
+      <% end %>
+    </li>
+    <li class="string required <%= "error" if @link.errors[:url].any? %>"> 
+      <%= f.label :url, raw("URL<abbr>*</abbr>") %><br />
+      <%= f.text_field :url %>
+      <% @link.errors[:url].each do |error| %>
+         <p class="inline-errors"><%= error %></p> 
+      <% end %>
+    </li>
+  </ol>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
