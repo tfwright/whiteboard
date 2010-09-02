@@ -25,6 +25,7 @@
     <li class="file required"> 
       <%= f.label :attached, raw("Attachment<abbr>*</abbr>") %><br />
       <%= f.file_field :attached %>
+      <p class="inline-hints">currently only word documents and pdfs are allowed</p> 
       <% @upload.errors[:attached_file_name].each do |error| %>
          <p class="inline-errors">File <%= error %></p> 
       <% end %>
