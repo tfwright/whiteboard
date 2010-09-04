@@ -3,6 +3,11 @@
     background-color:#FFFF66;
   }
 </style>
+<script>
+toggleStudentForm = function(formIndex) {
+  $("#import-student-"+formIndex).toggle()
+}
+</script>
 <%= render :partial => "courses/header" %>
 
 <h3 style="margin-top:15px">Import students from roster</h3>
@@ -18,24 +23,30 @@
       <tr>
         <% row.each do |field| %>
           <% if @roster.headers.index(field[0]) == @roster.headers.index(@selected_column) %>
-          <td class="selected">
-            <%= field[1] %>
-            <% form_for :user, :url => course_students_path(Course.find(params[:course_id])), :remote => true, :html => {:id => "import-user-#{index}"} do |f| %>
-              <%= f.hidden_field :email, :value => field[1] %>
-              <%= f.submit "Import" %>
-            <% end %>
-            <script>
-              jQuery(function($) {
-                var toggleLoading = function() { $("#import-user-<%= index %>").toggle() };
-                $("#import-user-<%= index %>")
-                  .bind("ajax:loading",  toggleLoading)
-                  .bind("ajax:success", function(data, status, xhr) {
-                    $($("#import-user-<%= index %>").parents("tr")[0]).remove();
-                    alert("Added student!");
+            <td class="selected">
+              <%= field[1] %>
+              <% unless Course.find(params[:course_id]).students.exists?(:email => field[1]) %>
+                <% form_for :student, :url => course_students_path(Course.find(params[:course_id])), :remote => true, :html => {:id => "import-student-#{index}"} do |f| %>
+                  <%= f.hidden_field :email, :value => field[1] %>
+                  <%= f.submit "Import" %>
+                <% end %>
+                <script>
+                  jQuery(function($) {
+                    $("#import-student-<%= index %>")
+                      .bind("ajax:loading",  function() {toggleStudentForm(<%= index %>)})
+                      .bind("ajax:success", function(data, status, xhr) {
+                        $($("#import-student-<%= index %>").parents("tr")[0]).remove();
+                        alert("Added student!");
+                      })
+                      .bind("ajax:failure", function(data, status, xhr) {
+                        alert("Sorry, there has been an error.  This is a bug.  A bad bug.  A bedbug.");
+                      });
                   });
-              });
-            </script>
-          </td>
+                </script>
+              <% else %>
+                This student has already been enrolled in your course.
+              <% end %>
+            </td>
           <% else %>
             <td>
               <%= field[1] %>

@@ -5,11 +5,11 @@ class StudentsController < ApplicationController
   end
   
   def new
-    @student = User.new
+    @student = Student.new
   end
   
   def create
-    @student = User.new(params[:user].merge(:password => Devise.friendly_token))
+    @student = Student.new(params[:student].merge(:password => Devise.friendly_token))
     respond_to do |format|
       if @student.save
         Course.find(params[:course_id]).students << @student
