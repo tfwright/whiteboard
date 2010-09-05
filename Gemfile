@@ -9,6 +9,11 @@ gem 'aws-s3', :require => 'aws/s3'
 gem 'truncate_html', '0.4.0'
 gem 'fastercsv'
 
+group :test do
+  gem 'factory_girl_rails'
+end
+
+
 
 # Use unicorn as the web server
 # gem 'unicorn'
