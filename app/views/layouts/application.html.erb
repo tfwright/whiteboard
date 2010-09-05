@@ -65,8 +65,9 @@
     <div style="float:left;width:150px">
       <% if user_signed_in? %>
         <ul id="sitenav">
-          <li><%= link_to "Your courses", courses_path %>
-          <li><%= link_to "Sign out", destroy_user_session_path %>
+          <li><%= link_to "Your account", user_path(current_user) %></li>
+          <li><%= link_to "Your courses", courses_path %></li>
+          <li><%= link_to "Sign out", destroy_user_session_path %></li>
         </ul>
       <% else %>
         <div style="margin-top:5px">

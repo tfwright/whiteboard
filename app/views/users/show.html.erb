@@ -1,0 +1,13 @@
+<h1>Your account</h1>
+  
+<dl>
+  <dt>Email</dt>
+  <dd><%= @user.email %></dd>
+</dl>
+
+<h3>Courses in which you are currently enrolled</h3>
+<ul>
+  <% @user.courses.each do |course| %>
+    <li><%= link_to course.title, course %></li>
+  <% end %>
+</ul>

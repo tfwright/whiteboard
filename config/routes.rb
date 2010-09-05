@@ -1,6 +1,8 @@
 Whiteboard::Application.routes.draw do
   devise_for :users
   
+  resources :users, :only => [:edit, :show, :update]
+  
   resources :courses do 
     resources :uploads, :announcements, :links, :assignments
     resources :students do
