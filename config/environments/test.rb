@@ -34,4 +34,4 @@ Whiteboard::Application.configure do
   config.active_support.deprecation = :stderr
 end
 
-PAPERCLIP_OPTIONS = :filesystem
+PAPERCLIP_OPTIONS = {:storage => :filesystem, :path => ":rails_root/tmp/:attachment/:id/:style.:extension"}
