@@ -7,11 +7,11 @@ Factory.define :student, :parent => :user, :class => "Student" do |student|
   student.type "Student"
 end
 
-Factory.define :admin, :parent => :user, :class => "Student" do |admin|
+Factory.define :admin, :parent => :user, :class => "Admin" do |admin|
   admin.type "Admin"
 end
 
-Factory.define :professor, :parent => :user, :class => "Student" do |professor|
+Factory.define :professor, :parent => :user, :class => "Professor" do |professor|
   professor.type "Professor"
 end
 
