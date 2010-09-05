@@ -1,4 +1,7 @@
 <% @course ||= Course.find(params[:course_id])%>
 <h1 style="display:inline"><%= @course.title %></h1> (<tt style="display:inline"><%= @course.code %></tt>)
 
-<div style="margin-top:5px"><%= link_to "Students", course_students_path(@course) %></div>
+<div style="margin:5px 0">
+  <%= link_to "Course home", course_path(@course) %>
+  <%= link_to "Students", course_students_path(@course) %>
+</div>

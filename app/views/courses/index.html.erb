@@ -6,6 +6,7 @@
     <th>Code</th>
     <th>Start date</th>
     <th>End date</th>
+    <th>Students</th>
     <th>Manage</th>
   </tr>
 
@@ -15,6 +16,7 @@
     <td><%= course.code %></td>
     <td><%= course.begins_on %></td>
     <td><%= course.ends_on %></td>
+    <td><%= link_to course.students.count, course_students_path(course) %>
     <td>
       <%= link_to 'Show', course %>
       <%= link_to 'Edit', edit_course_path(course) %>
