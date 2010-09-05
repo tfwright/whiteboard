@@ -37,6 +37,7 @@ GEM
     bcrypt-ruby (2.1.2)
     builder (2.1.2)
     columnize (0.3.1)
+    configuration (1.1.0)
     devise (1.1.2)
       bcrypt-ruby (~> 2.1.2)
       warden (~> 0.10.7)
@@ -48,7 +49,16 @@ GEM
       rails (>= 3.0.0.beta4)
     fastercsv (1.5.3)
     flutie (1.0.3)
+    heroku (1.9.14)
+      json_pure (>= 1.2.0, < 1.5.0)
+      launchy (~> 0.3.2)
+      rest-client (~> 1.4.0)
+    heroku_san (0.2.3)
     i18n (0.4.1)
+    json_pure (1.4.6)
+    launchy (0.3.7)
+      configuration (>= 0.0.5)
+      rake (>= 0.8.1)
     linecache (0.43)
     mail (2.2.5)
       activesupport (>= 2.3.6)
@@ -79,6 +89,8 @@ GEM
       thor (~> 0.14.0)
     rake (0.8.7)
     redgreen (1.2.2)
+    rest-client (1.4.2)
+      mime-types (>= 1.16)
     ruby-debug (0.10.3)
       columnize (>= 0.1)
       ruby-debug-base (~> 0.10.3.0)
@@ -104,6 +116,8 @@ DEPENDENCIES
   factory_girl_rails
   fastercsv
   flutie (= 1.0.3)
+  heroku
+  heroku_san
   paperclip (= 2.3.3)
   rails (= 3.0.0)
   redgreen
