@@ -17,6 +17,7 @@ class StudentsController < ApplicationController
     @student.courses << @current_course
     respond_to do |format|
       if @student.save
+        Notifier.enrollment_notification(@student, @current_course).deliver
         format.html { redirect_to(course_students_path(@current_course), :notice => 'Student was successfully added.') }
         format.js { render :json => @student, :status => 200 }
       else
