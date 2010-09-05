@@ -1,6 +1,4 @@
 class CoursesController < ApplicationController
-  before_filter :authenticate_user!
-  
   # GET /courses
   # GET /courses.xml
   def index
