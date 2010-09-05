@@ -8,4 +8,10 @@ class Notifier < ActionMailer::Base
          :subject => "You have been enrolled in a Whiteboard course: " + @course.title )
   end
   
+  def new_account_notification(student)
+    @student = student
+    mail(:to => @student.email,
+         :subject => "Your account has been created on Whiteboard")
+  end
+  
 end
