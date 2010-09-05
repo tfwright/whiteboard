@@ -58,7 +58,7 @@ $(document).ready(function(){
   jQuery(function($) {
     $("#import_all_button")
       .bind("click",  function() {
-        $("#batch-upload-msg").modal({containerCss: {'background-color':'#fff'}});
+        $("#batch-upload-msg").modal({containerCss: {'background-color':'#fff'}, closeHTML: ''});
         $("#progressbar").progressbar({
           value: 0,
           change:function(event,ui){
