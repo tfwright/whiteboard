@@ -23,9 +23,13 @@ class StudentsController < ApplicationController
   end
   
   def enroll
-    @student = Student.find_by_email(params[:student][:email]) || Student.create!(params[:student].merge(:password => Devise.friendly_token))
+    @student = Student.find_by_email(params[:student][:email]) || Student.new(params[:student].merge(:password => Devise.friendly_token))
     @student.courses << Course.find(params[:course_id])
-    render :json => @student
+    if @student.save
+      render :json => @student, :status => 200
+    else
+      render :json => @student, :status => :unprocessable_entity
+    end
   end
   
   def import
