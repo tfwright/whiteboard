@@ -1,4 +1,8 @@
 class CoursesController < ApplicationController
+  
+  before_filter :ensure_professor_or_admin, :except => [:show, :index]
+  before_filter :ensure_enrolled, :except => [:new, :create, :index]
+  
   # GET /courses
   # GET /courses.xml
   def index
@@ -80,4 +84,19 @@ class CoursesController < ApplicationController
       format.xml  { head :ok }
     end
   end
+  
+  private
+  
+    def ensure_professor_or_admin
+      unless %w(Professor Admin).include?(current_user.type)
+        flash[:warning] = "You do not have the right to do this to me!"
+        redirect_to root_url
+      end
+    end
+    
+    def ensure_enrolled
+      unless current_user.type == "Admin" || current_user.courses.inlude?(Course.find(params[:id]))
+        redirect_to courses_path
+      end
+    end
 end
