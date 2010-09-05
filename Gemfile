@@ -11,6 +11,7 @@ gem 'fastercsv'
 
 group :test do
   gem 'factory_girl_rails'
+  gem 'redgreen'
 end
 
 
