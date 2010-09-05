@@ -8,6 +8,7 @@ gem 'paperclip', '2.3.3'
 gem 'aws-s3', :require => 'aws/s3'
 gem 'truncate_html', '0.4.0'
 gem 'fastercsv'
+gem 'grit'
 
 group :development do 
   gem 'heroku'

@@ -77,6 +77,9 @@
     </div>
     <div style="padding-left:160px"><%= yield %></div>
   </div>
-  <div id="footer">ABOUT // FAQ // LEGAL</div>
+  <div id="footer">
+    ABOUT // FAQ // LEGAL
+    <span style="float:right"><%= Grit::Repo.new(Rails.root + '.git').recent_tag_name %></span>
+  </div>
 </body>
 </html>
