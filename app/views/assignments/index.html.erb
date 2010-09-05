@@ -1,0 +1,20 @@
+<%= render :partial => "courses/header" %>
+<h3>Listing assignments</h3>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @assignments.each do |assignment| %>
+  <tr>
+    <td><%= assignment.name %></td>
+    <td><%= link_to 'Show', course_assignment_path(Course.find(params[:course_id]), assignment) %></td>
+    <td><%= link_to 'Edit', edit_course_assignment_path(Course.find(params[:course_id]), assignment) %></td>
+    <td><%= link_to 'Destroy', course_assignment_path(Course.find(params[:course_id]), assignment), :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>

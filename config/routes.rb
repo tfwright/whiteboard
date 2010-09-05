@@ -2,7 +2,7 @@ Whiteboard::Application.routes.draw do
   devise_for :users
   
   resources :courses do 
-    resources :uploads, :announcements, :links
+    resources :uploads, :announcements, :links, :assignments
     resources :students do
       collection do
         post 'import'

@@ -1,0 +1,36 @@
+<%= form_for(@assignment, :url => course_assignments_path(Course.find(params[:course_id]))) do |f| %>
+  <% if @assignment.errors.any? %>
+    <div  class="error">
+      <h2><%= pluralize(@assignment.errors.count, "error") %> prevented this assignment from being saved:</h2>
+      <% @assignment.errors[:base].each do |error| %>
+        <%= error %>
+      <% end %>
+    </div>
+  <% end %>
+  <ol> 
+    <li class="string required <%= "error" if @assignment.errors[:name].any? %>"> 
+      <label for="course_name">Name<abbr title="required">*</abbr></label> 
+      <%= f.text_field :name %>
+      <% @assignment.errors[:name].each do |error| %>
+         <p class="inline-errors"><%= error %></p> 
+      <% end %>
+    </li>
+    <li class="string required <%= "error" if @assignment.errors[:description].any? %>"> 
+      <%= f.label :description, raw("Description<abbr>*</abbr>") %><br />
+      <%= f.text_area :description %>
+      <% @assignment.errors[:description].each do |error| %>
+         <p class="inline-errors"><%= error %></p> 
+      <% end %>
+    </li>
+    <li class="date required"> 
+      <h5 class="legend"><span class="label">Due date*</span></h5> 
+      <%= f.datetime_select :due_at, :default => 1.week.from_now %>
+      <% @assignment.errors[:due_at].each do |error| %>
+         <p class="inline-errors"><%= error %></p> 
+      <% end %>
+    </li>
+  </ol>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

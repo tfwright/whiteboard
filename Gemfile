@@ -13,6 +13,7 @@ group :test do
   gem 'factory_girl_rails'
   gem 'redgreen'
   gem 'single_test'
+  gem 'ruby-debug'
 end
 
 

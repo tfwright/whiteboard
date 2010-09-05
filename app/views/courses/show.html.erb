@@ -46,6 +46,11 @@
   .pdf {
     background-color:#B22222;
   }
+  
+  .due-date {
+    color:red;
+    float:right;
+  }
 </style>
 
 <%= render :partial => "courses/header" %>
@@ -65,6 +70,26 @@
   <div>
     <%= link_to new_course_announcement_path(@course), :class => "green-button pcb" do %>
       <span>Make an announcement</span>
+    <% end %>
+  </div>
+</div>
+
+<div style="margin-top:20px">
+  <h3>Assignments</h3>
+  <% if @course.assignments.any? %>
+  <dl style="padding:15px">
+    <% @course.assignments.each do |assignment| %>
+      <dt><%= assignment.name %></dt>
+      <dd class="due-date">DUE: <%= assignment.due_at %></dd>
+      <dd><%= truncate_html(assignment.description, :length => 200, :omission => "... "+link_to("(More)", course_assignment_path(@course, assignment))) %>
+    <% end %>
+  </dl>
+  <% else %>
+    <div style="margin:20px 50px">No assignments have been posted yet.</div>
+  <% end %>
+  <div>
+    <%= link_to new_course_assignment_path(@course), :class => "green-button pcb" do %>
+      <span>Post an assignment</span>
     <% end %>
   </div>
 </div>
