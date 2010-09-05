@@ -3,12 +3,21 @@ Factory.define :user do |user|
   user.email 'user@example.com'
 end
 
-Factory.define :student, :parent => :user do |student|
+Factory.define :student, :parent => :user, :class => "Student" do |student|
   student.type "Student"
 end
 
+Factory.define :admin, :parent => :user, :class => "Student" do |admin|
+  admin.type "Admin"
+end
+
+Factory.define :professor, :parent => :user, :class => "Student" do |professor|
+  professor.type "Professor"
+end
+
 Factory.define :course do |course|
-  course.name "Test course"
+  course.title "Test course"
+  course.code "testcode"
   course.begins_on Date.today
   course.ends_on 3.months.from_now
 end

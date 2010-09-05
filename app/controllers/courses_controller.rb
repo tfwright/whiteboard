@@ -95,7 +95,7 @@ class CoursesController < ApplicationController
     end
     
     def ensure_enrolled
-      unless current_user.type == "Admin" || current_user.courses.inlude?(Course.find(params[:id]))
+      unless current_user.type == "Admin" || current_user.courses.include?(Course.find(params[:id]))
         redirect_to courses_path
       end
     end
