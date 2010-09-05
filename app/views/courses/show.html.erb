@@ -67,11 +67,13 @@
   <% else %>
     <div style="margin:20px 50px">No announcements have been posted yet.</div>
   <% end %>
-  <div>
-    <%= link_to new_course_announcement_path(@course), :class => "green-button pcb" do %>
-      <span>Make an announcement</span>
-    <% end %>
-  </div>
+  <% if %(Admin Professor).include?(current_user.type) %>
+    <div>
+      <%= link_to new_course_announcement_path(@course), :class => "green-button pcb" do %>
+        <span>Make an announcement</span>
+      <% end %>
+    </div>
+  <% end %>
 </div>
 
 <div style="margin-top:20px">
@@ -87,11 +89,13 @@
   <% else %>
     <div style="margin:20px 50px">No assignments have been posted yet.</div>
   <% end %>
-  <div>
-    <%= link_to new_course_assignment_path(@course), :class => "green-button pcb" do %>
-      <span>Post an assignment</span>
-    <% end %>
-  </div>
+  <% if %(Admin Professor).include?(current_user.type) %>
+    <div>
+      <%= link_to new_course_assignment_path(@course), :class => "green-button pcb" do %>
+        <span>Post an assignment</span>
+      <% end %>
+    </div>
+  <% end %>
 </div>
 
 <div style="margin-top:20px">
@@ -115,11 +119,13 @@
   <% else %>
     <div style="margin:20px 50px">No files have been posted yet.</div>
   <% end %>
-  <div>
-    <%= link_to new_course_upload_path(@course), :class => "green-button pcb" do %>
-      <span>Upload a file</span>
-    <% end %>
-  </div>
+  <% if %(Admin Professor).include?(current_user.type) %>
+    <div>
+      <%= link_to new_course_upload_path(@course), :class => "green-button pcb" do %>
+        <span>Upload a file</span>
+      <% end %>
+    </div>
+  <% end %>
 </div>
 
 <div style="margin-top:20px">
@@ -134,9 +140,11 @@
   <% else %>
     <div style="margin:20px 50px">No links have been posted yet.</div>
   <% end %>
-  <div>
-    <%= link_to new_course_link_path(@course), :class => "green-button pcb" do %>
-      <span>Post a link</span>
-    <% end %>
-  </div>
+  <% if %(Admin Professor).include?(current_user.type) %>
+    <div>
+      <%= link_to new_course_link_path(@course), :class => "green-button pcb" do %>
+        <span>Post a link</span>
+      <% end %>
+    </div>
+  <% end %>
 </div>
