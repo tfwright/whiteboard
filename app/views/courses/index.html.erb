@@ -1,4 +1,4 @@
-<h1>Listing courses</h1>
+<h1>Your courses</h1>
 
 <table>
   <tr>
@@ -7,7 +7,9 @@
     <th>Start date</th>
     <th>End date</th>
     <th>Students</th>
-    <th>Manage</th>
+    <% if %(Admin Professor).include?(current_user.type) %>
+      <th>Manage</th>
+    <% end %>
   </tr>
 
 <% @courses.each do |course| %>
@@ -17,11 +19,13 @@
     <td><%= course.begins_on %></td>
     <td><%= course.ends_on %></td>
     <td><%= link_to course.students.count, course_students_path(course) %>
-    <td>
-      <%= link_to 'Show', course %>
-      <%= link_to 'Edit', edit_course_path(course) %>
-      <%= link_to 'Destroy', course, :confirm => 'Are you sure?', :method => :delete %>
-    </td>
+    <% if %(Admin Professor).include?(current_user.type) %>
+      <td>
+        <%= link_to 'Show', course %>
+        <%= link_to 'Edit', edit_course_path(course) %>
+        <%= link_to 'Destroy', course, :confirm => 'Are you sure?', :method => :delete %>
+      </td>
+    <% end %>
   </tr>
 <% end %>
 </table>

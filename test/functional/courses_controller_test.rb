@@ -33,4 +33,14 @@ class CoursesControllerTest < ActionController::TestCase
     assert_response :success
   end
   
+  test "user doesn't see courses in which they're not enrolled" do
+    enrolled_course = Factory(:course)
+    unenrolled_course = Factory(:course)
+    student = Factory(:student)
+    enrolled_course.students << student
+    sign_in student
+    get :index
+    assert !assigns(:courses).include?(unenrolled_course)
+  end
+  
 end

@@ -7,7 +7,7 @@ class CoursesController < ApplicationController
   # GET /courses
   # GET /courses.xml
   def index
-    @courses = Course.all
+    @courses = current_user.courses
 
     respond_to do |format|
       format.html # index.html.erb
