@@ -72,7 +72,8 @@ $(document).ready(function(){
         });
         var increment = (100/$("#csv td.selected").length);
         $.manageAjax.create('studentImporter', {
-        	queue: false
+        	queue: true,
+        	preventDoubbleRequests: false
         });
         $("#csv td.selected").each(function(i,l){
           $.manageAjax.add("studentImporter", {
@@ -83,7 +84,7 @@ $(document).ready(function(){
               $("#progressbar").progressbar("value", $("#progressbar").progressbar("value")+increment);
             },
             error:function(data) {
-              $.manageAjax.abort("studentImporter", true);
+              $.manageAjax.clear("studentImporter", true);
               alert("There was an error importing a student.  Be sure you have selected a column with a complete list of student emails.");
               $.modal.close();
             }
