@@ -3,7 +3,7 @@ class Course < ActiveRecord::Base
   has_many :announcements
   has_many :links
   has_many :assignments
-  has_and_belongs_to_many :students, :association_foreign_key => "user_id", :join_table => "courses_users"
+  has_and_belongs_to_many :students, :association_foreign_key => "user_id", :join_table => "courses_users", :uniq => true
   belongs_to :professor, :foreign_key => "user_id"
   
   validates :title, :presence => true
