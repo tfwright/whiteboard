@@ -6,6 +6,7 @@ Whiteboard::Application.routes.draw do
     resources :students do
       collection do
         post 'import'
+        post 'enroll'
       end
     end
   end

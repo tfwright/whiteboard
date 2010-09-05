@@ -22,6 +22,12 @@ class StudentsController < ApplicationController
     end
   end
   
+  def enroll
+    @student = Student.find_by_email(params[:student][:email]) || Student.create!(params[:student].merge(:password => Devise.friendly_token))
+    @student.courses << Course.find(params[:course_id])
+    render :json => @student
+  end
+  
   def import
     @roster = FasterCSV.table(params[:roster].path)
     @selected_column = @roster.headers.detect{|h| h.to_s.match(/email/) }

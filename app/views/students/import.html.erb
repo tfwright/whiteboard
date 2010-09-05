@@ -2,58 +2,93 @@
   .selected {
     background-color:#FFFF66;
   }
+  
+  #batch-upload-msg {
+    display:none;
+  }
+  
+  #csv th:hover {
+    background-color:#000;
+    color:#FFFF66;
+    cursor:pointer;
+  }
 </style>
 <script>
 toggleStudentForm = function(formIndex) {
   $("#import-student-"+formIndex).toggle()
 }
+$(document).ready(function(){
+  $("th").bind("click", function(event){
+    $("#csv").find('td, th').removeClass('selected') 
+      .filter(':nth-child(' + ($(event.target).index()+1) + ')').addClass('selected')
+  })
+});
 </script>
 <%= render :partial => "courses/header" %>
 
 <h3 style="margin-top:15px">Import students from roster</h3>
-<p>All Whiteboard needs is an email for each student to be imported.  Confirm the field with the correct email is highlighted and click 'Import'. </p>
+<p>All Whiteboard needs is an email for each student to be imported.  Please confirm the column with the correct emails is selected and click import.  Select a different column by clicking the header. </p>
 <div style="width:100%;height:650px;overflow:scroll">
-  <table>
+  <table id="csv">
     <tr>
       <% @roster.headers.each do |header| %>
-        <th class="<%= "selected" if header == @selected_column %>"><%= header %></th>
+        <th class="<%= "selected" if header == @selected_column %>">
+          <%= header %>
+        </th>
       <% end %>
     </tr>
     <% @roster.each_with_index do |row, index| %>
       <tr>
-        <% row.each do |field| %>
-          <% if @roster.headers.index(field[0]) == @roster.headers.index(@selected_column) %>
-            <td class="selected">
-              <%= field[1] %>
-              <% unless Course.find(params[:course_id]).students.exists?(:email => field[1]) %>
-                <% form_for :student, :url => course_students_path(Course.find(params[:course_id])), :remote => true, :html => {:id => "import-student-#{index}"} do |f| %>
-                  <%= f.hidden_field :email, :value => field[1] %>
-                  <%= f.submit "Import" %>
-                <% end %>
-                <script>
-                  jQuery(function($) {
-                    $("#import-student-<%= index %>")
-                      .bind("ajax:loading",  function() {toggleStudentForm(<%= index %>)})
-                      .bind("ajax:success", function(data, status, xhr) {
-                        $($("#import-student-<%= index %>").parents("tr")[0]).remove();
-                        alert("Added student!");
-                      })
-                      .bind("ajax:failure", function(data, status, xhr) {
-                        alert("Sorry, there has been an error.  This is a bug.  A bad bug.  A bedbug.");
-                      });
-                  });
-                </script>
-              <% else %>
-                This student has already been enrolled in your course.
-              <% end %>
-            </td>
-          <% else %>
-            <td>
-              <%= field[1] %>
-            </td>
-          <% end %>
+        <% row.each do |field| %>          
+          <td class="<%= "selected" if @roster.headers.index(field[0]) == @roster.headers.index(@selected_column) %>">
+            <%= field[1] %>
+          </td>
         <% end %>
       </tr>
     <% end %>    
   </table>
 </div>
+<%= submit_tag "Import All Students", :id => "import_all_button", :style => "font-size:25px" %>
+<div id="batch-upload-msg">
+  <h1>Importing students</h1>
+  <p>Please don't touch anything until this process is complete!  It's not my fault whatever happens if you do!</p>
+  <div id="progressbar" style="margin:100px auto;width:50%"></div>
+</div>
+<script>
+  jQuery(function($) {
+    $("#import_all_button")
+      .bind("click",  function() {
+        $("#batch-upload-msg").modal({containerCss: {'background-color':'#fff'}});
+        $("#progressbar").progressbar({
+          value: 0,
+          change:function(event,ui){
+            if($(event.target).progressbar("value")>=100){
+              $("#batch-upload-msg").append("<h3>Import complete!</h3>");
+              window.setInterval(function() {
+                window.location="<%= course_students_url(Course.find(params[:course_id])) %>"
+              }, 800);
+            }
+          }
+        });
+        var increment = (100/$("#csv td.selected").length);
+        $.manageAjax.create('studentImporter', {
+        	queue: false
+        });
+        $("#csv td.selected").each(function(i,l){
+          $.manageAjax.add("studentImporter", {
+            type: "POST",
+            url:"<%= enroll_course_students_url(Course.find(params[:course_id]), :format => "js") %>",
+            data:{student:{email:$(l).text().trim()}},
+            success:function(data) {
+              $("#progressbar").progressbar("value", $("#progressbar").progressbar("value")+increment);
+            },
+            error:function(data) {
+              $.manageAjax.clear("studentImporter", true)
+              alert("There was an error importing a student.  Be sure you have selected a column with a complete list of student emails.")
+              $.modal.close();
+            }
+          });
+        });
+      });
+  });
+</script>
