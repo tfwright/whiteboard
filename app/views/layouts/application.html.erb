@@ -79,7 +79,7 @@
   </div>
   <div id="footer">
     ABOUT // FAQ // LEGAL
-    <span style="float:right"><%= Grit::Repo.new(Rails.root + '.git').recent_tag_name %></span>
+    <span style="float:right"><%= Grit::Repo.new(Rails.root + '.git').recent_tag_name rescue "" %></span>
   </div>
 </body>
 </html>
