@@ -8,7 +8,7 @@
     </tr>
     <% @students.each do |student| %>
       <tr>
-        <td><%= student.email %></td>
+        <td><%= mail_to student.email %></td>
       </tr>
     <% end %>
   </table>
