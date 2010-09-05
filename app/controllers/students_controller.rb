@@ -25,10 +25,14 @@ class StudentsController < ApplicationController
   def enroll
     @student = Student.find_by_email(params[:student][:email]) || Student.new(params[:student].merge(:password => Devise.friendly_token))
     @student.courses << Course.find(params[:course_id])
-    if @student.save
-      render :json => @student, :status => 200
-    else
-      render :json => @student, :status => :unprocessable_entity
+    respond_to do |format|
+      if @student.save
+        format.html { redirect_to(course_students_path(Course.find(params[:course_id])), :notice => 'Student was successfully added.') }
+        format.js { render :json => @student, :status => 200 }
+      else
+        format.html { render :action => :new }
+        format.js { render :json => @student, :status => :unprocessable_entity }
+      end
     end
   end
   
