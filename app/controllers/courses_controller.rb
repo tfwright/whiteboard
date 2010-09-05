@@ -1,5 +1,6 @@
 class CoursesController < ApplicationController
   
+  before_filter :set_current_course, :except => [:new, :create, :index]
   before_filter :ensure_professor_or_admin, :except => [:show, :index]
   before_filter :ensure_enrolled, :except => [:new, :create, :index]
   
@@ -85,18 +86,10 @@ class CoursesController < ApplicationController
     end
   end
   
-  private
+  private 
   
-    def ensure_professor_or_admin
-      unless %w(Professor Admin).include?(current_user.type)
-        flash[:warning] = "You do not have the right to do this to me!"
-        redirect_to root_url
-      end
+    def set_current_course
+      @current_course ||= Course.find(params[:id])
     end
-    
-    def ensure_enrolled
-      unless current_user.type == "Admin" || current_user.courses.include?(Course.find(params[:id]))
-        redirect_to courses_path
-      end
-    end
+  
 end

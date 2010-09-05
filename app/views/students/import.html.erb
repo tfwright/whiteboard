@@ -65,7 +65,7 @@ $(document).ready(function(){
             if($(event.target).progressbar("value")>=100){
               $("#batch-upload-msg").append("<h3>Import complete!</h3>");
               window.setInterval(function() {
-                window.location="<%= course_students_url(Course.find(params[:course_id])) %>"
+                window.location="<%= course_students_url(@current_course) %>"
               }, 800);
             }
           }
@@ -78,7 +78,7 @@ $(document).ready(function(){
         $("#csv td.selected").each(function(i,l){
           $.manageAjax.add("studentImporter", {
             type: "POST",
-            url:"<%= enroll_course_students_url(Course.find(params[:course_id]), :format => "js") %>",
+            url:"<%= enroll_course_students_url(@current_course, :format => "js") %>",
             data:{student:{email:$(l).text().trim()}},
             success:function(data) {
               $("#progressbar").progressbar("value", $("#progressbar").progressbar("value")+increment);

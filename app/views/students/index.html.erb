@@ -15,6 +15,6 @@
 <% else %>
   <div style="margin:20px 50px">No announcements have been posted yet.</div>
 <% end %>
-<%= link_to new_course_student_path(Course.find(params[:course_id])), :class => "green-button pcb" do %>
+<%= link_to new_course_student_path(@current_course), :class => "green-button pcb" do %>
   <span>Add students to this course</span>
 <% end %>

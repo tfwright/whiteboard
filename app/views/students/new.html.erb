@@ -2,7 +2,7 @@
 
 <h3 style="margin-top:15px">New student</h3>
 
-<%= form_for(@student, :url => enroll_course_students_path(Course.find(params[:course_id]))) do |f| %>
+<%= form_for(@student, :url => enroll_course_students_path(@current_course)) do |f| %>
   <% if @student.errors.any? %>
     <div class="error">
       <h3><%= pluralize(@student.errors.count, "error") %> prevented this course from being saved:</h3>
@@ -29,7 +29,7 @@
 
 <h3 style="margin-top:15px">Import student roster</h3>
 
-<%= form_tag import_course_students_path(Course.find(params[:course_id])), :multipart => true do %>
+<%= form_tag import_course_students_path(@current_course), :multipart => true do %>
   <ol>
     <li class="file required"> 
       <%= label :roster, raw("Roster<abbr>*</abbr>") %><br />
