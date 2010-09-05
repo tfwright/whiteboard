@@ -83,8 +83,8 @@ $(document).ready(function(){
               $("#progressbar").progressbar("value", $("#progressbar").progressbar("value")+increment);
             },
             error:function(data) {
-              $.manageAjax.clear("studentImporter", true)
-              alert("There was an error importing a student.  Be sure you have selected a column with a complete list of student emails.")
+              $.manageAjax.abort("studentImporter", true);
+              alert("There was an error importing a student.  Be sure you have selected a column with a complete list of student emails.");
               $.modal.close();
             }
           });
