@@ -43,4 +43,11 @@ class CoursesControllerTest < ActionController::TestCase
     assert !assigns(:courses).include?(unenrolled_course)
   end
   
+  test "creates a course" do
+    sign_in Factory(:professor)
+    assert_difference "Course.count", 1 do
+      post :create, :course => Factory.attributes_for(:course)
+    end
+  end
+  
 end
