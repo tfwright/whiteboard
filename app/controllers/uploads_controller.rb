@@ -37,14 +37,11 @@ class UploadsController < ApplicationController
     @upload = Upload.find(params[:id])
   end
 
-  # POST /uploads
-  # POST /uploads.xml
   def create
-    @upload = Course.find(params[:course_id]).uploads.build(params[:upload])
-
+    @upload = Upload.new(params[:upload].merge(params[:attachable]))
     respond_to do |format|
       if @upload.save
-        format.html { redirect_to(@upload.course, :notice => 'Upload was successfully created.') }
+        format.html { redirect_to(@upload.attachable, :notice => 'Upload was successfully created.') }
         format.xml  { render :xml => @upload, :status => :created, :location => @upload }
       else
         format.html { render :action => "new" }

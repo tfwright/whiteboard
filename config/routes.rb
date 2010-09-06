@@ -4,7 +4,10 @@ Whiteboard::Application.routes.draw do
   resources :users, :only => [:edit, :show, :update]
   
   resources :courses do 
-    resources :uploads, :announcements, :links, :assignments
+    resources :uploads, :announcements, :links
+    resources :assignments do
+      resources :uploads
+    end
     resources :students do
       collection do
         post 'import'

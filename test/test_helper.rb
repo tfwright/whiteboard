@@ -5,3 +5,6 @@ require 'rails/test_help'
 class ActionController::TestCase
   include Devise::TestHelpers
 end
+
+# For using test helper methods in factory definitions
+include ActionDispatch::TestProcess

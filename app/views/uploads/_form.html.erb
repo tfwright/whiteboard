@@ -37,6 +37,8 @@
       <% end %>
     </li>
   </ol>
+  <%= hidden_field_tag "attachable[attachable_id]", params[:course_id] %>
+  <%= hidden_field_tag "attachable[attachable_type]", "Course" %>
   <div class="actions">
     <%= f.submit %>
   </div>

@@ -30,3 +30,9 @@ Factory.define :course do |course|
   course.ends_on 3.months.from_now
   course.association :professor
 end
+
+Factory.define :upload do |upload|
+  upload.name "Test Upload"
+  upload.description "This is an test of the upload system.  This is only a test."
+  upload.attached { fixture_file_upload('/files/syllabus.pdf', 'application/pdf') }
+end
