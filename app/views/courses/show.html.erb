@@ -81,7 +81,7 @@
   <% if @course.assignments.any? %>
   <dl style="padding:15px">
     <% @course.assignments.each do |assignment| %>
-      <dt><%= assignment.name %></dt>
+      <dt><%= link_to assignment.name, course_assignment_path(@course, assignment) %></dt>
       <dd class="due-date">DUE: <%= assignment.due_at %></dd>
       <dd><%= truncate_html(assignment.description, :length => 200, :omission => "... "+link_to("(More)", course_assignment_path(@course, assignment))) %>
     <% end %>
@@ -100,18 +100,18 @@
 
 <div style="margin-top:20px">
   <h3>Course files</h3>
-  <% if @course.uploads.any? %>
+  <% if @course.documents.any? %>
     <dl class="filelist">
-    <% @course.uploads.each do |upload| %>
-      <% ext = File.extname(upload.attached.original_filename).gsub(/^\.+/, "") %>
+    <% @course.documents.each do |document| %>
+      <% ext = File.extname(document.attached.original_filename).gsub(/^\.+/, "") %>
       <dt class="<%= ext %>">
-        <%= link_to ext, upload.attached.url %>
+        <%= link_to ext, document.attached.url %>
       </dt>
       <dd class="top">
-        <h4 style="display:inline"><%= upload.name %></h4>
+        <h4 style="display:inline"><%= document.name %></h4>
       </dd>
       <dd class="bottom">
-        <span style="color:#D8D8D8;"><%= upload.description %></span>
+        <span style="color:#D8D8D8;"><%= document.description %></span>
       </dd>
     <% end %>
     </dl>
@@ -121,7 +121,7 @@
   <% end %>
   <% if %(Admin Professor).include?(current_user.type) %>
     <div>
-      <%= link_to new_course_upload_path(@course), :class => "green-button pcb" do %>
+      <%= link_to new_course_document_path(@course), :class => "green-button pcb" do %>
         <span>Upload a file</span>
       <% end %>
     </div>

@@ -31,8 +31,8 @@ Factory.define :course do |course|
   course.association :professor
 end
 
-Factory.define :upload do |upload|
-  upload.name "Test Upload"
-  upload.description "This is an test of the upload system.  This is only a test."
-  upload.attached { fixture_file_upload('/files/syllabus.pdf', 'application/pdf') }
+Factory.define :document do |document|
+  document.name "Test Upload"
+  document.description "This is an test of the document system.  This is only a test."
+  document.attached { fixture_file_upload('/files/syllabus.pdf', 'application/pdf') }
 end

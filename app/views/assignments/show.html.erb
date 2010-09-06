@@ -1,3 +1,8 @@
 <%= render :partial => "courses/header" %>
 <h3><%= @assignment.name %></h3>
 <p><%= simple_format(@assignment.description) %></p>
+<% if current_user.is_a?(Student) %>
+<%= link_to new_course_assignment_upload_path(Course.find(params[:course_id]), @assignment), :class => "green-button pcb" do %>
+  <span>Turn in this assignment</span>
+<% end %>
+<% end %>

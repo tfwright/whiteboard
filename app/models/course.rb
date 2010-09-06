@@ -1,5 +1,5 @@
 class Course < ActiveRecord::Base
-  has_many :uploads, :as => :attachable
+  has_many :documents, :as => :attachable
   has_many :announcements
   has_many :links
   has_many :assignments

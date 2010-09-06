@@ -4,9 +4,9 @@ Whiteboard::Application.routes.draw do
   resources :users, :only => [:edit, :show, :update]
   
   resources :courses do 
-    resources :uploads, :announcements, :links
+    resources :documents, :announcements, :links
     resources :assignments do
-      resources :uploads
+      resources :documents
     end
     resources :students do
       collection do
