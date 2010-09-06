@@ -1,0 +1,4 @@
+<%= render :partial => "courses/header" %>
+<h3>Submit your assignment: <%= Assignment.find(params[:assignment_id]).name %></h3>
+<p>This assignment is due in <%= distance_of_time_in_words(Time.now, Assignment.find(params[:assignment_id]).due_at) %></p>
+<%= render 'form' %>

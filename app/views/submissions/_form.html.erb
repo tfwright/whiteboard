@@ -1,0 +1,29 @@
+<%= form_for(@submission, :url => course_assignment_submissions_path(Course.find(params[:course_id]), Assignment.find(params[:assignment_id]))) do |f| %>
+  <% if @submission.errors.any? %>
+    <div class="error">
+      <h3><%= pluralize(@submission.errors.count, "error") %> prevented this course from being saved:</h3>
+      <% @submission.errors[:base].each do |error| %>
+        <%= error %>
+      <% end %>
+    </div>
+    <% end %>
+    <ol>
+      <li class="file required"> 
+        <%= f.label :upload, raw("Attachment<abbr>*</abbr>") %><br />
+        <%= f.file_field :upload %>
+        <p class="inline-hints">currently only word submissions and pdfs are allowed</p> 
+        <% @submission.errors[:upload_file_name].each do |error| %>
+           <p class="inline-errors">File <%= error %></p> 
+        <% end %>
+        <% @submission.errors[:upload_file_size].each do |error| %>
+           <p class="inline-errors"><%= error %></p> 
+        <% end %>
+        <% @submission.errors[:upload_content_type].each do |error| %>
+           <p class="inline-errors"><%= error %></p> 
+        <% end %>
+      </li>
+    </ol>
+    <div class="actions">
+      <%= f.submit %>
+    </div>
+  <% end %>
