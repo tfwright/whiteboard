@@ -82,7 +82,13 @@
   <dl style="padding:15px">
     <% @course.assignments.each do |assignment| %>
       <dt><%= link_to assignment.name, course_assignment_path(@course, assignment) %></dt>
-      <dd class="due-date">DUE: <%= assignment.due_at %></dd>
+      <% if current_user.is_a?(Student) %>
+        <% unless submission = current_user.submissions.where(:assignment_id => assignment.id).last %>
+          <dd class="due-date">DUE: <%= assignment.due_at %></dd>
+        <% else %>
+          <dd class="due-date">Submitted!<dd>
+        <% end %>
+      <% end %>
       <dd><%= truncate_html(assignment.description, :length => 200, :omission => "... "+link_to("(More)", course_assignment_path(@course, assignment))) %>
     <% end %>
   </dl>

@@ -36,3 +36,16 @@ Factory.define :document do |document|
   document.description "This is an test of the document system.  This is only a test."
   document.attached { fixture_file_upload('/files/syllabus.pdf', 'application/pdf') }
 end
+
+Factory.define :assignment do |assignment|
+  assignment.association :course
+  assignment.name "Test assignment"
+  assignment.due_at { 4.days.from_now }
+  assignment.description "This is a test assignment."
+end
+
+Factory.define :submission do |submission|
+  submission.association :student
+  submission.association :assignment
+  submission.upload { fixture_file_upload('/files/syllabus.pdf', 'application/pdf') }
+end

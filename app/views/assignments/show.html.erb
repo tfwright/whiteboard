@@ -2,7 +2,11 @@
 <h3><%= @assignment.name %></h3>
 <p><%= simple_format(@assignment.description) %></p>
 <% if current_user.is_a?(Student) %>
-<%= link_to new_course_assignment_upload_path(Course.find(params[:course_id]), @assignment), :class => "green-button pcb" do %>
-  <span>Turn in this assignment</span>
-<% end %>
+  <% unless submission = current_user.submissions.where(:assignment_id => @assignment.id).last %>
+    <%= link_to new_course_assignment_submission_path(Course.find(params[:course_id]), @assignment), :class => "green-button pcb" do %>
+      <span>Submit this assignment</span>
+    <% end %>
+  <% else %>
+    <p>Congrats, you submitted this assignment.</p>
+  <% end %>
 <% end %>

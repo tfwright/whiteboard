@@ -6,7 +6,7 @@ Whiteboard::Application.routes.draw do
   resources :courses do 
     resources :documents, :announcements, :links
     resources :assignments do
-      resources :documents
+      resources :submissions
     end
     resources :students do
       collection do
