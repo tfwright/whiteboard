@@ -42,19 +42,12 @@ class CoursesController < ApplicationController
     @course = Course.find(params[:id])
   end
 
-  # POST /courses
-  # POST /courses.xml
   def create
-    @course = current_user.courses.build(params[:course])
-
-    respond_to do |format|
-      if @course.save
-        format.html { redirect_to(@course, :notice => 'Course was successfully created.') }
-        format.xml  { render :xml => @course, :status => :created, :location => @course }
-      else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @course.errors, :status => :unprocessable_entity }
-      end
+    @course = Course.new(params[:course].merge(:user_id => current_user.id))
+    if @course.save
+      redirect_to(@course, :notice => 'Course was successfully created.')
+    else
+      render :action => "new"
     end
   end
 
