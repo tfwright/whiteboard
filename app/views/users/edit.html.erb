@@ -1,0 +1,39 @@
+<%= form_for(@user, :as => :user, :url => user_path(@user)) do |f| %>
+  <% if @user.errors.any? %>
+    <div class="error">
+      <h2><%= pluralize(@user.errors.count, "error") %> prohibited this link from being saved:</h2>
+
+      <ul>
+        <% @user.errors[:base].each do |error| %>
+          <%= error %>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <ol>
+    <li class="string <%= "error" if @user.errors[:name].any? %>"> 
+      <%= f.label :name, raw("Name<abbr></abbr>") %><br />
+      <%= f.text_field :name %>
+      <% @user.errors[:name].each do |error| %>
+         <p class="inline-errors"><%= error %></p> 
+      <% end %>
+    </li>
+    <li class="string required <%= "error" if @user.errors[:email].any? %>"> 
+      <%= f.label :email, raw("Email<abbr>*</abbr>") %><br />
+      <%= f.text_field :email %>
+      <% @user.errors[:email].each do |error| %>
+         <p class="inline-errors"><%= error %></p> 
+      <% end %>
+    </li>
+    <li class="string required <%= "error" if @user.errors[:password].any? %>"> 
+      <%= f.label :password, raw("Password<abbr>*</abbr>") %><br />
+      <%= f.password_field :password %>
+      <% @user.errors[:password].each do |error| %>
+         <p class="inline-errors"><%= error %></p> 
+      <% end %>
+    </li>
+  </ol>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

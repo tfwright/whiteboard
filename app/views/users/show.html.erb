@@ -7,6 +7,10 @@
   <dd><%= @user.email %></dd>
 </dl>
 
+<%= link_to edit_user_path(@user), :class => "grey-button pcb" do %>
+  <span>Edit account details</span>
+<% end %>
+
 <h3>Courses in which you are currently enrolled</h3>
 <ul>
   <% @user.courses.each do |course| %>

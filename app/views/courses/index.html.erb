@@ -33,5 +33,7 @@
 <br />
 
 <% if %(Admin Professor).include?(current_user.type) %>
-  <%= link_to 'New Course', new_course_path %>
+  <%= link_to new_course_path, :class => "green-button pcb" do %>
+    <span>New Course</span>
+  <% end %>
 <% end %>
