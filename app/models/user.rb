@@ -8,4 +8,9 @@ class User < ActiveRecord::Base
   attr_accessible :email, :password, :password_confirmation, :remember_me
   
   validates_format_of :email, :with => /^.+@.+\..+$/
+  
+  def before_create
+    self.name ||= email.gsub(/@.*/, "")
+  end
+  
 end

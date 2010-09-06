@@ -4,17 +4,28 @@
 <% if @students.any? %>
   <table style="padding:15px">
     <tr>
-      <th>Email</th>
+      <th>Name</th>
+      <% if %(Admin Professor).include?(current_user.type) %>
+        <th>Manage</th>
+      <% end %>
     </tr>
     <% @students.each do |student| %>
       <tr>
-        <td><%= mail_to student.email %></td>
+        <td><%= student.name %></td>
+        <% if %(Admin Professor).include?(current_user.type) %>
+          <td>
+            <%= mail_to student.email %>
+          </td>
+        <% end %>
       </tr>
     <% end %>
   </table>
 <% else %>
   <div style="margin:20px 50px">No announcements have been posted yet.</div>
 <% end %>
-<%= link_to new_course_student_path(@current_course), :class => "green-button pcb" do %>
-  <span>Add students to this course</span>
+
+<% if %(Admin Professor).include?(current_user.type) %>
+  <%= link_to new_course_student_path(@current_course), :class => "green-button pcb" do %>
+    <span>Add students to this course</span>
+  <% end %>
 <% end %>

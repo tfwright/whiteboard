@@ -32,4 +32,6 @@
 
 <br />
 
-<%= link_to 'New Course', new_course_path %>
+<% if %(Admin Professor).include?(current_user.type) %>
+  <%= link_to 'New Course', new_course_path %>
+<% end %>
