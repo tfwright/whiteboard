@@ -14,4 +14,10 @@ class Notifier < ActionMailer::Base
          :subject => "Your account has been created on Whiteboard")
   end
   
+  def feedback(feedback)
+    @feedback = feedback
+    mail(:to => "tfwright@gmail.com",
+      :subject => "Whiteboard Feedback: " + feedback[:summary] + feedback[:feeling])
+  end
+  
 end

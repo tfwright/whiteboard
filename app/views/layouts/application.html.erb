@@ -55,11 +55,16 @@
     color:#222;
     border:solid 1px #222;
   }
+  
   h3 {
     margin-top:15px;
   }
   
-  .color-changer {
+  div {
+    margin-top:10px;
+  }
+  
+  a.color-changer {
     padding:2px 5px;
     text-decoration:none;
     font-size:8px;
@@ -67,8 +72,13 @@
     margin-left:5px;
   }
   
-  .color-changer:visited {
+  a.color-changer:visited {
     text-decoration:none;
+  }
+  
+  .site-pages a, a:hover, a:visited {
+    text-decoration:none;
+    color:#ccc;
   }
   </style>
   <script>
@@ -77,6 +87,12 @@
       if(color)
         $(document.body).css({"background-color":color});
     });
+    
+    feedbackForm = function(){
+			$.get("<%= feedback_form_path %>", function(data){
+				$(data).modal({containerCss: {'background-color':'#fff','width':475, 'height':400}});
+			});
+    };
   </script>
 </head>
 <body>
@@ -101,7 +117,7 @@
     <div style="padding-left:160px"><%= yield %></div>
   </div>
   <div id="footer">
-    <span>ABOUT // FAQ // LEGAL</span>
+    <span class="site-pages">ABOUT // FAQ // LEGAL // <%= link_to_function "FEEDBACK", "feedbackForm()" %></span>
     <span id="color-changers">
       <% 5.times do %>
         <a href="#" class="color-changer" style="background-color:#<%= "%06x" % (rand * 0xffffff) %>">&nbsp;</a>

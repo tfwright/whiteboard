@@ -1,0 +1,22 @@
+<div style="margin:0">
+  <h3>Feedback!</h3>
+  <%= form_tag(deliver_feedback_path, :remote => true, :id => "feedback-form") do %>
+    <div>
+      <h5 style="display:inline">I'm feeling...</h5> 
+       <label style="display:inline;margin:5px;color:#000"><%= radio_button_tag "feedback[feeling]", ":D" %> :D</label>     
+       <label style="display:inline;margin:5px;color:#000"><%= radio_button_tag "feedback[feeling]", ":)" %>:) </label>
+       <label style="display:inline;margin:5px;color:#000"><%= radio_button_tag "feedback[feeling]", ":|" %>:| </label>
+       <label style="display:inline;margin:5px;color:#000"><%= radio_button_tag "feedback[feeling]", ":(" %>:( </label>
+       <label style="display:inline;margin:5px;color:#000"><%= radio_button_tag "feedback[feeling]", "D:" %>D: </label>
+       <label style="display:inline;margin:5px;color:#000"><%= radio_button_tag "feedback[feeling]", ":p" %>:p </label>  
+      </div>
+      <div><h5>Summarize:</h5> <%= text_field_tag "feedback[summary]" %></div>
+      <div><h5>Rant/Gush:</h5> <%= text_area_tag "feedback[body]" %></div>
+      <%= submit_tag "Send" %>
+  <% end %>
+  <script>
+  $("#feedback-form").bind("ajax:complete", function(event){ 
+   $.modal.close();
+  });
+  </script>
+</div>

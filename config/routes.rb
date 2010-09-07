@@ -15,6 +15,9 @@ Whiteboard::Application.routes.draw do
       end
     end
   end
+  
+  match 'feedback' => 'feedback#new', :as => :feedback_form
+  match 'feedback/deliver' => 'feedback#deliver', :as => :deliver_feedback
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
