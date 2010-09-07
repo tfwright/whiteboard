@@ -7,6 +7,7 @@
   <%= javascript_include_tag 'rails' %>
   <%= javascript_include_tag 'jquery.simplemodal' %>
   <%= javascript_include_tag 'jquery.ajaxmanager' %>
+  <%= javascript_include_tag 'jquery.cookies.2.2.0.min' %>
   <%= csrf_meta_tag %>
   <style type="text/css"> 
   /* These are styles to make the page look nice */
@@ -57,7 +58,26 @@
   h3 {
     margin-top:15px;
   }
+  
+  .color-changer {
+    padding:2px 5px;
+    text-decoration:none;
+    font-size:8px;
+    vertical-align:top;
+    margin-left:5px;
+  }
+  
+  .color-changer:visited {
+    text-decoration:none;
+  }
   </style>
+  <script>
+    $(document).ready(function() {
+      var color = $.cookies.get("bg-color");
+      if(color)
+        $(document.body).css({"background-color":color});
+    });
+  </script>
 </head>
 <body>
   <div id="masthead">WHITEBOARD</div>
@@ -81,7 +101,22 @@
     <div style="padding-left:160px"><%= yield %></div>
   </div>
   <div id="footer">
-    ABOUT // FAQ // LEGAL
+    <span>ABOUT // FAQ // LEGAL</span>
+    <span id="color-changers">
+      <% 5.times do %>
+        <a href="#" class="color-changer" style="background-color:#<%= "%06x" % (rand * 0xffffff) %>">&nbsp;</a>
+      <% end %>
+    <span>
+    <script>
+      $("#color-changers a").each(function(i,l){
+        $(l).click(function(){
+          var color = $(l).css("background-color");
+          $(document.body).animate({ "background-color": color }, 1000);
+          $.cookies.set("bg-color", color);
+          return false;
+        });
+      });
+    </script>
     <span style="float:right"><%= Grit::Repo.new(Rails.root + '.git').recent_tag_name rescue "" %></span>
   </div>
 </body>
