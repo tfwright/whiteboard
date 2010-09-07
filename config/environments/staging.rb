@@ -48,6 +48,8 @@ Whiteboard::Application.configure do
   config.active_support.deprecation = :notify
   
   config.action_mailer.default_url_options = { :host => 'whiteboard.tfwright.info' }
+  
+  config.action_mailer.delivery_method = :file
 end
 
 PAPERCLIP_OPTIONS = {:storage => :s3,
