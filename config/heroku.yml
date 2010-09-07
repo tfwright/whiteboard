@@ -1,4 +1,0 @@
-apps:
-  # shorthand: heroku app
-  production: tfwright-whiteboard
-  staging: tfwright-whiteboard-staging

@@ -12,7 +12,6 @@ gem 'grit'
 
 group :development do 
   gem 'heroku'
-  gem 'heroku_san'
 end
 
 group :test do
