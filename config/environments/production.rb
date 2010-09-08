@@ -1,3 +1,4 @@
+DOMAIN = "whiteboard.depaulphilgrad.com"
 Whiteboard::Application.configure do
   # Settings specified here will take precedence over those in config/environment.rb
 
@@ -47,11 +48,11 @@ Whiteboard::Application.configure do
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
   
-  config.action_mailer.default_url_options = { :host => 'whiteboard.tfwright.info' }
+  config.action_mailer.default_url_options = { :host => DOMAIN }
 end
 
 PAPERCLIP_OPTIONS = {:storage => :s3,
   :s3_credentials => {:access_key_id => '0141VS3DG9BCVMMS9W82', :secret_access_key => 'i70QHTiCvBVBPoJwzs91B6zzStWQ14wsreTCmsY+'},
   :path => ":attachment/:id/:style.:extension",
-  :bucket => 'assets.whiteboard.tfwright.info',
-  :s3_alias_url => 'assets.whiteboard.tfwright.info'}
+  :bucket => 'assets.'+DOMAIN,
+  :s3_alias_url => 'assets.'+DOMAIN}

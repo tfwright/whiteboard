@@ -1,5 +1,5 @@
 class Notifier < ActionMailer::Base
-  default :from => "notifier@whiteboard.tfwright.info"
+  default :from => "notifier@" + DOMAIN
   
   def enrollment_notification(student, course)
     @student = student
@@ -16,7 +16,7 @@ class Notifier < ActionMailer::Base
   
   def feedback(feedback)
     @feedback = feedback
-    mail(:to => "tfwright@gmail.com",
+    mail(:to => ENV['CONTACT'],
       :subject => "Whiteboard Feedback: " + feedback[:summary] + feedback[:feeling])
   end
   
