@@ -27,6 +27,12 @@ class StudentsController < ApplicationController
     end
   end
   
+  def unenroll
+    @student = Student.find(params[:id])
+    @student.courses.delete(@current_course)
+    redirect_to course_students_path(@current_course), :notice => "Student has been unrolled."
+  end
+  
   def import
     @roster = FasterCSV.table(params[:roster].path)
     @selected_column = @roster.headers.detect{|h| h.to_s.match(/email/) }

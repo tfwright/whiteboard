@@ -38,12 +38,21 @@ class StudentsControllerTest < ActionController::TestCase
     assert_response :redirect
   end
   
-  test "should send 2 emails when a new student is enrolled" do
+  test "sends 2 emails when a new student is enrolled" do
     course = Factory(:course)
     sign_in course.professor
     assert_difference "ActionMailer::Base.deliveries.size", 2 do
       post :enroll, :student => Factory.attributes_for(:student), :course_id => course.id
     end
   end
-    
+  
+  test "removes student from course" do
+    course = Factory(:course)
+    student = Factory(:student)
+    course.students << student
+    sign_in course.professor
+    assert_difference "student.courses.count", -1 do
+      delete :unenroll, :id => student.id, :course_id => course.id
+    end 
+  end
 end

@@ -15,6 +15,7 @@
         <% if %(Admin Professor).include?(current_user.type) %>
           <td>
             <%= mail_to student.email %>
+            <%= link_to "Unenroll", unenroll_course_student_path(@current_course, student), :method => :delete %>
           </td>
         <% end %>
       </tr>
