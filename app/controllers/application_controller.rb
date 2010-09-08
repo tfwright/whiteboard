@@ -17,4 +17,10 @@ class ApplicationController < ActionController::Base
       end
     end
     
+    def ensure_admin
+      unless current_user.is_a?(Admin)
+        redirect_to root_url, :warning => "You do not have permission."
+      end
+    end
+    
 end

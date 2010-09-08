@@ -19,6 +19,8 @@ Whiteboard::Application.routes.draw do
     end
   end
   
+  resources :professors
+  
   match 'feedback' => 'feedback#new', :as => :feedback_form
   match 'feedback/deliver' => 'feedback#deliver', :as => :deliver_feedback
 
