@@ -10,8 +10,9 @@ class FeedbackControllerTest < ActionController::TestCase
   
   test "sends feedback email" do 
     sign_in Factory(:student)
-    post :deliver, :feedback => {:feeling => ":D", :summary => "This test passes!", :body => "Everything's working great!"}
-    assert response.body.blank?
+    assert_difference "ActionMailer::Base.deliveries.size", 1 do
+      post :deliver, :feedback => {:feeling => ":D", :summary => "This test passes!", :body => "Everything's working great!"}
+    end
   end
   
 end
