@@ -20,4 +20,10 @@ class Notifier < ActionMailer::Base
       :subject => "Whiteboard Feedback: " + feedback[:summary] + feedback[:feeling])
   end
   
+  def announcement(announcement, student)
+    @announcement = announcement
+    mail(:to => student.email,
+      :subject => @announcement.subject + " (#{announcement.course.code})")
+  end
+  
 end

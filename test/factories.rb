@@ -49,3 +49,9 @@ Factory.define :submission do |submission|
   submission.association :assignment
   submission.upload { fixture_file_upload('/files/syllabus.pdf', 'application/pdf') }
 end
+
+Factory.define :announcement do |announcement|
+  announcement.association :course
+  announcement.subject "Test announcement"
+  announcement.body "This is a test announcement."
+end
