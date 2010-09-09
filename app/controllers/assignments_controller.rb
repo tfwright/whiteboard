@@ -1,4 +1,7 @@
 class AssignmentsController < ApplicationController
+  
+  before_filter :ensure_professor_or_admin, :except => :show
+    
   # GET /assignments
   # GET /assignments.xml
   def index
