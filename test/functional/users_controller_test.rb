@@ -1,8 +1,13 @@
 require 'test_helper'
 
 class UsersControllerTest < ActionController::TestCase
-  # Replace this with your real tests.
-  test "the truth" do
-    assert true
+
+  test "only account owner can update account" do
+    student = Factory(:student)
+    other_student = Factory(:student)
+    sign_in other_student
+    get :show, :id => student.id
+    assert_response :redirect
   end
+  
 end
