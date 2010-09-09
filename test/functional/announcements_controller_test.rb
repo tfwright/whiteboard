@@ -10,4 +10,11 @@ class AnnouncementsControllerTest < ActionController::TestCase
     get :show, :course_id => 1, :id => Factory(:announcement).id
   end
   
+  test "students cannot access edit form" do
+    student = Factory(:student)
+    sign_in student
+    get :edit, :course_id => 1, :id => Factory(:announcement).id
+    assert_response :redirect
+  end
+  
 end

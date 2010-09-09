@@ -1,4 +1,7 @@
 class AnnouncementsController < ApplicationController
+  
+  before_filter :ensure_professor_or_admin, :except => :show
+  
   # GET /announcements
   # GET /announcements.xml
   def index
@@ -80,4 +83,5 @@ class AnnouncementsController < ApplicationController
       format.xml  { head :ok }
     end
   end
+  
 end
