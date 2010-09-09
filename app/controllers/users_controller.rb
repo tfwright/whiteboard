@@ -22,7 +22,7 @@ class UsersController < ApplicationController
   private
   
   def ensure_owner
-    unless current_user.id == params[:id]
+    unless current_user.id.to_s == params[:id]
       redirect_to root_path, :warning => "You don't have permission."
     end
   end
