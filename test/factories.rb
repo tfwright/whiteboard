@@ -34,6 +34,7 @@ end
 Factory.define :document do |document|
   document.name "Test Upload"
   document.description "This is an test of the document system.  This is only a test."
+  document.association :attachable, :factory => :course
   document.attached { fixture_file_upload('/files/syllabus.pdf', 'application/pdf') }
 end
 

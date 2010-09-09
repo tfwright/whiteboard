@@ -1,4 +1,7 @@
 class DocumentsController < ApplicationController
+  
+  before_filter :ensure_professor_or_admin, :except => :show
+    
   # GET /Documents
   # GET /Documents.xml
   def index
