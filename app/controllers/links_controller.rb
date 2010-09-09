@@ -1,4 +1,7 @@
 class LinksController < ApplicationController
+
+  before_filter :ensure_professor_or_admin, :except => :show
+  
   # GET /links
   # GET /links.xml
   def index

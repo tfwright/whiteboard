@@ -56,3 +56,10 @@ Factory.define :announcement do |announcement|
   announcement.subject "Test announcement"
   announcement.body "This is a test announcement."
 end
+
+Factory.define :link do |link|
+  link.name "Test link"
+  link.url "http://test.example.com"
+  link.description "This is a test link"
+  link.association :course
+end
