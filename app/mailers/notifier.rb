@@ -23,7 +23,7 @@ class Notifier < ActionMailer::Base
   def announcement(announcement, student)
     @announcement = announcement
     mail(:to => student.email,
-      :subject => @announcement.subject + " (#{announcement.course.code})")
+      :subject => "[#{announcement.course.title}] " + @announcement.subject)
   end
   
 end
