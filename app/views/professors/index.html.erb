@@ -2,16 +2,19 @@
 
 <table>
   <tr>
-    <th></th>
-    <th></th>
-    <th></th>
+    <th>Name</th>
+    <th>Manage</th>
   </tr>
 
 <% @professors.each do |professor| %>
   <tr>
-    <td><%= link_to 'Show', professor %></td>
-    <td><%= link_to 'Edit', edit_professor_path(professor) %></td>
-    <td><%= link_to 'Destroy', professor, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td>
+      <%= link_to professor.name, professor %>
+    </td>
+    <td>
+      <%= link_to 'Edit', edit_professor_path(professor) %>
+      <%= link_to 'Destroy', professor, :confirm => 'Are you sure?', :method => :delete %>
+    </td>
   </tr>
 <% end %>
 </table>
