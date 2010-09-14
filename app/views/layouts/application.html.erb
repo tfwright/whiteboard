@@ -14,12 +14,14 @@
   /* These are styles to make the page look nice */
 
   body { background-color: #222;}
-  .content {
+  
+  #content {
     background: #fff;
     padding: 25px 40px;
     margin: 40px auto;
     margin-bottom:5px;
     width: 880px;
+    min-height:200px;
     -moz-border-radius: 24px;
     -webkit-border-radius: 24px;
   }
@@ -90,7 +92,7 @@
 </head>
 <body>
   <div id="masthead">WHITEBOARD</div>
-  <div class="content">
+  <div id="content">
     <% if notice %><div class="notice"><%= notice %></div><% end %>
     <% if alert %><div class="error"><%= alert %></div><% end %>
     <div style="display:block;clear:both">&nbsp;</div>
