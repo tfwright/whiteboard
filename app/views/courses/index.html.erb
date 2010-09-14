@@ -22,7 +22,6 @@
     <% if %(Admin Professor).include?(current_user.type) %>
       <td>
         <%= link_to 'Edit', edit_course_path(course) %>
-        <%= link_to 'Destroy', course, :confirm => 'Are you sure?', :method => :delete %>
       </td>
     <% end %>
   </tr>
