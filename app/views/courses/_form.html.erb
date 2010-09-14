@@ -22,7 +22,7 @@
     <li class="string required <%= "error" if @course.errors[:title].any? %>" id="course_code"> 
       <label for="course_code">Code<abbr title="required">*</abbr></label> 
       <%= f.text_field :code %>
-      <p class="inline-hints">a unique identifier, usually provided by the university</p> 
+      <p class="inline-hints">something unique, ie. term/year/course/section</p> 
       <% @course.errors[:code].each do |error| %>
          <p class="inline-errors"><%= error %></p> 
       <% end %>
