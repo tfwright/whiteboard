@@ -24,6 +24,6 @@ Whiteboard::Application.routes.draw do
   match 'feedback' => 'feedback#new', :as => :feedback_form
   match 'feedback/deliver' => 'feedback#deliver', :as => :deliver_feedback
 
-  root :to => "users#index"
+  root :to => "courses#index"
 
 end
