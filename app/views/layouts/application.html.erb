@@ -113,7 +113,7 @@
     <div style="padding-left:160px"><%= yield %></div>
   </div>
   <div id="footer">
-    <span class="site-pages">ABOUT // FAQ // LEGAL // <%= link_to_function "FEEDBACK", "feedbackForm()" %></span>
+    <span class="site-pages"><%= link_to "ABOUT", page_path("about") %> // <%= link_to "FAQ", page_path("faq") %> // <%= link_to_function "FEEDBACK", "feedbackForm()" %></span>
     <span id="color-changers">
       <% 5.times do %>
         <a href="#" class="color-changer" style="background-color:#<%= "%06x" % (rand * 0xffffff) %>">&nbsp;</a>

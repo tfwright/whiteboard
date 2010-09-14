@@ -9,6 +9,7 @@ gem 'aws-s3', :require => 'aws/s3'
 gem 'truncate_html', '0.4.0'
 gem 'fastercsv'
 gem 'grit'
+gem 'high_voltage'
 
 group :development do 
   gem 'heroku'

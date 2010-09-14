@@ -57,6 +57,7 @@ GEM
       json_pure (>= 1.2.0, < 1.5.0)
       launchy (~> 0.3.2)
       rest-client (~> 1.4.0)
+    high_voltage (0.9.1)
     i18n (0.4.1)
     json_pure (1.4.6)
     launchy (0.3.7)
@@ -121,6 +122,7 @@ DEPENDENCIES
   flutie (= 1.0.3)
   grit
   heroku
+  high_voltage
   paperclip (= 2.3.3)
   rails (= 3.0.0)
   redgreen
