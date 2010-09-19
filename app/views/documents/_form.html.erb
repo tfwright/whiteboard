@@ -1,7 +1,7 @@
 <%= form_for(@document, :html => {:multipart => true}, :url => course_documents_path(Course.find(params[:course_id]))) do |f| %>
   <% if @document.errors.any? %>
   <div class="error">
-    <h3><%= pluralize(@document.errors.count, "error") %> prevented this course from being saved:</h3>
+    <h3><%= pluralize(@document.errors.count, "error") %> prevented this document from being saved:</h3>
     <% @document.errors[:base].each do |error| %>
       <%= error %>
     <% end %>
