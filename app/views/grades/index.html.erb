@@ -1,0 +1,61 @@
+<script>
+  $(document).ready(function() {
+    $("form").hide();
+  });
+  function showGradeForm(el){
+    $("span", el).hide();
+    $("form", el).show();
+    $("input", el).focus();
+    $("input", el).blur(function(event){
+      $("form", el).submit();
+    });
+  }
+</script>
+<%= render :partial => "courses/header" %>
+<table>
+  <tr>
+    <th>Student</th>
+    <% @current_course.assignments.each do |assignment| %>
+      <th><%= assignment.name %></th>
+    <% end %>
+  </tr>
+<% @students.each do |student| %>
+  <tr>
+    <td><%= student.name %></td>
+    <% @current_course.assignments.each do |assignment| %>
+      <td id="student-<%= student.id %>-assign-<%= assignment.id %>">
+          <% if grade = student.grades.first(:conditions => {:assignment_id => assignment.id}) %>
+            <span class="grade"><%= grade.score %></span>
+            <%= form_for(grade, :url => course_grade_path(@current_course, grade, :format => :json), :remote => true) do |f| %>
+              <%= f.text_field :score, :size => 3, :style => "width:auto" %>
+            <% end %>
+            <script>
+              var gradeBox = $("#student-<%= student.id %>-assign-<%= assignment.id %>");
+              $("form", gradeBox).bind("ajax:success", function(event, grade, status) {
+                $("span.grade", gradeBox).text($.parseJSON(grade).score);
+                $("span.grade", gradeBox).show();
+                $("form", gradeBox).hide();
+              });
+            </script>
+          <% else %>
+            <span class="grade">--</span>
+            <%= form_for(Grade.new, :url => course_grades_path(@current_course, :format => :json), :remote => true) do |f| %>
+              <%= f.text_field :score, :size => 3, :style => "width:auto" %>
+              <%= f.hidden_field :assignment_id, :value => assignment.id %>
+              <%= f.hidden_field :student_id, :value => student.id %>
+            <% end %>
+          <% end %>
+      </td>
+      <script>
+        var gradeBox = $("#student-<%= student.id %>-assign-<%= assignment.id %>");
+        gradeBox.click(function(event){
+          showGradeForm(gradeBox);
+        });
+        $("form", gradeBox).bind("ajax:failure", function(event, grade, status){
+          alert("There was an error: " + xhr.responseText);
+        });
+      </script>
+    <% end %>
+  </tr>
+<% end %>
+</table>

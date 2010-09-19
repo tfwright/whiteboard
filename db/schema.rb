@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100906215720) do
+ActiveRecord::Schema.define(:version => 20100919201231) do
 
   create_table "announcements", :force => true do |t|
     t.integer  "course_id"
@@ -55,6 +55,14 @@ ActiveRecord::Schema.define(:version => 20100906215720) do
     t.integer  "attached_file_size"
     t.datetime "attached_updated_at"
     t.string   "attachable_type"
+  end
+
+  create_table "grades", :force => true do |t|
+    t.integer  "student_id"
+    t.integer  "assignment_id"
+    t.integer  "score"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "links", :force => true do |t|

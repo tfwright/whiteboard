@@ -63,3 +63,8 @@ Factory.define :link do |link|
   link.description "This is a test link"
   link.association :course
 end
+
+Factory.define :grade do |grade|
+  grade.association :student
+  grade.score 75
+end

@@ -1,4 +1,5 @@
 Whiteboard::Application.routes.draw do
+
   devise_for :users
   
   resources :users, :only => [:edit, :show, :update]
@@ -17,6 +18,7 @@ Whiteboard::Application.routes.draw do
         delete 'unenroll'
       end
     end
+    resources :grades
   end
   
   resources :professors
