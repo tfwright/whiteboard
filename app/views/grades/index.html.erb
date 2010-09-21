@@ -3,11 +3,16 @@
     min-width:100px;
     border-right:dotted 1px black;
   }
+  .assignment {
+    white-space:nowrap;
+    overflow:hidden;
+  }
   th {
     padding: 0 5px;
   }
   .editable {
     min-width:60px;
+    width:60px;
     text-align:center;
   }
   .editable:hover {
@@ -69,35 +74,44 @@
   
 </script>
 <%= render :partial => "courses/header" %>
-<div style="width:100%;overflow-x:auto">
-  <table>
-    <tr>
-      <th class="student">Student</th>
-      <% @current_course.assignments.each do |assignment| %>
-        <th title="<%= assignment.name %>"><%= truncate(assignment.name, :length => 8) %></th>
-      <% end %>
-    </tr>
-    <% @students.each do |student| %>
+<% if @current_course.assignments.any? %>
+  <p>
+    All assignments are listed below.  You can add or update grades for each students.
+  </p>
+  <div style="width:100%;overflow-x:auto">
+    <table>
       <tr>
-        <td class="student"><%= student.name %></td>
+        <th class="student">Student</th>
         <% @current_course.assignments.each do |assignment| %>
-          <td id="student-<%= student.id %>-assign-<%= assignment.id %>" class="editable">
-              <% if grade = student.grades.first(:conditions => {:assignment_id => assignment.id}) %>
-                <span class="grade"><%= grade.score %></span>
-                <%= form_for(grade, :url => course_grade_path(@current_course, grade, :format => :js), :remote => true) do |f| %>
-                  <%= f.text_field :score, :size => 3, :style => "width:auto" %>
-                <% end %>
-              <% else %>
-                <span class="grade">--</span>
-                <%= form_for(Grade.new, :url => course_grades_path(@current_course, :format => :js), :remote => true) do |f| %>
-                  <%= f.text_field :score, :size => 3, :style => "width:auto" %>
-                  <%= f.hidden_field :assignment_id, :value => assignment.id %>
-                  <%= f.hidden_field :student_id, :value => student.id %>
-                <% end %>
-              <% end %>
-          </td>
+          <th class="assignment" title="<%= assignment.name %>"><%= assignment.name %></th>
         <% end %>
       </tr>
-    <% end %>
-  </table>
-</div>
+      <% @students.each do |student| %>
+        <tr>
+          <td class="student"><%= student.name %></td>
+          <% @current_course.assignments.each do |assignment| %>
+            <td id="student-<%= student.id %>-assign-<%= assignment.id %>" class="editable">
+                <% if grade = student.grades.first(:conditions => {:assignment_id => assignment.id}) %>
+                  <span class="grade"><%= grade.score %></span>
+                  <%= form_for(grade, :url => course_grade_path(@current_course, grade, :format => :js), :remote => true) do |f| %>
+                    <%= f.text_field :score, :size => 3, :style => "width:auto" %>
+                  <% end %>
+                <% else %>
+                  <span class="grade">--</span>
+                  <%= form_for(Grade.new, :url => course_grades_path(@current_course, :format => :js), :remote => true) do |f| %>
+                    <%= f.text_field :score, :size => 3, :style => "width:auto" %>
+                    <%= f.hidden_field :assignment_id, :value => assignment.id %>
+                    <%= f.hidden_field :student_id, :value => student.id %>
+                  <% end %>
+                <% end %>
+            </td>
+          <% end %>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+<% else %>
+<p>
+  You don't have any graded assignments yet.  Would you like to <%= link_to "add one", new_course_assignment_path(@current_course) %>?
+</p>
+<% end %>
