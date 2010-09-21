@@ -78,7 +78,7 @@
 
 <div style="margin-top:20px">
   <h3>Assignments</h3>
-  <% if @course.written.assignments.any? %>
+  <% if @course.assignments.written.any? %>
   <dl style="padding:15px">
     <% @course.assignments.written.order("due_at").each do |assignment| %>
       <dt><%= link_to assignment.name, course_assignment_path(@course, assignment) %></dt>
