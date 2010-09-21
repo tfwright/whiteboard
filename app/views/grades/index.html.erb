@@ -18,63 +18,71 @@
     max-width:60px;
     text-align:center;
   }
+  <% if current_user.is_a?(Professor) %>
   .editable:hover {
     background-color:yellow;
   }
+  <% end %>
   tr {
     height:40px;
   }
 </style>
 <script>
-  function hideGradeForm(form, score){
-    $(form).hide();
-    $("input", form).unbind("blur");
-    $("input", form).blur();
-    $("span.grade", $(form).parents("td")).text(score);
-    $("span.grade", $(form).parents("td")).show();
-  }
-  
-  function showGradeForm(form){
-    $(form).show();
-    $("span", $(form).parents("td")).hide();
-    $("input", form).focus();
-    $("input", form).blur(function(event){
-      $(form).submit();
-    });
-  }
-  
-  function newGradeSuccessHandler(event, grade, status) {
-    var gradeJSON = $.parseJSON(grade)
-    hideGradeForm(event.target, gradeJSON.score);
-    $(event.target).attr("action", gradeJSON.update_url)
-    $(event.target).attr("method", "put")
-    $("input[type=hidden]", event.target).remove();
-    $(event.target).unbind("ajax:success")
-    $(event.target).bind("ajax:success", updateGradeSuccessHandler);
-  };
+<% if current_user.is_a?(Professor) %>
 
-  function updateGradeSuccessHandler(event, grade, status){
-    hideGradeForm(event.target, $.parseJSON(grade).score);
-  };
+    function hideGradeForm(form, score){
+      $(form).hide();
+      $("input", form).unbind("blur");
+      $("input", form).blur();
+      $("span.grade", $(form).parents("td")).text(score);
+      $("span.grade", $(form).parents("td")).show();
+    }
   
-  $(document).ready(function() {
-    $("form").hide();
-    $("td.editable").each(function(i, td){
-      $(td).click(function(event){
-        showGradeForm($("form", td));
+    function showGradeForm(form){
+      $(form).show();
+      $("span", $(form).parents("td")).hide();
+      $("input", form).focus();
+      $("input", form).blur(function(event){
+        $(form).submit();
       });
-      if($("span.grade", td).text() == "--") { 
-        $("form", td).bind("ajax:success", newGradeSuccessHandler);
-      } else {
-        $("form", td).bind("ajax:success", updateGradeSuccessHandler);
-      };
-      $("form", td).bind("ajax:failure", function(event, grade, status){
-        alert("There was an error: " + grade.responseText);
-        $("input", td).focus();
+    }
+  
+    function newGradeSuccessHandler(event, grade, status) {
+      var gradeJSON = $.parseJSON(grade)
+      hideGradeForm(event.target, gradeJSON.score);
+      $(event.target).attr("action", gradeJSON.update_url)
+      $(event.target).attr("method", "put")
+      $("input[type=hidden]", event.target).remove();
+      $(event.target).unbind("ajax:success")
+      $(event.target).bind("ajax:success", updateGradeSuccessHandler);
+    };
+
+    function updateGradeSuccessHandler(event, grade, status){
+      hideGradeForm(event.target, $.parseJSON(grade).score);
+    };
+  
+    $(document).ready(function() {
+      $("form").hide();
+      $("td.editable").each(function(i, td){
+        $(td).click(function(event){
+          showGradeForm($("form", td));
+        });
+        if($("span.grade", td).text() == "--") { 
+          $("form", td).bind("ajax:success", newGradeSuccessHandler);
+        } else {
+          $("form", td).bind("ajax:success", updateGradeSuccessHandler);
+        };
+        $("form", td).bind("ajax:failure", function(event, grade, status){
+          alert("There was an error: " + grade.responseText);
+          $("input", td).focus();
+        });
       });
     });
+<% else %>
+  $(document).ready(function() {
+    $("form").remove();
   });
-  
+<% end %>
 </script>
 <%= render :partial => "courses/header" %>
 <% if @current_course.assignments.any? %>
