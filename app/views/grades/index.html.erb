@@ -26,7 +26,7 @@
       <td id="student-<%= student.id %>-assign-<%= assignment.id %>">
           <% if grade = student.grades.first(:conditions => {:assignment_id => assignment.id}) %>
             <span class="grade"><%= grade.score %></span>
-            <%= form_for(grade, :url => course_grade_path(@current_course, grade, :format => :json), :remote => true) do |f| %>
+            <%= form_for(grade, :url => course_grade_path(@current_course, grade, :format => :js), :remote => true) do |f| %>
               <%= f.text_field :score, :size => 3, :style => "width:auto" %>
             <% end %>
             <script>
@@ -35,15 +35,33 @@
                 $("span.grade", gradeBox).text($.parseJSON(grade).score);
                 $("span.grade", gradeBox).show();
                 $("form", gradeBox).hide();
+                $("input", gradeBox).unbind("blur");
+                $("input", gradeBox).blur();
               });
             </script>
           <% else %>
             <span class="grade">--</span>
-            <%= form_for(Grade.new, :url => course_grades_path(@current_course, :format => :json), :remote => true) do |f| %>
+            <%= form_for(Grade.new, :url => course_grades_path(@current_course, :format => :js), :remote => true) do |f| %>
               <%= f.text_field :score, :size => 3, :style => "width:auto" %>
               <%= f.hidden_field :assignment_id, :value => assignment.id %>
               <%= f.hidden_field :student_id, :value => student.id %>
             <% end %>
+            <script>
+              var gradeBox = $("#student-<%= student.id %>-assign-<%= assignment.id %>");
+              $("form", gradeBox).bind("ajax:success", function(event, grade, status) {
+                var gradeJSON = $.parseJSON(grade)
+                $("span.grade", gradeBox).text(gradeJSON.score);
+                $("span.grade", gradeBox).show();
+                $("form", gradeBox).hide();
+                $("input", gradeBox).unbind("blur");
+                $("input", gradeBox).blur();
+                if(gradeJSON.update_url != 'undefined') {
+                  $("form", gradeBox).attr("action", gradeJSON.update_url)
+                  $("form", gradeBox).attr("method", "put")
+                  $("input[type=hidden]", gradeBox).remove();
+                };
+              });
+            </script>
           <% end %>
       </td>
       <script>
@@ -52,7 +70,7 @@
           showGradeForm(gradeBox);
         });
         $("form", gradeBox).bind("ajax:failure", function(event, grade, status){
-          alert("There was an error: " + xhr.responseText);
+          alert("There was an error: " + grade.responseText);
         });
       </script>
     <% end %>
