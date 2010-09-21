@@ -1,10 +1,20 @@
 <style>
-  td.editable {
-    width:50px;
+  .student {
+    min-width:100px;
+    border-right:dotted 1px black;
+  }
+  th {
+    padding: 0 5px;
+  }
+  .editable {
+    min-width:60px;
     text-align:center;
   }
-  td.editable:hover {
+  .editable:hover {
     background-color:yellow;
+  }
+  tr {
+    height:40px;
   }
 </style>
 <script>
@@ -61,14 +71,14 @@
 <div style="width:100%;overflow-x:auto">
   <table>
     <tr>
-      <th>Student</th>
+      <th class="student">Student</th>
       <% @current_course.assignments.each do |assignment| %>
         <th title="<%= assignment.name %>"><%= truncate(assignment.name, :length => 8) %></th>
       <% end %>
     </tr>
     <% @students.each do |student| %>
       <tr>
-        <td><%= student.name %></td>
+        <td class="student"><%= student.name %></td>
         <% @current_course.assignments.each do |assignment| %>
           <td id="student-<%= student.id %>-assign-<%= assignment.id %>" class="editable">
               <% if grade = student.grades.first(:conditions => {:assignment_id => assignment.id}) %>
