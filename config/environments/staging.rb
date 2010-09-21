@@ -57,5 +57,5 @@ PAPERCLIP_OPTIONS = {:storage => :s3,
   :s3_credentials => {:access_key_id => '0141VS3DG9BCVMMS9W82', :secret_access_key => 'i70QHTiCvBVBPoJwzs91B6zzStWQ14wsreTCmsY+'},
   :path => ":attachment/:id/:filename",
   :bucket => 'assets.tfwright-whiteboard.staging.heroku.com',
-  :s3_alias_url => 'assets.staging.whiteboard',
+  :s3_host_alias => 'assets.staging.whiteboard.com',
   :url => ":s3_alias_url"}
