@@ -1,7 +1,21 @@
+<style>
+  td.editable {
+    width:50px;
+    text-align:center;
+  }
+  td.editable:hover {
+    background-color:yellow;
+  }
+</style>
 <script>
-  $(document).ready(function() {
-    $("form").hide();
-  });
+  function hideGradeForm(el, score){
+    $(el).hide();
+    $("input", el).unbind("blur");
+    $("input", el).blur();
+    $("span.grade", $(el).parents("td")).text(score);
+    $("span.grade", $(el).parents("td")).show();
+  }
+  
   function showGradeForm(el){
     $("span", el).hide();
     $("form", el).show();
@@ -10,70 +24,69 @@
       $("form", el).submit();
     });
   }
+  
+  function newGradeSuccessHandler(event, grade, status) {
+    var gradeJSON = $.parseJSON(grade)
+    hideGradeForm(event.target, gradeJSON.score);
+    $(event.target).attr("action", gradeJSON.update_url)
+    $(event.target).attr("method", "put")
+    $("input[type=hidden]", event.target).remove();
+    $(event.target).unbind("ajax:success")
+    $(event.target).bind("ajax:success", updateGradeSuccessHandler);
+  };
+
+  function updateGradeSuccessHandler(event, grade, status){
+    hideGradeForm(event.target, $.parseJSON(grade).score);
+  };
+  
+  $(document).ready(function() {
+    $("form").hide();
+    $("td.editable").each(function(i, el){
+      $(el).click(function(event){
+        showGradeForm(el);
+      });
+      if($("span.grade", el).text() == "--") { 
+        $("form", el).bind("ajax:success", newGradeSuccessHandler);
+      } else {
+        $("form", el).bind("ajax:success", updateGradeSuccessHandler);
+      };
+      $("form", el).bind("ajax:failure", function(event, grade, status){
+        alert("There was an error: " + grade.responseText);
+      });
+    });
+  });
+  
 </script>
 <%= render :partial => "courses/header" %>
-<table>
-  <tr>
-    <th>Student</th>
-    <% @current_course.assignments.each do |assignment| %>
-      <th><%= assignment.name %></th>
+<div style="width:100%;overflow-x:auto">
+  <table>
+    <tr>
+      <th>Student</th>
+      <% @current_course.assignments.each do |assignment| %>
+        <th title="<%= assignment.name %>"><%= truncate(assignment.name, :length => 8) %></th>
+      <% end %>
+    </tr>
+    <% @students.each do |student| %>
+      <tr>
+        <td><%= student.name %></td>
+        <% @current_course.assignments.each do |assignment| %>
+          <td id="student-<%= student.id %>-assign-<%= assignment.id %>" class="editable">
+              <% if grade = student.grades.first(:conditions => {:assignment_id => assignment.id}) %>
+                <span class="grade"><%= grade.score %></span>
+                <%= form_for(grade, :url => course_grade_path(@current_course, grade, :format => :js), :remote => true) do |f| %>
+                  <%= f.text_field :score, :size => 3, :style => "width:auto" %>
+                <% end %>
+              <% else %>
+                <span class="grade">--</span>
+                <%= form_for(Grade.new, :url => course_grades_path(@current_course, :format => :js), :remote => true) do |f| %>
+                  <%= f.text_field :score, :size => 3, :style => "width:auto" %>
+                  <%= f.hidden_field :assignment_id, :value => assignment.id %>
+                  <%= f.hidden_field :student_id, :value => student.id %>
+                <% end %>
+              <% end %>
+          </td>
+        <% end %>
+      </tr>
     <% end %>
-  </tr>
-<% @students.each do |student| %>
-  <tr>
-    <td><%= student.name %></td>
-    <% @current_course.assignments.each do |assignment| %>
-      <td id="student-<%= student.id %>-assign-<%= assignment.id %>">
-          <% if grade = student.grades.first(:conditions => {:assignment_id => assignment.id}) %>
-            <span class="grade"><%= grade.score %></span>
-            <%= form_for(grade, :url => course_grade_path(@current_course, grade, :format => :js), :remote => true) do |f| %>
-              <%= f.text_field :score, :size => 3, :style => "width:auto" %>
-            <% end %>
-            <script>
-              var gradeBox = $("#student-<%= student.id %>-assign-<%= assignment.id %>");
-              $("form", gradeBox).bind("ajax:success", function(event, grade, status) {
-                $("span.grade", gradeBox).text($.parseJSON(grade).score);
-                $("span.grade", gradeBox).show();
-                $("form", gradeBox).hide();
-                $("input", gradeBox).unbind("blur");
-                $("input", gradeBox).blur();
-              });
-            </script>
-          <% else %>
-            <span class="grade">--</span>
-            <%= form_for(Grade.new, :url => course_grades_path(@current_course, :format => :js), :remote => true) do |f| %>
-              <%= f.text_field :score, :size => 3, :style => "width:auto" %>
-              <%= f.hidden_field :assignment_id, :value => assignment.id %>
-              <%= f.hidden_field :student_id, :value => student.id %>
-            <% end %>
-            <script>
-              var gradeBox = $("#student-<%= student.id %>-assign-<%= assignment.id %>");
-              $("form", gradeBox).bind("ajax:success", function(event, grade, status) {
-                var gradeJSON = $.parseJSON(grade)
-                $("span.grade", gradeBox).text(gradeJSON.score);
-                $("span.grade", gradeBox).show();
-                $("form", gradeBox).hide();
-                $("input", gradeBox).unbind("blur");
-                $("input", gradeBox).blur();
-                if(gradeJSON.update_url != 'undefined') {
-                  $("form", gradeBox).attr("action", gradeJSON.update_url)
-                  $("form", gradeBox).attr("method", "put")
-                  $("input[type=hidden]", gradeBox).remove();
-                };
-              });
-            </script>
-          <% end %>
-      </td>
-      <script>
-        var gradeBox = $("#student-<%= student.id %>-assign-<%= assignment.id %>");
-        gradeBox.click(function(event){
-          showGradeForm(gradeBox);
-        });
-        $("form", gradeBox).bind("ajax:failure", function(event, grade, status){
-          alert("There was an error: " + grade.responseText);
-        });
-      </script>
-    <% end %>
-  </tr>
-<% end %>
-</table>
+  </table>
+</div>
