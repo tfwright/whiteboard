@@ -22,7 +22,23 @@
          <p class="inline-errors"><%= error %></p> 
       <% end %>
     </li>
-    <li class="date required"> 
+    <li>
+      <label for="assignment_accepting_submissions">
+        <%= f.check_box :accepting_submissions, :checked => true %>  Students will submit work.
+      </label>
+      <script>
+        $("#assignment_accepting_submissions").click(function(event){
+          if($(event.target).attr("checked")) {
+            $("#due_date_box").show(100);
+            $("#due_date_box > select").removeAttr('disabled');
+          } else {
+            $("#due_date_box").hide(100);
+            $("#due_date_box > select").attr('disabled', 'disabled');
+          }
+        });
+      </script>
+    </li>
+    <li class="date required" id="due_date_box"> 
       <h5 class="legend"><span class="label">Due date*</span></h5> 
       <%= f.datetime_select :due_at, :default => 1.week.from_now %>
       <% @assignment.errors[:due_at].each do |error| %>
