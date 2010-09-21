@@ -18,20 +18,20 @@
   }
 </style>
 <script>
-  function hideGradeForm(el, score){
-    $(el).hide();
-    $("input", el).unbind("blur");
-    $("input", el).blur();
-    $("span.grade", $(el).parents("td")).text(score);
-    $("span.grade", $(el).parents("td")).show();
+  function hideGradeForm(form, score){
+    $(form).hide();
+    $("input", form).unbind("blur");
+    $("input", form).blur();
+    $("span.grade", $(form).parents("td")).text(score);
+    $("span.grade", $(form).parents("td")).show();
   }
   
-  function showGradeForm(el){
-    $("span", el).hide();
-    $("form", el).show();
-    $("input", el).focus();
-    $("input", el).blur(function(event){
-      $("form", el).submit();
+  function showGradeForm(form){
+    $(form).show();
+    $("span", $(form).parents("td")).hide();
+    $("input", form).focus();
+    $("input", form).blur(function(event){
+      $(form).submit();
     });
   }
   
@@ -51,17 +51,18 @@
   
   $(document).ready(function() {
     $("form").hide();
-    $("td.editable").each(function(i, el){
-      $(el).click(function(event){
-        showGradeForm(el);
+    $("td.editable").each(function(i, td){
+      $(td).click(function(event){
+        showGradeForm($("form", td));
       });
-      if($("span.grade", el).text() == "--") { 
-        $("form", el).bind("ajax:success", newGradeSuccessHandler);
+      if($("span.grade", td).text() == "--") { 
+        $("form", td).bind("ajax:success", newGradeSuccessHandler);
       } else {
-        $("form", el).bind("ajax:success", updateGradeSuccessHandler);
+        $("form", td).bind("ajax:success", updateGradeSuccessHandler);
       };
-      $("form", el).bind("ajax:failure", function(event, grade, status){
+      $("form", td).bind("ajax:failure", function(event, grade, status){
         alert("There was an error: " + grade.responseText);
+        $("input", td).focus();
       });
     });
   });
