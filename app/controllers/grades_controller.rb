@@ -7,7 +7,7 @@ class GradesController < ApplicationController
   def index
     @students = @current_course.students
     unless current_user.is_a?(Professor) || current_user.is_a?(Admin)
-      @students.find(current_user.id)
+      @students.reject!{|student| student != current_user}
     end
   end
 
