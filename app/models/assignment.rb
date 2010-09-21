@@ -6,4 +6,8 @@ class Assignment < ActiveRecord::Base
   validates_presence_of :name, :description, :course_id
   validates_presence_of :due_at, :if => Proc.new { |assignment| assignment.accepting_submissions? }
   validates_datetime :due_at, :after => DateTime.now, :if => Proc.new { |assignment| assignment.accepting_submissions? }
+  
+  scope :written, lambda {
+    where(:accepting_submissions => true)
+  }
 end
