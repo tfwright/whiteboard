@@ -126,7 +126,7 @@
         $(l).click(function(){
           var color = $(l).css("background-color");
           $(document.body).animate({ "background-color": color }, 1000);
-          $.cookies.set("bg-color", color);
+          $.cookies.set("bg-color", color, {expiresAt:new Date( 2100, 1, 1 )});
           return false;
         });
       });
