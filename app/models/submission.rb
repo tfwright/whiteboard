@@ -8,4 +8,15 @@ class Submission < ActiveRecord::Base
   validates_attachment_size :upload, :less_than => 4.megabytes 
   
   validates_presence_of :student_id, :assignment_id
+  
+  validate :enforce_due_date, :on => :update
+  
+  private
+  
+    def enforce_due_date
+      if assignment.due_at < lambda { Time.now }.call
+        errors.add(:base, "This assignment is past due")
+      end
+    end
+    
 end

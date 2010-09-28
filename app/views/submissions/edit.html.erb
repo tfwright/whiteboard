@@ -1,6 +1,5 @@
-<h1>Editing submission</h1>
-
-<%= render 'form' %>
-
-<%= link_to 'Show', @submission %> |
-<%= link_to 'Back', submissions_path %>
+<%= render :partial => "courses/header" %>
+<h3>Submit a new version of this assignment</h3>
+<%= form_for(@submission, :url => course_assignment_submission_path(Course.find(params[:course_id]), Assignment.find(params[:assignment_id]), @submission), :html => {:multipart => true}) do |f| %>
+  <%= render(:partial => 'form', :locals => {:f => f}) %>
+<% end %>

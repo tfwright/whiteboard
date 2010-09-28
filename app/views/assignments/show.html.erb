@@ -3,10 +3,17 @@
 <p><%= simple_format(@assignment.description) %></p>
 <% if current_user.is_a?(Student) %>
   <% unless submission = current_user.submissions.where(:assignment_id => @assignment.id).last %>
-    <%= link_to new_course_assignment_submission_path(Course.find(params[:course_id]), @assignment), :class => "green-button pcb" do %>
-      <span>Submit this assignment</span>
+    <% if @assignment.due_at > Time.now %>
+      <%= link_to new_course_assignment_submission_path(Course.find(params[:course_id]), @assignment), :class => "green-button pcb" do %>
+        <span>Submit this assignment</span>
+      <% end %>
+    <% else %>
+      <p>This assignment is overdue.  You should probably email your professor.</p>
     <% end %>
   <% else %>
-    <p>Congrats, you submitted this assignment.</p>
+    <p>Congrats, you submitted this assignment.  <%= link_to "Your current submission", submission.upload.url %>.</p>
+    <% if @assignment.due_at > Time.now %>
+      <p><%= link_to "Edit your submission", edit_course_assignment_submission_path(Course.find(params[:course_id]), @assignment, submission) %></p>
+    <% end %>
   <% end %>
 <% end %>
