@@ -16,4 +16,7 @@
       <p><%= link_to "Edit your submission", edit_course_assignment_submission_path(Course.find(params[:course_id]), @assignment, submission) %></p>
     <% end %>
   <% end %>
+<% elsif current_user.is_a?(Professor) %>
+  <hr/>
+  <%= link_to "#{@assignment.submissions.count} students have submitted this assignment", course_assignment_submissions_path(Course.find(params[:course_id]), @assignment)%>
 <% end %>

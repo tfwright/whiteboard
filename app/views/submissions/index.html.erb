@@ -1,21 +1,91 @@
-<h1>Listing submissions</h1>
+<style>
+  .editable {
+    width:60px;
+    min-width:60px;
+    max-width:60px;
+    text-align:center;
+  }
+  .editable:hover {
+    background-color:yellow;
+  }
+</style>
+<script>
+  function hideGradeForm(form, score){
+    $(form).hide();
+    $("input", form).unbind("blur");
+    $("input", form).blur();
+    $("span.grade", $(form).parents("td")).text(score);
+    $("span.grade", $(form).parents("td")).show();
+  }
 
+  function showGradeForm(form){
+    $(form).show();
+    $("span", $(form).parents("td")).hide();
+    $("input", form).focus();
+    $("input", form).blur(function(event){
+      $(form).submit();
+    });
+  }
+
+  function newGradeSuccessHandler(event, grade, status) {
+    var gradeJSON = $.parseJSON(grade)
+    hideGradeForm(event.target, gradeJSON.score);
+    $(event.target).attr("action", gradeJSON.update_url)
+    $(event.target).attr("method", "put")
+    $("input[type=hidden]", event.target).remove();
+    $(event.target).unbind("ajax:success")
+    $(event.target).bind("ajax:success", updateGradeSuccessHandler);
+  };
+
+  function updateGradeSuccessHandler(event, grade, status){
+    hideGradeForm(event.target, $.parseJSON(grade).score);
+  };
+
+  $(document).ready(function() {
+    $("form").hide();
+    $("td.editable").each(function(i, td){
+      $(td).click(function(event){
+        showGradeForm($("form", td));
+      });
+      if($("span.grade", td).text() == "--") { 
+        $("form", td).bind("ajax:success", newGradeSuccessHandler);
+      } else {
+        $("form", td).bind("ajax:success", updateGradeSuccessHandler);
+      };
+      $("form", td).bind("ajax:failure", function(event, grade, status){
+        alert("There was an error: " + grade.responseText);
+        $("input", td).focus();
+      });
+    });
+  });
+</script>
+<%= render :partial => "courses/header" %>
+<h3>Student submissions for "<%= Assignment.find(params[:assignment_id]).name %>"</h3>
 <table>
   <tr>
-    <th></th>
-    <th></th>
-    <th></th>
+    <th>Student</th>
+    <th>Submission</th>
+    <th>Grade</th>
   </tr>
-
-<% @submissions.each do |submission| %>
-  <tr>
-    <td><%= link_to 'Show', submission %></td>
-    <td><%= link_to 'Edit', edit_submission_path(submission) %></td>
-    <td><%= link_to 'Destroy', submission, :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
-<% end %>
+  <% @submissions.each do |submission| %>
+    <tr>
+      <td><%= submission.student.name %></td>
+      <td><%= link_to submission.upload.original_filename, submission.upload.url %></td>
+      <td class="editable">
+        <% if grade = submission.student.grades.first(:conditions => {:assignment_id => submission.assignment.id}) %>
+          <span class="grade"><%= grade.score %></span>
+          <%= form_for(grade, :url => course_grade_path(@current_course, grade, :format => :js), :remote => true) do |f| %>
+            <%= f.text_field :score, :size => 3, :style => "width:auto" %>
+          <% end %>
+        <% else %>
+          <span class="grade">--</span>
+          <%= form_for(Grade.new, :url => course_grades_path(@current_course, :format => :js), :remote => true) do |f| %>
+            <%= f.text_field :score, :size => 3, :style => "width:auto" %>
+            <%= f.hidden_field :assignment_id, :value => submission.assignment.id %>
+            <%= f.hidden_field :student_id, :value => submission.student.id %>
+          <% end %>
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
 </table>
-
-<br />
-
-<%= link_to 'New Submission', new_submission_path %>

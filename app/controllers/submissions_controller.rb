@@ -2,7 +2,12 @@ class SubmissionsController < ApplicationController
   
   before_filter :set_current_course
   before_filter :ensure_enrolled
+  before_filter :ensure_professor_or_admin, :only => :index
 
+  def index
+    @submissions = Assignment.find(params[:assignment_id]).submissions
+  end
+  
   def new
     @submission = Submission.new
   end
