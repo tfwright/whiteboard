@@ -13,7 +13,8 @@ class SubmissionsController < ApplicationController
   end
   
   def create
-    @submission = Submission.new(params[:submission].merge(:assignment_id => params[:assignment_id], :student_id => current_user.id))
+    @submission = Submission.new(params[:submission])
+    @submission.attributes = {:assignment_id => params[:assignment_id], :student_id => current_user.id}
     if @submission.save
       redirect_to(course_assignment_path(Course.find(params[:course_id]), @submission.assignment), :notice => 'Submission was successfully created.')
     else
