@@ -4,8 +4,10 @@ class Submission < ActiveRecord::Base
   belongs_to :assignment
     
   validates_attachment_presence :upload
-  validates_attachment_content_type :upload, :content_type => ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']
-  validates_attachment_size :upload, :less_than => 4.megabytes 
+  validates_attachment_content_type :upload, 
+    :content_type => ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
+    :if => Proc.new { |submission| !submission.upload_file_name.blank? }
+  validates_attachment_size :upload, :less_than => 4.megabytes, :if => Proc.new { |submission| !submission.upload_file_name.blank? }
   
   validates_presence_of :student_id, :assignment_id
   
