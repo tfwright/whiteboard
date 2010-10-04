@@ -1,6 +1,6 @@
 <%= render :partial => "courses/header" %>
 <h3>Submit your assignment: <%= Assignment.find(params[:assignment_id]).name %></h3>
-<p>This assignment is due in <%= distance_of_time_in_words(Time.now, Assignment.find(params[:assignment_id]).due_at) %></p>
+<p>This assignment is due in <%= distance_of_time_in_words(Time.now.utc, Assignment.find(params[:assignment_id]).due_at) %></p>
 <%= form_for(@submission, :url => course_assignment_submissions_path(Course.find(params[:course_id]), Assignment.find(params[:assignment_id])), :html => {:multipart => true}) do |f| %>
   <%= render(:partial => 'form', :locals => {:f => f}) %>
 <% end %>

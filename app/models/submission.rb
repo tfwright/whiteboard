@@ -14,7 +14,7 @@ class Submission < ActiveRecord::Base
   private
   
     def enforce_due_date
-      if assignment.due_at < lambda { Time.now }.call
+      if assignment.due_at < lambda { Time.now.utc }.call
         errors.add(:base, "This assignment is past due")
       end
     end
