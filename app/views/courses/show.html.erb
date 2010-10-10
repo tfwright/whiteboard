@@ -59,7 +59,7 @@
   <h3>Recent announcements</h3>
   <% if @course.announcements.any? %>
     <dl style="padding:15px">
-      <% @course.announcements.order("created_at desc").each do |announcement| %>
+      <% @course.announcements.order("created_at desc").limit(3).each do |announcement| %>
         <dt><%= announcement.subject %></dt>
         <dd><%= truncate_html(announcement.body, :length => 200, :omission => "... "+link_to("(More)", course_announcement_path(@course, announcement))) %>
       <% end %>
