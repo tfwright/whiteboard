@@ -10,6 +10,7 @@ class Submission < ActiveRecord::Base
   validates_attachment_size :upload, :less_than => 4.megabytes, :if => Proc.new { |submission| !submission.upload_file_name.blank? }
   
   validates_presence_of :student_id, :assignment_id
+  validates_uniqueness_of :student_id, :scope => :assignment_id
   
   validate :enforce_due_date, :on => :update
   

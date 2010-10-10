@@ -3,6 +3,9 @@ class SubmissionsController < ApplicationController
   before_filter :set_current_course
   before_filter :ensure_enrolled
   before_filter :ensure_professor_or_admin, :only => :index
+  before_filter :ensure_assignment_not_overdue, :only => [:new, :update, :create]
+  before_filter :check_for_existing_submission, :only => :new
+  
 
   def index
     @submissions = Assignment.find(params[:assignment_id]).submissions
@@ -38,6 +41,18 @@ class SubmissionsController < ApplicationController
   end
   
   private
+  
+    def ensure_assignment_not_overdue
+      unless Assignment.find(params[:assignment_id]).due_at > Time.now
+        redirect_to course_path(@current_course), :warning => "You cannot submit or update overdue assignments."
+      end
+    end
+  
+    def check_for_existing_submission
+      if submission = Submission.first(:conditions => {:student_id => current_user.id, :assignment_id => params[:assignment_id]})
+        redirect_to edit_course_assignment_submission_path(@current_course, params[:assignment_id], submission), :notice => "Please update your submission below"
+      end
+    end
   
     def set_current_course
       @current_course ||= Course.find(params[:course_id])
