@@ -80,7 +80,7 @@
   <h3>Assignments</h3>
   <% if @course.assignments.written.any? %>
   <dl style="padding:15px">
-    <% @course.assignments.written.order("due_at").each do |assignment| %>
+    <% @course.assignments.written.active.order("due_at").each do |assignment| %>
       <dt><%= link_to assignment.name, course_assignment_path(@course, assignment) %></dt>
       <% if current_user.is_a?(Student) %>
         <% unless submission = current_user.submissions.where(:assignment_id => assignment.id).last %>
