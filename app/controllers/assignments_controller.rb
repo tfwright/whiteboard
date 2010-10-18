@@ -56,19 +56,12 @@ class AssignmentsController < ApplicationController
     end
   end
 
-  # PUT /assignments/1
-  # PUT /assignments/1.xml
   def update
     @assignment = Assignment.find(params[:id])
-
-    respond_to do |format|
-      if @assignment.update_attributes(params[:assignment])
-        format.html { redirect_to(@assignment, :notice => 'Assignment was successfully updated.') }
-        format.xml  { head :ok }
-      else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @assignment.errors, :status => :unprocessable_entity }
-      end
+    if @assignment.update_attributes(params[:assignment])
+      redirect_to(course_path(params[:course_id]), :notice => 'Assignment was successfully updated.')
+    else
+      render :action => "edit"
     end
   end
 

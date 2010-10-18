@@ -1,4 +1,4 @@
-<%= form_for(@assignment, :url => course_assignments_path(Course.find(params[:course_id]))) do |f| %>
+<%= form_for(@assignment, :url => url) do |f| %>
   <% if @assignment.errors.any? %>
     <div  class="error">
       <h2><%= pluralize(@assignment.errors.count, "error") %> prevented this assignment from being saved:</h2>

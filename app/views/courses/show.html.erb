@@ -40,7 +40,7 @@
     color:#fff;
   }
   
-  .filelist dt span.editbox {
+  .editbox {
     position:absolute;
     z-index:1000;
     left:-50px;
@@ -88,9 +88,14 @@
 <div style="margin-top:20px">
   <h3>Assignments</h3>
   <% if @course.assignments.written.any? %>
-  <dl style="padding:15px">
+  <dl style="padding:15px;position:relative" id="course-assignment-list">
     <% @course.assignments.written.active.order("due_at").each do |assignment| %>
-      <dt><%= link_to assignment.name, course_assignment_path(@course, assignment) %></dt>
+      <dt>
+        <%= link_to assignment.name, course_assignment_path(@course, assignment) %>
+        <span class="editbox" style="top:20px;padding-right:55px">
+          <%= link_to "Edit", edit_course_assignment_path(@course, assignment) %>
+        </span>
+      </dt>
       <% if current_user.is_a?(Student) %>
         <% unless submission = current_user.submissions.where(:assignment_id => assignment.id).last %>
           <dd class="due-date">DUE: <%= assignment.due_at %></dd>
@@ -112,6 +117,13 @@
     </div>
   <% end %>
 </div>
+<script>
+  $("#course-assignment-list dt").hover(function(event){
+    $(".editbox", $(event.target).closest("dt")).show();
+  }, function(event){
+    $(".editbox").hide();
+  });
+</script>
 
 <div style="margin-top:20px">
   <h3>Course files</h3>
