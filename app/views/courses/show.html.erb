@@ -98,7 +98,7 @@
       </dt>
       <% if current_user.is_a?(Student) %>
         <% unless submission = current_user.submissions.where(:assignment_id => assignment.id).last %>
-          <dd class="due-date">DUE: <%= assignment.due_at %></dd>
+          <dd class="due-date">DUE: <%= assignment.due_at.to_s(:short) %></dd>
         <% else %>
           <dd class="due-date">Submitted!<dd>
         <% end %>
