@@ -12,16 +12,16 @@
     padding: 0 0 5px 10px;
   }
   .filelist dt {
-    font-size:15px;
-    font-weight:bold;
-    font-variant:small-caps;
     text-align:center;
   	clear: left;
   	float: left;
   	margin-right: 5px;
   }
   
-  .filelist dt a {
+  .filelist dt a.file-link {
+    font-size:15px;
+    font-weight:bold;
+    font-variant:small-caps;
     font-size:15px;
     font-weight:bold;
     font-variant:small-caps;
@@ -32,12 +32,21 @@
     
   }
   
-  .filelist dt a:hover {
+  .filelist dt a.file-link:hover {
     color:#fff;
   }
   
-  .filelist dt a:visited {
+  .filelist dt a.file-link:visited {
     color:#fff;
+  }
+  
+  .filelist dt span.editbox {
+    position:absolute;
+    z-index:1000;
+    left:-50px;
+    top:0px;
+    display:none;
+    padding:0px 30px 20px 0px;
   }
   
   .doc, .docx {
@@ -107,11 +116,14 @@
 <div style="margin-top:20px">
   <h3>Course files</h3>
   <% if @course.documents.any? %>
-    <dl class="filelist">
+    <dl class="filelist" id="course-file-list">
     <% @course.documents.order("created_at desc").each do |document| %>
       <% ext = File.extname(document.attached.original_filename).gsub(/^\.+/, "") %>
-      <dt class="<%= ext %>">
-        <%= link_to ext, document.attached.url %>
+      <dt class="<%= ext %>" style="position:relative">
+        <%= link_to ext, document.attached.url, :class => "file-link" %>
+        <span class="editbox">
+          <%= link_to "Edit", edit_course_document_path(@course, document) %>
+        </span>
       </dt>
       <dd class="top">
         <h4 style="display:inline"><%= document.name %></h4>
@@ -133,6 +145,13 @@
     </div>
   <% end %>
 </div>
+<script>
+  $("#course-file-list dt").hover(function(event){
+    $(".editbox", $(event.target).closest("dt")).show();
+  }, function(event){
+    $(".editbox").hide();
+  });
+</script>
 
 <div style="margin-top:20px">
   <h3>Course links</h3>

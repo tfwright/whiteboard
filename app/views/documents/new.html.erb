@@ -1,3 +1,2 @@
 <h1>New document</h1>
-
-<%= render 'form' %>
+<%= render :partial => 'form', :locals => {:url => course_documents_path(Course.find(params[:course_id]))} %>

@@ -53,19 +53,12 @@ class DocumentsController < ApplicationController
     end
   end
 
-  # PUT /Documents/1
-  # PUT /Documents/1.xml
   def update
     @document = Document.find(params[:id])
-
-    respond_to do |format|
-      if @document.update_attributes(params[:document])
-        format.html { redirect_to(@document, :notice => 'Document was successfully updated.') }
-        format.xml  { head :ok }
-      else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @document.errors, :status => :unprocessable_entity }
-      end
+    if @document.update_attributes(params[:document])
+      redirect_to(course_path(params[:course_id]), :notice => 'Document was successfully updated.')
+    else
+      render :action => "edit"
     end
   end
 
