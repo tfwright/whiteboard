@@ -4,6 +4,7 @@
 <% if current_user.is_a?(Student) %>
   <% unless submission = current_user.submissions.where(:assignment_id => @assignment.id).last %>
     <% if @assignment.due_at > Time.now %>
+      <p><%= distance_of_time_in_words(Time.now, @assignment.due_at) %> remaining to submit this assignment!</p>
       <%= link_to new_course_assignment_submission_path(Course.find(params[:course_id]), @assignment), :class => "green-button pcb" do %>
         <span>Submit this assignment</span>
       <% end %>
