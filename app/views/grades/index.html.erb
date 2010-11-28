@@ -96,6 +96,7 @@
         <% @current_course.assignments.each do |assignment| %>
           <th class="assignment" title="<%= assignment.name %>"><%= assignment.name %></th>
         <% end %>
+        <th class="total">Overall</th>
       </tr>
       <% @students.each do |student| %>
         <tr>
@@ -117,6 +118,7 @@
                 <% end %>
             </td>
           <% end %>
+          <td><%= student.grades.average(:score).round %></td>
         </tr>
       <% end %>
     </table>
