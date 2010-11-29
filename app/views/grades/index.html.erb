@@ -222,13 +222,11 @@
     <%= submit_tag "Save", :style => "font-size:5em", :id => "weighting-form-submit" %>
     <script>
       $("#weighting-form-submit").click(function(event){
+        $('#weighting-form-submit').attr('disabled', 'disabled');
         $.ajax({
           url: '<%= adjust_weighting_course_assignments_path(@current_course) %>',
           type: 'PUT',
           data: $.param({weighting:$.map(Assignments,function(a){return {id:a.id, weight:a.weight}})}),
-          loading: function(){
-            $('#weighting-form-submit').attr('disabled', 'disabled');
-          },
           error: function(){
             alert("There was an error saving your weighting settings.  Please report this with the feedback link and try again later.")
           },
