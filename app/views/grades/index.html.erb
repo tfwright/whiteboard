@@ -84,6 +84,10 @@
         $.getJSON("<%= course_assignments_path(@current_course, :format => :js) %>", function(assignments){
           $('#weighting-chart-loader').hide();
           Assignments = $(assignments);
+          Assignments.each(function(i, assignment){
+            if(assignment.weight == null)
+              assignment.weight = 100.0 / Assignments.length
+          });
           WeightingChart = Raphael("weighting-chart");
           var StartX = 250;
           var StartY = 250;
