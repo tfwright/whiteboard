@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100921211446) do
+ActiveRecord::Schema.define(:version => 20101128210030) do
 
   create_table "announcements", :force => true do |t|
     t.integer  "course_id"
@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(:version => 20100921211446) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "accepting_submissions"
+    t.float    "weight"
   end
 
   create_table "courses", :force => true do |t|

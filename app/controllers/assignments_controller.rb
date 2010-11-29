@@ -1,15 +1,13 @@
 class AssignmentsController < ApplicationController
   
+  before_filter :set_current_course
   before_filter :ensure_professor_or_admin, :except => :show
     
-  # GET /assignments
-  # GET /assignments.xml
   def index
-    @assignments = Assignment.all
-
+    @assignments = @current_course.assignments
     respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @assignments }
+      format.html
+      format.js  { render :json => @assignments.map{ |a| a.attributes.merge(:update_url => course_assignment_path(@current_course, a, :format => :js)) } }
     end
   end
 
@@ -76,4 +74,26 @@ class AssignmentsController < ApplicationController
       format.xml  { head :ok }
     end
   end
+  
+  def adjust_weighting
+    @assignments = @current_course.assignments
+    begin
+      Assignment.transaction do
+        params[:weighting].each_value do |assignment|
+          Assignment.find(assignment["id"]).update_attribute(:weight, assignment["weight"])
+        end
+        raise "Invalid weighting" unless @current_course.assignments.sum(:weight) == 100
+      end
+      render :nothing => true, :status => 200
+    rescue Exception => e
+      render :text => e.message, :status => 406
+    end
+  end
+  
+  private
+  
+    def set_current_course
+      @current_course ||= Course.find(params[:course_id])
+    end
+    
 end

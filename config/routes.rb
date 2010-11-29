@@ -8,6 +8,9 @@ Whiteboard::Application.routes.draw do
     resources :documents, :announcements, :links
     resources :assignments do
       resources :submissions
+      collection do
+        put 'adjust_weighting'
+      end
     end
     resources :students do
       collection do
