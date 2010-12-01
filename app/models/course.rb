@@ -1,4 +1,5 @@
 class Course < ActiveRecord::Base
+  
   has_many :documents, :as => :attachable
   has_many :announcements
   has_many :links
@@ -12,4 +13,15 @@ class Course < ActiveRecord::Base
   validate do
     errors.add :base, 'End date cannot precede start date' unless (begins_on.blank? || ends_on.blank?) || ends_on > begins_on
   end
+  
+  def grade(student)
+    grades.where(:student_id => student.id).to_a.sum{ |g| g.score * (g.assignment.weight/total_weight(student)) }
+  end
+  
+  private
+  
+    def total_weight(student)
+      grades.where(:student_id => student.id).map(&:assignment).sum(&:weight)
+    end
+  
 end

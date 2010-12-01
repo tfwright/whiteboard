@@ -65,6 +65,7 @@ Factory.define :link do |link|
 end
 
 Factory.define :grade do |grade|
+  grade.association :assignment
   grade.association :student
   grade.score 75
 end

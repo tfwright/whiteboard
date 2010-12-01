@@ -222,7 +222,7 @@
             </td>
           <% end %>
           <% if current_user.is_a?(Professor) %>
-            <td><%= student.grades.average(:score).round %></td>
+            <td><%= @current_course.grade(student) %></td>
           <% end %>
         </tr>
       <% end %>
