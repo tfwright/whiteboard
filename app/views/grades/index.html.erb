@@ -26,124 +26,142 @@
   tr {
     height:40px;
   }
+  #tip{
+   position : absolute;
+   border : 1px solid gray;
+   background-color : #efefef;
+   padding : 3px;
+   z-index: 5;
+  }
 </style>
 <script>
   <% if current_user.is_a?(Professor) %>
 
-      function hideGradeForm(form, score){
-        $(form).hide();
-        $("input", form).unbind("blur");
-        $("input", form).blur();
-        $("span.grade", $(form).parents("td")).text(score);
-        $("span.grade", $(form).parents("td")).show();
-      }
+  function addTip(node, txt){
+      $(node).mouseenter(function(){
+         tipText = txt;
+         tip.show();
+         over = true;
+      }).mouseleave(function(){
+         tip.hide();
+         over = false;
+      });
+  }
   
-      function showGradeForm(form){
-        $(form).show();
-        $("span", $(form).parents("td")).hide();
-        $("input", form).focus();
-        $("input", form).blur(function(event){
-          $(form).submit();
-        });
-      }
-  
-      function newGradeSuccessHandler(event, grade, status) {
-        var gradeJSON = $.parseJSON(grade)
-        hideGradeForm(event.target, gradeJSON.score);
-        $(event.target).attr("action", gradeJSON.update_url)
-        $(event.target).attr("method", "put")
-        $("input[type=hidden]", event.target).remove();
-        $(event.target).unbind("ajax:success")
-        $(event.target).bind("ajax:success", updateGradeSuccessHandler);
-      };
+    function hideGradeForm(form, score){
+      $(form).hide();
+      $("input", form).unbind("blur");
+      $("input", form).blur();
+      $("span.grade", $(form).parents("td")).text(score);
+      $("span.grade", $(form).parents("td")).show();
+    }
 
-      function updateGradeSuccessHandler(event, grade, status){
-        hideGradeForm(event.target, $.parseJSON(grade).score);
-      };
-  
-      $(document).ready(function() {
-        $("form").hide();
-        $("td.editable").each(function(i, td){
-          $(td).click(function(event){
-            showGradeForm($("form", td));
-          });
-          if($("span.grade", td).text() == "--") { 
-            $("form", td).bind("ajax:success", newGradeSuccessHandler);
-          } else {
-            $("form", td).bind("ajax:success", updateGradeSuccessHandler);
-          };
-          $("form", td).bind("ajax:failure", function(event, grade, status){
-            alert("There was an error: " + grade.responseText);
-            $("input", td).focus();
-          });
+    function showGradeForm(form){
+      $(form).show();
+      $("span", $(form).parents("td")).hide();
+      $("input", form).focus();
+      $("input", form).blur(function(event){
+        $(form).submit();
+      });
+    }
+
+    function newGradeSuccessHandler(event, grade, status) {
+      var gradeJSON = $.parseJSON(grade)
+      hideGradeForm(event.target, gradeJSON.score);
+      $(event.target).attr("action", gradeJSON.update_url)
+      $(event.target).attr("method", "put")
+      $("input[type=hidden]", event.target).remove();
+      $(event.target).unbind("ajax:success")
+      $(event.target).bind("ajax:success", updateGradeSuccessHandler);
+    };
+
+    function updateGradeSuccessHandler(event, grade, status){
+      hideGradeForm(event.target, $.parseJSON(grade).score);
+    };
+
+    $(document).ready(function() {
+      $("form").hide();
+      $("td.editable").each(function(i, td){
+        $(td).click(function(event){
+          showGradeForm($("form", td));
+        });
+        if($("span.grade", td).text() == "--") { 
+          $("form", td).bind("ajax:success", newGradeSuccessHandler);
+        } else {
+          $("form", td).bind("ajax:success", updateGradeSuccessHandler);
+        };
+        $("form", td).bind("ajax:failure", function(event, grade, status){
+          alert("There was an error: " + grade.responseText);
+          $("input", td).focus();
         });
       });
-      
-      function weightingForm(){
-				$('#weighting-popup').modal({containerCss: {'background-color':'#fff','width': 500, 'height': 600}});
-        $.getJSON("<%= course_assignments_path(@current_course, :format => :js) %>", function(assignments){
-          $('#weighting-chart-loader').hide();
-          Assignments = $(assignments);
-          Assignments.each(function(i, assignment){
-            if(assignment.weight == null)
-              assignment.weight = 100.0 / Assignments.length
-          });
-          WeightingChart = Raphael("weighting-chart");
-          var StartX = 250;
-          var StartY = 250;
-          var radius = 200;
-          WeightingChart.customAttributes.slice = function (x, y, r, a1, a2) {
-             var flag = (a2 - a1) > 180,
-                 clr = (a2 - a1) / 360;
-             a1 = (a1 % 360) * Math.PI / 180;
-             a2 = (a2 % 360) * Math.PI / 180;
-             return {
-                 path: [["M", x, y], ["l", r * Math.cos(a1), r * Math.sin(a1)], ["A", r, r, 0, +flag, 1, x + r * Math.cos(a2), y + r * Math.sin(a2)], ["z"]],
-                 fill: "hsb(" + clr + ", .75, .8)"
-             };
-          };
-
-          function animate(ms) {
-             var start = 0,
-                 val;
-             for (i = 0; i < Assignments.length; i++) {
-                 val = 360 / total * Assignments[i].weight;
-                 paths[i].animate({slice: [StartX, StartY, radius, start, start += val]}, ms || 1500, "bounce");
-                 paths[i].angle = start - val / 2;
-             }
-          }
-
-          var paths = WeightingChart.set(),
-             total,
-             start,
-             bg = WeightingChart.circle(StartX, StartY, 0).attr({stroke: "#000", "stroke-width": 4});
-          Assignments = Assignments.sort(function(a, b) { return b.weight - a.weight;});
-
-          total = 100;
-          start = 0;
-          for (i = 0; i < Assignments.length; i++) {
-            var val = 360 / total * Assignments[i].weight;
-            (function(i, val) {
-              paths.push(WeightingChart.path().attr({slice: [StartX, StartY, 1, start, start + val], stroke: "#000"}).click(function() {
-                var assignment = Assignments[i];
-                if(assignment == Assignments.last()[0]) {
-                  var nextAssignment = Assignments.first()[0];
-                } else {
-                  var nextAssignment = Assignments[i+1];
-                }
-                if(nextAssignment.weight > 5) {
-                  assignment.weight += 5;
-                  nextAssignment.weight -= 5;
-                  animate();
-                };
-              }));
-            })(i, val);
-            start += val;
-          }
-          bg.animate({r: radius}, 1000, "bounce");
-          animate(1000);
+    });
+    
+    function weightingForm(){
+			$('#weighting-popup').modal({containerCss: {'background-color':'#fff','width': 500, 'height': 600}});
+      $.getJSON("<%= course_assignments_path(@current_course, :format => :js) %>", function(assignments){
+        $('#weighting-chart-loader').hide();
+        Assignments = $(assignments);
+        Assignments.each(function(i, assignment){
+          if(assignment.weight == null)
+            assignment.weight = 100.0 / Assignments.length
         });
-      };
+        WeightingChart = Raphael("weighting-chart");
+        var StartX = 250;
+        var StartY = 250;
+        var radius = 200;
+        WeightingChart.customAttributes.slice = function (x, y, r, a1, a2) {
+           var flag = (a2 - a1) > 180,
+               clr = (a2 - a1) / 360;
+           a1 = (a1 % 360) * Math.PI / 180;
+           a2 = (a2 % 360) * Math.PI / 180;
+           return {
+               path: [["M", x, y], ["l", r * Math.cos(a1), r * Math.sin(a1)], ["A", r, r, 0, +flag, 1, x + r * Math.cos(a2), y + r * Math.sin(a2)], ["z"]],
+               fill: "hsb(" + clr + ", .75, .8)"
+           };
+        };
+        function animate(ms) {
+           var start = 0,
+               val;
+           for (i = 0; i < Assignments.length; i++) {
+               val = 360 / total * Assignments[i].weight;
+               paths[i].animate({slice: [StartX, StartY, radius, start, start += val]}, ms || 1500, "bounce");
+               paths[i].angle = start - val / 2;
+               addTip(paths[i].node, Assignments[i].name + ': ' + Assignments[i].weight);
+           }
+        }
+        var paths = WeightingChart.set(),
+           total,
+           start,
+           bg = WeightingChart.circle(StartX, StartY, 0).attr({stroke: "#000", "stroke-width": 4});
+        Assignments = Assignments.sort(function(a, b) { return b.weight - a.weight;});
+        total = 100;
+        start = 0;
+        for (i = 0; i < Assignments.length; i++) {
+          var val = 360 / total * Assignments[i].weight;
+          (function(i, val) {
+            var slice = WeightingChart.path().attr({slice: [StartX, StartY, 1, start, start + val], stroke: "#000"})
+            var assignment = Assignments[i];
+            slice.click(function() {
+              if(assignment == Assignments.last()[0]) {
+                var nextAssignment = Assignments.first()[0];
+              } else {
+                var nextAssignment = Assignments[i+1];
+              }
+              if(nextAssignment.weight > 5) {
+                assignment.weight += 5;
+                nextAssignment.weight -= 5;
+                animate();
+              };
+            })
+            paths.push(slice);
+          })(i, val);
+          start += val;
+        }
+        bg.animate({r: radius}, 1000, "bounce");
+        animate(1000);
+      });
+    };
     
   <% else %>
 
@@ -215,6 +233,7 @@
 </p>
 <% end %>
 <div id="weighting-popup" style="display:none">
+  <div id="tip"></div>
   <h3>Grade weighting</h3>
   <img src="/images/ajax-loader.gif" id="weighting-chart-loader"/>
   <div id="weighting-chart" style="height:500px"></div>
@@ -236,6 +255,16 @@
           }
         });
         event.preventDefault();
+      });
+      
+      var tip = $("#tip").hide();
+      var tipText = "";
+      var over = false;
+      $(document).mousemove(function(e){
+          if (over){
+            tip.css("left", e.offsetX+25).css("top", e.offsetY+50);
+            tip.text(tipText);
+          }
       });
     </script>
   </div>

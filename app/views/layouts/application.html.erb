@@ -4,15 +4,15 @@
   <title>Whiteboard</title>
   <%= stylesheet_link_tag :flutie %>
   <%= stylesheet_link_tag "buttons", "simple-modal/basic", "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" %>
-  <%= javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.min.js", "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js" %>
+  <%= javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js", "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.5/jquery-ui.min.js" %>
   <%= javascript_include_tag 'rails' %>
   <%= javascript_include_tag 'jquery.simplemodal' %>
   <%= javascript_include_tag 'jquery.ajaxmanager' %>
   <%= javascript_include_tag 'jquery.cookies.2.2.0.min' %>
   <%= javascript_include_tag 'dragtable' %>
   <%= javascript_include_tag 'raphael-min' %>
-  <%= javascript_include_tag 'g.raphael-min' %>
-  <%= javascript_include_tag 'g.pie-min' %>
+  <% javascript_include_tag 'tooltip.raphael' %>
+  
   <%= csrf_meta_tag %>
   <style type="text/css"> 
   /* These are styles to make the page look nice */
