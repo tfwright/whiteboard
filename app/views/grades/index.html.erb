@@ -149,8 +149,9 @@
                 var nextAssignment = Assignments[i+1];
               }
               if(nextAssignment.weight > 5) {
-                assignment.weight += 5;
-                nextAssignment.weight -= 5;
+                var change = Math.ceil((assignment.weight+1)/5)*5-assignment.weight;
+                assignment.weight += change;
+                nextAssignment.weight -= change;
                 animate();
               };
             })
