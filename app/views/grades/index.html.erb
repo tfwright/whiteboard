@@ -148,8 +148,8 @@
               } else {
                 var nextAssignment = Assignments[i+1];
               }
-              if(nextAssignment.weight > 5) {
-                var change = Math.ceil((assignment.weight+1)/5)*5-assignment.weight;
+              if(nextAssignment.weight >= 1) {
+                var change = Math.floor(assignment.weight+1)-assignment.weight;
                 assignment.weight += change;
                 nextAssignment.weight -= change;
                 animate();
