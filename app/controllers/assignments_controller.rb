@@ -79,8 +79,8 @@ class AssignmentsController < ApplicationController
     @assignments = @current_course.assignments
     begin
       Assignment.transaction do
-        params[:weighting].each_value do |assignment|
-          Assignment.find(assignment["id"]).update_attribute(:weight, assignment["weight"])
+        params[:weighting].each do |id, weight|
+          Assignment.find(id).update_attribute(:weight, weight)
         end
         raise "Invalid weighting" unless @current_course.assignments.sum(:weight) == 100
       end

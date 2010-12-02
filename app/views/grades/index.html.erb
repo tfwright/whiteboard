@@ -26,27 +26,9 @@
   tr {
     height:40px;
   }
-  #tip{
-   position : absolute;
-   border : 1px solid gray;
-   background-color : #efefef;
-   padding : 3px;
-   z-index: 5;
-  }
 </style>
 <script>
   <% if current_user.is_a?(Professor) %>
-
-  function addTip(node, txt){
-      $(node).mouseenter(function(){
-         tipText = txt;
-         tip.show();
-         over = true;
-      }).mouseleave(function(){
-         tip.hide();
-         over = false;
-      });
-  }
   
     function hideGradeForm(form, score){
       $(form).hide();
@@ -80,7 +62,7 @@
     };
 
     $(document).ready(function() {
-      $("form").hide();
+      $(".grade-form").hide();
       $("td.editable").each(function(i, td){
         $(td).click(function(event){
           showGradeForm($("form", td));
@@ -96,73 +78,6 @@
         });
       });
     });
-    
-    function weightingForm(){
-			$('#weighting-popup').modal({containerCss: {'background-color':'#fff','width': 500, 'height': 600}});
-      $.getJSON("<%= course_assignments_path(@current_course, :format => :js) %>", function(assignments){
-        $('#weighting-chart-loader').hide();
-        Assignments = $(assignments);
-        Assignments.each(function(i, assignment){
-          if(assignment.weight == null)
-            assignment.weight = 100.0 / Assignments.length
-        });
-        WeightingChart = Raphael("weighting-chart");
-        var StartX = 250;
-        var StartY = 250;
-        var radius = 200;
-        WeightingChart.customAttributes.slice = function (x, y, r, a1, a2) {
-           var flag = (a2 - a1) > 180,
-               clr = (a2 - a1) / 360;
-           a1 = (a1 % 360) * Math.PI / 180;
-           a2 = (a2 % 360) * Math.PI / 180;
-           return {
-               path: [["M", x, y], ["l", r * Math.cos(a1), r * Math.sin(a1)], ["A", r, r, 0, +flag, 1, x + r * Math.cos(a2), y + r * Math.sin(a2)], ["z"]],
-               fill: "hsb(" + clr + ", .75, .8)"
-           };
-        };
-        function animate(ms) {
-           var start = 0,
-               val;
-           for (i = 0; i < Assignments.length; i++) {
-               val = 360 / total * Assignments[i].weight;
-               paths[i].animate({slice: [StartX, StartY, radius, start, start += val]}, ms || 1500, "bounce");
-               paths[i].angle = start - val / 2;
-               addTip(paths[i].node, Assignments[i].name + ': ' + Assignments[i].weight);
-           }
-        }
-        var paths = WeightingChart.set(),
-           total,
-           start,
-           bg = WeightingChart.circle(StartX, StartY, 0).attr({stroke: "#000", "stroke-width": 4});
-        Assignments = Assignments.sort(function(a, b) { return b.weight - a.weight;});
-        total = 100;
-        start = 0;
-        for (i = 0; i < Assignments.length; i++) {
-          var val = 360 / total * Assignments[i].weight;
-          (function(i, val) {
-            var slice = WeightingChart.path().attr({slice: [StartX, StartY, 1, start, start + val], stroke: "#000"})
-            var assignment = Assignments[i];
-            slice.click(function() {
-              if(assignment == Assignments.last()[0]) {
-                var nextAssignment = Assignments.first()[0];
-              } else {
-                var nextAssignment = Assignments[i+1];
-              }
-              if(nextAssignment.weight > 1) {
-                var change = Math.floor(assignment.weight+1)-assignment.weight;
-                assignment.weight += change;
-                nextAssignment.weight -= change;
-                animate();
-              };
-            })
-            paths.push(slice);
-          })(i, val);
-          start += val;
-        }
-        bg.animate({r: radius}, 1000, "bounce");
-        animate(1000);
-      });
-    };
     
   <% else %>
 
@@ -185,7 +100,7 @@
     </div>
     <script>
       $('#weighting-button').click(function(event){
-        weightingForm();
+        $("#weighting-popup").modal({containerCss: {'background-color':'#fff'}});
         event.preventDefault();
       });
     </script>
@@ -208,12 +123,12 @@
             <td id="student-<%= student.id %>-assign-<%= assignment.id %>" class="editable">
                 <% if grade = student.grades.first(:conditions => {:assignment_id => assignment.id}) %>
                   <span class="grade"><%= grade.score %></span>
-                  <%= form_for(grade, :url => course_grade_path(@current_course, grade, :format => :js), :remote => true) do |f| %>
+                  <%= form_for(grade, :url => course_grade_path(@current_course, grade, :format => :js), :remote => true, :html => {:class => "grade-form"}) do |f| %>
                     <%= f.text_field :score, :size => 3, :style => "width:auto" %>
                   <% end %>
                 <% else %>
                   <span class="grade">--</span>
-                  <%= form_for(Grade.new, :url => course_grades_path(@current_course, :format => :js), :remote => true) do |f| %>
+                  <%= form_for(Grade.new, :url => course_grades_path(@current_course, :format => :js), :remote => true, :html => {:class => "grade-form"}) do |f| %>
                     <%= f.text_field :score, :size => 3, :style => "width:auto" %>
                     <%= f.hidden_field :assignment_id, :value => assignment.id %>
                     <%= f.hidden_field :student_id, :value => student.id %>
@@ -234,39 +149,29 @@
 </p>
 <% end %>
 <div id="weighting-popup" style="display:none">
-  <div id="tip"></div>
   <h3>Grade weighting</h3>
-  <img src="/images/ajax-loader.gif" id="weighting-chart-loader"/>
-  <div id="weighting-chart" style="height:500px"></div>
-  <div align="center">
-    <%= submit_tag "Save", :style => "font-size:5em", :id => "weighting-form-submit" %>
-    <script>
-      $("#weighting-form-submit").click(function(event){
-        $('#weighting-form-submit').attr('disabled', 'disabled');
-        $.ajax({
-          url: '<%= adjust_weighting_course_assignments_path(@current_course) %>',
-          type: 'PUT',
-          data: $.param({weighting:$.map(Assignments,function(a){return {id:a.id, weight:a.weight}})}),
-          error: function(){
-            alert("There was an error saving your weighting settings.  Please report this with the feedback link and try again later.")
-          },
-          success: function(){
-            $('#weighting-form-submit').attr('disabled', '');
-            $.modal.close();
-          }
-        });
-        event.preventDefault();
-      });
-      
-      var tip = $("#tip").hide();
-      var tipText = "";
-      var over = false;
-      $(document).mousemove(function(e){
-          if (over){
-            tip.css("left", e.offsetX+25).css("top", e.offsetY+50);
-            tip.text(tipText);
-          }
-      });
-    </script>
-  </div>
+  <% form_tag adjust_weighting_course_assignments_path(@current_course), :method => "put", :remote => true, :id => "weighting-form" do %>
+    <table>
+      <tr>
+        <th>Assignment</th>
+        <th>Weight</th>
+      </tr>
+      <% @current_course.assignments.each do |assignment| %>
+        <tr>
+          <td><%= assignment.name %></td>
+          <td><%= text_field_tag "weighting[#{assignment.id}]", assignment.weight %></td>
+        </tr>
+      <% end %>
+    </table>
+    <div align="center">
+      <%= submit_tag "Save" %>
+    </div>
+  <% end %>
+  <script>
+    $("#weighting-form").bind("ajax:success", function(event){
+      window.location.reload();
+    }).bind("ajax:failure", function(event){
+      alert("Could not save weighting.")
+    });
+  </script>
 </div>
