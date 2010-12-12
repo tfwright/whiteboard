@@ -19,9 +19,13 @@
     text-align:center;
   }
   <% if current_user.is_a?(Professor) %>
-  .editable:hover {
-    background-color:yellow;
-  }
+    .editable:hover {
+      background-color:yellow;
+    }
+    #chart {
+      width:300px;
+      margin:auto;
+    }
   <% end %>
   tr {
     height:40px;
@@ -62,6 +66,7 @@
     };
 
     $(document).ready(function() {
+      
       $(".grade-form").hide();
       $("td.editable").each(function(i, td){
         $(td).click(function(event){
@@ -77,6 +82,25 @@
           $("input", td).focus();
         });
       });
+      
+      $("#weighting-form").bind("ajax:success", function(event){
+        window.location.reload();
+      }).bind("ajax:failure", function(event){
+        alert("Could not save weighting.")
+      });
+      
+      $('#weighting-button').click(function(event){
+        $("#weighting-popup").modal({containerCss: {'background-color':'#fff',height:"80%",'overflow-y':'scroll'}});
+        var values = <%= @current_course.assignments.map(&:weight).to_json %>;
+        r = Raphael("chart", 300, 300);
+        chart = r.piechart(150, 150, 125, values, {color:"blue",onchange:function(values){
+          $.each(values, function(key, value){
+            $($('#weighting-form input[type=text]')[key]).val(value);
+          });
+        }});
+        event.preventDefault();
+      });
+      
     });
     
   <% else %>
@@ -98,12 +122,6 @@
         <span>Change grade weighting</span>
       <% end %>
     </div>
-    <script>
-      $('#weighting-button').click(function(event){
-        $("#weighting-popup").modal({containerCss: {'background-color':'#fff'}});
-        event.preventDefault();
-      });
-    </script>
   <% end %>
   <div style="width:100%;overflow-x:auto">
     <table class="draggable" id="grade-table">
@@ -150,6 +168,7 @@
 <% end %>
 <div id="weighting-popup" style="display:none">
   <h3>Grade weighting</h3>
+  <div id="chart"></div>
   <% form_tag adjust_weighting_course_assignments_path(@current_course), :method => "put", :remote => true, :id => "weighting-form" do %>
     <table>
       <tr>
@@ -159,7 +178,7 @@
       <% @current_course.assignments.each do |assignment| %>
         <tr>
           <td><%= assignment.name %></td>
-          <td><%= text_field_tag "weighting[#{assignment.id}]", assignment.weight %></td>
+          <td><%= text_field_tag "weighting[#{assignment.id}]", assignment.weight, :disabled => true %></td>
         </tr>
       <% end %>
     </table>
@@ -167,11 +186,4 @@
       <%= submit_tag "Save" %>
     </div>
   <% end %>
-  <script>
-    $("#weighting-form").bind("ajax:success", function(event){
-      window.location.reload();
-    }).bind("ajax:failure", function(event){
-      alert("Could not save weighting.")
-    });
-  </script>
 </div>
