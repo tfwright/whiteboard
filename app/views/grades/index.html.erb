@@ -178,7 +178,7 @@
       <% @current_course.assignments.each do |assignment| %>
         <tr>
           <td><%= assignment.name %></td>
-          <td><%= text_field_tag "weighting[#{assignment.id}]", assignment.weight %></td>
+          <td><%= text_field_tag "weighting[#{assignment.id}]", assignment.weight, :disabled => true %></td>
         </tr>
       <% end %>
     </table>
