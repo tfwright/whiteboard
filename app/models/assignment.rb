@@ -12,7 +12,7 @@ class Assignment < ActiveRecord::Base
   scope :active, lambda { where("due_at > ?", Time.zone.now) }
   
   def weight
-    super || 100.0/course.assignments.count
+    super || (100.0 - course.assignments.sum(:weight))/course.assignments.count
   end
   
 end
