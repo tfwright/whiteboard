@@ -18,15 +18,6 @@
          <p class="inline-errors"><%= error %></p> 
       <% end %>
     </li> 
-    
-    <li class="string required <%= "error" if @course.errors[:title].any? %>" id="course_code"> 
-      <label for="course_code">Code<abbr title="required">*</abbr></label> 
-      <%= f.text_field :code %>
-      <p class="inline-hints">something unique, ie. term/year/course/section</p> 
-      <% @course.errors[:code].each do |error| %>
-         <p class="inline-errors"><%= error %></p> 
-      <% end %>
-    </li>
   
     <li class="date required" id="course_begins_on"> 
       <h5 class="legend"><span class="label">Start date</span></h5> 

@@ -25,7 +25,6 @@ end
 
 Factory.define :course do |course|
   course.title "Test course"
-  course.code "testcode"
   course.begins_on Date.today
   course.ends_on 3.months.from_now
   course.association :professor
