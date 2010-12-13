@@ -1,6 +1,7 @@
 class AnnouncementsController < ApplicationController
   
   before_filter :ensure_professor_or_admin, :except => :show
+  before_filter :ensure_enrolled
   
   # GET /announcements
   # GET /announcements.xml

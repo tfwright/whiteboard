@@ -2,6 +2,7 @@ class AssignmentsController < ApplicationController
   
   before_filter :set_current_course
   before_filter :ensure_professor_or_admin, :except => :show
+  before_filter :ensure_enrolled
     
   def index
     @assignments = @current_course.assignments
