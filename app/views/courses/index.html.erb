@@ -1,4 +1,9 @@
-<h1>Your courses</h1>
+<style>
+  tr.inactive {
+    display:none;
+  }
+</style>
+<h1>Active courses</h1>
 
 <table>
   <tr>
@@ -12,7 +17,7 @@
     <% end %>
   </tr>
 
-<% @courses.each do |course| %>
+<% @courses.active.each do |course| %>
   <tr>
     <td><%= link_to course.title, course %></td>
     <td><%= course.code %></td>
@@ -26,7 +31,25 @@
     <% end %>
   </tr>
 <% end %>
+
+<% @courses.inactive.each do |course| %>
+  <tr class="inactive">
+    <td><%= link_to course.title, course %></td>
+    <td><%= course.code %></td>
+    <td><%= course.begins_on %></td>
+    <td><%= course.ends_on %></td>
+    <td><%= link_to course.students.count, course_students_path(course) %>
+    <% if %(Admin Professor).include?(current_user.type) %>
+      <td>
+        <%= link_to 'Edit', edit_course_path(course) %>
+      </td>
+    <% end %>
+  </tr>
+<% end %>
+
 </table>
+
+<p><%= link_to_function "Toggle all courses", "$('tr.inactive').toggle()" %></p>
 
 <br />
 
