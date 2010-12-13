@@ -34,7 +34,11 @@ class StudentsController < ApplicationController
   end
   
   def import
-    @roster = FasterCSV.table(params[:roster].path)
+    begin
+      @roster = FasterCSV.table(params[:roster].path)
+    rescue
+      redirect_to({:action => :new}, :alert => "Unable to import CSV file.  It may be invalidly formatted.") and return
+    end
     @selected_column = @roster.headers.detect{|h| h.to_s.match(/email/) }
   end
   

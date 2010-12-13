@@ -16,6 +16,13 @@ class StudentsControllerTest < ActionController::TestCase
     assert_response :success
   end
   
+  test "should handle a badly formed roster gracefully" do
+    course = Factory(:course)
+    sign_in course.professor
+    post :import, :roster => fixture_file_upload('/files/syllabus.pdf', 'text/csv'), :course_id => course.id
+    assert_response :success
+  end
+  
   test "should create student record if it doesn't exist" do
     course = Factory(:course)
     sign_in course.professor

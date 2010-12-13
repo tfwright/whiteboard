@@ -1,6 +1,6 @@
 <%= render :partial => "courses/header" %>
 
-<h3 style="margin-top:15px">New student</h3>
+<h3 style="margin-top:15px">Add a student</h3>
 
 <%= form_for(@student, :url => enroll_course_students_path(@current_course)) do |f| %>
   <% if @student.errors.any? %>
@@ -27,8 +27,9 @@
   </div>
 <% end %>
 
-<h3 style="margin-top:15px">Import student roster</h3>
+<p><h1 style="text-align:center">OR</h1></p>
 
+<h3 style="margin-top:15px">Import a roster of students</h3>
 <%= form_tag import_course_students_path(@current_course), :multipart => true do %>
   <ol>
     <li class="file required"> 
