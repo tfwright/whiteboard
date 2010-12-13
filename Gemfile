@@ -7,7 +7,7 @@ gem 'devise', '1.1.2'
 gem 'paperclip', '2.3.3'
 gem 'aws-s3', :require => 'aws/s3'
 gem 'truncate_html', '0.4.0'
-gem 'fastercsv'
+gem 'fastercsv', '1.5.3'
 gem 'grit'
 gem 'high_voltage'
 
