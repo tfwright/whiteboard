@@ -1,5 +1,6 @@
 class AnnouncementsController < ApplicationController
   
+  before_filter :set_current_course
   before_filter :ensure_professor_or_admin, :except => :show
   before_filter :ensure_enrolled
   
@@ -84,5 +85,11 @@ class AnnouncementsController < ApplicationController
       format.xml  { head :ok }
     end
   end
+  
+  private
+  
+    def set_current_course
+      @current_course ||= Course.find(params[:course_id])
+    end
   
 end

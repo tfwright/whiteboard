@@ -9,4 +9,13 @@ class LinksControllerTest < ActionController::TestCase
     assert_response :redirect
   end
   
+  test "creates link" do
+    professor = Factory(:professor)
+    course = Factory(:course, :professor => professor)
+    sign_in professor
+    assert_difference "Link.count", 1 do
+      post :create, :course_id => course.id, :link => Factory.attributes_for(:link)
+    end
+  end
+  
 end

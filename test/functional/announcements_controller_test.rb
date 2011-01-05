@@ -17,4 +17,13 @@ class AnnouncementsControllerTest < ActionController::TestCase
     assert_response :redirect
   end
   
+  test "creates announcement" do
+    professor = Factory(:professor)
+    course = Factory(:course, :professor => professor)
+    sign_in professor
+    assert_difference "Announcement.count", 1 do
+      post :create, :course_id => course.id, :announcement => Factory.attributes_for(:announcement)
+    end
+  end
+  
 end
