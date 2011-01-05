@@ -50,4 +50,12 @@ class CoursesControllerTest < ActionController::TestCase
     end
   end
   
+  test "destroys a course" do
+    course = Factory(:course)
+    sign_in course.professor
+    assert_difference "Course.count", -1 do
+      post :destroy, :id => course.id
+    end
+  end
+  
 end
