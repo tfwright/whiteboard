@@ -20,6 +20,10 @@ class Course < ActiveRecord::Base
     grades.where(:student_id => student.id).to_a.sum{ |g| g.score * (g.assignment.weight/total_weight(student)) }
   end
   
+  def active?
+    begins_on < Date.today && ends_on > Date.today
+  end
+  
   private
   
     def total_weight(student)

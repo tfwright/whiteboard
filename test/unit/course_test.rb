@@ -37,4 +37,9 @@ class CourseTest < ActiveSupport::TestCase
     assert_equal 30.0, course.grade(student)
   end
   
+  test "returns true for an active course" do
+    course = Factory(:course, :begins_on => Date.today-1, :ends_on => Date.today+1)
+    assert course.active?
+  end
+  
 end
