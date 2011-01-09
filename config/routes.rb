@@ -9,16 +9,16 @@ Whiteboard::Application.routes.draw do
     resources :assignments do
       resources :submissions
       collection do
-        put 'adjust_weighting'
+        put :adjust_weighting
       end
     end
     resources :students do
       collection do
-        post 'import'
-        post 'enroll'
+        post :import
+        post :enroll
       end
       member do
-        delete 'unenroll'
+        delete :unenroll
       end
     end
     resources :grades
@@ -26,8 +26,8 @@ Whiteboard::Application.routes.draw do
   
   resources :professors
   
-  match 'feedback' => 'feedback#new', :as => :feedback_form
-  match 'feedback/deliver' => 'feedback#deliver', :as => :deliver_feedback
+  match "feedback" => 'feedback#new', :as => "feedback_form"
+  match "feedback/deliver" => 'feedback#deliver', :as => "deliver_feedback"
 
   root :to => "courses#index"
 
