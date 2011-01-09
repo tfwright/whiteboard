@@ -4,8 +4,12 @@ class Student < User
   has_many :submissions
   has_many :grades
   
-  def after_create
-    Notifier.new_account_notification(self).deliver
-  end
+  after_create :send_confirmation_email
+  
+  private
+  
+    def send_confirmation_email
+      Notifier.new_account_notification(self).deliver
+    end
   
 end
