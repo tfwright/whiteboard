@@ -119,7 +119,7 @@ DEPENDENCIES
   aws-s3
   devise (= 1.1.2)
   factory_girl_rails
-  fastercsv
+  fastercsv (= 1.5.3)
   flutie (= 1.0.3)
   grit
   heroku

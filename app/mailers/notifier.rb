@@ -1,5 +1,5 @@
 class Notifier < ActionMailer::Base
-  default :from => "DO NOT REPLY <notifier@#{DOMAIN}>"
+  default :from => "Whiteboard <notifier@#{DOMAIN}>"
   
   def enrollment_notification(student, course)
     @student = student
