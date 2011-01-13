@@ -169,7 +169,7 @@
 <div id="weighting-popup" style="display:none">
   <h3>Grade weighting</h3>
   <div id="chart"></div>
-  <% form_tag adjust_weighting_course_assignments_path(@current_course), :method => "put", :remote => true, :id => "weighting-form" do %>
+  <%= form_tag adjust_weighting_course_assignments_path(@current_course), :method => "put", :remote => true, :id => "weighting-form" do %>
     <table>
       <tr>
         <th>Assignment</th>

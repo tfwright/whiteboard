@@ -10,9 +10,13 @@ class User < ActiveRecord::Base
   validates_format_of :email, :with => /^.+@.+\..+$/
   validates_uniqueness_of :email
   
-  def before_create
-    self.name ||= email.gsub(/@.*/, "")
-  end
+  before_create :set_default_name
+  
+  private
+  
+    def set_default_name
+      self.name ||= email.gsub(/@.*/, "")
+    end
   
   def self.find_for_authentication(conditions) 
     conditions[:email].downcase! 
