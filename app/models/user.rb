@@ -14,4 +14,9 @@ class User < ActiveRecord::Base
     self.name ||= email.gsub(/@.*/, "")
   end
   
+  def self.find_for_authentication(conditions) 
+    conditions[:email].downcase! 
+    super(conditions) 
+  end
+  
 end
