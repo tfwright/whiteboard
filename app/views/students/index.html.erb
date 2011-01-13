@@ -1,15 +1,20 @@
+<% content_for :ready do %>
+  $(".sortable").tablesorter();
+<% end %>
 <%= render :partial => "courses/header" %>
-
 <h3>Enrolled students</h3>
 <% if @students.any? %>
-  <table style="padding:15px">
-    <tr>
-      <th>Name</th>
-      <% if %(Admin Professor).include?(current_user.type) %>
-        <th>Last sign in</th>
-        <th>Manage</th>
-      <% end %>
-    </tr>
+  <table style="padding:15px" class="sortable">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <% if %(Admin Professor).include?(current_user.type) %>
+          <th>Last sign in</th>
+          <th>Manage</th>
+        <% end %>
+      </tr>
+    </thead>
+    <tbody>
     <% @students.each do |student| %>
       <tr>
         <td><%= student.name %></td>
@@ -24,6 +29,7 @@
         <% end %>
       </tr>
     <% end %>
+    </tbody>
   </table>
 <% else %>
   <div style="margin:20px 50px">No announcements have been posted yet.</div>

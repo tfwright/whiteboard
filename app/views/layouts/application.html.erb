@@ -9,6 +9,7 @@
   <%= javascript_include_tag 'jquery.simplemodal' %>
   <%= javascript_include_tag 'jquery.ajaxmanager' %>
   <%= javascript_include_tag 'jquery.cookies.2.2.0.min' %>
+  <%= javascript_include_tag 'jquery.tablesorter.min' %>
   <%= javascript_include_tag 'dragtable' %>
   <%= javascript_include_tag 'raphael-min' %>
   <%= javascript_include_tag 'adjustable-pie-chart' %>
@@ -85,6 +86,7 @@
       var color = $.cookies.get("bg-color");
       if(color)
         $(document.body).css({"background-color":color});
+      <%= yield :ready %>
     });
     
     feedbackForm = function(){
