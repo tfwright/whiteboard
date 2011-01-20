@@ -12,11 +12,6 @@ class User < ActiveRecord::Base
   
   before_create :set_default_name
   
-  def self.find_for_authentication(conditions) 
-    conditions[:email].downcase! 
-    super(conditions) 
-  end
-  
   private
   
     def set_default_name
