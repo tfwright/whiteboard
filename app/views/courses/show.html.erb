@@ -87,7 +87,7 @@
 
 <div style="margin-top:20px">
   <h3>Assignments</h3>
-  <% if @course.assignments.written.any? %>
+  <% if @course.assignments.written.active.any? %>
   <dl style="padding:15px;position:relative" id="course-assignment-list">
     <% @course.assignments.written.active.order("due_at").each do |assignment| %>
       <dt>
@@ -107,7 +107,7 @@
     <% end %>
   </dl>
   <% else %>
-    <div style="margin:20px 50px">No assignments have been posted yet.</div>
+    <div style="margin:20px 50px">No active assignments.</div>
   <% end %>
   <% if %(Admin Professor).include?(current_user.type) %>
     <div>
