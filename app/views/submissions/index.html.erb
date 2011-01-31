@@ -89,3 +89,8 @@
     </tr>
   <% end %>
 </table>
+<div>
+  <%= link_to new_course_assignment_submission_path(@current_course, Assignment.find(params[:assignment_id])), :class => "green-button pcb" do %>
+    <span>Upload a submission</span>
+  <% end %>
+</div>

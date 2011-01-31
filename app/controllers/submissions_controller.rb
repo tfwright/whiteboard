@@ -17,7 +17,7 @@ class SubmissionsController < ApplicationController
   
   def create
     @submission = Submission.new(params[:submission])
-    @submission.attributes = {:assignment_id => params[:assignment_id], :student_id => current_user.id}
+    @submission.student_id = current_user.id unless current_user.is_a?(Professor)
     if @submission.save
       redirect_to(course_assignment_path(Course.find(params[:course_id]), @submission.assignment), :notice => 'Submission was successfully created.')
     else
@@ -43,7 +43,7 @@ class SubmissionsController < ApplicationController
   private
   
     def ensure_assignment_not_overdue
-      unless Assignment.find(params[:assignment_id]).due_at > Time.now
+      unless Assignment.find(params[:assignment_id]).due_at > Time.now || current_user.is_a?(Professor) && current_user.teaching?(@current_course)
         redirect_to course_path(@current_course), :warning => "You cannot submit or update overdue assignments."
       end
     end
