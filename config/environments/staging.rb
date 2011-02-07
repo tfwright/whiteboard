@@ -55,7 +55,7 @@ end
 
 PAPERCLIP_OPTIONS = {:storage => :s3,
   :s3_credentials => {:access_key_id => '0141VS3DG9BCVMMS9W82', :secret_access_key => 'i70QHTiCvBVBPoJwzs91B6zzStWQ14wsreTCmsY+'},
-  :path => ":attachment/:id/:filename",
+  :path => ":attachment/:id/:s3_safe_filename",
   :bucket => 'assets.'+DOMAIN,
   :s3_host_alias => 'assets.'+DOMAIN,
   :url => ":s3_alias_url"}

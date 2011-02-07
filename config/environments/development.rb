@@ -29,5 +29,5 @@ Whiteboard::Application.configure do
   config.action_mailer.delivery_method = :file
 end
 
-PAPERCLIP_OPTIONS = {:storage => :filesystem, :path => ":rails_root/tmp/:attachment/:id/:filename", :url => "/tmp/:attachment/:id/:filename" }
+PAPERCLIP_OPTIONS = {:storage => :filesystem, :path => ":rails_root/tmp/:attachment/:id/:s3_safe_filename", :url => "/tmp/:attachment/:id/:s3_safe_filename" }
 
