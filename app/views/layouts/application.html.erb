@@ -47,21 +47,30 @@
     margin:auto;
   }
   #sitenav {
+    float:left;
     list-style:none;
   }
-  #sitenav li {
-    margin:10px;
-  }
   #sitenav a {
-    text-decoration:none;
     background-color:#222;
+    text-decoration:none;
     color:#fff;
-    padding:5px;
+    padding:10px;
+    margin:2px;
+    float:left;
+    width:100px;
+    border:dashed 2px #222;
   }
+  
+  #sign-out-link:visited {
+    background-color:#fff;
+    color:#222;
+    border:dashed 2px #222;
+  }
+  
   #sitenav a:hover {
     background-color:#fff;
     color:#222;
-    border:solid 1px #222;
+    border:solid 2px #222;
   }
   
   a.color-changer {
@@ -107,7 +116,7 @@
         <ul id="sitenav">
           <li><%= link_to "Your account", user_path(current_user) %></li>
           <li><%= link_to "Your courses", courses_path %></li>
-          <li><%= link_to "Sign out", destroy_user_session_path %></li>
+          <li><%= link_to "Sign out", destroy_user_session_path, :id =>"sign-out-link" %></li>
           <% if current_user.is_a?(Admin) %>
             <li><%= link_to "Professors", professors_path %></li>
           <% end %>
