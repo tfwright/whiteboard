@@ -14,4 +14,8 @@ class Assignment < ActiveRecord::Base
     super || (100.0 - course.assignments.sum(:weight))/course.assignments.count
   end
   
+  def submitted?(student)
+    Submission.exists?(:student_id => student.id, :assignment_id => id)
+  end
+  
 end

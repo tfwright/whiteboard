@@ -4,7 +4,7 @@ class SubmissionsController < ApplicationController
   before_filter :ensure_enrolled
   before_filter :ensure_professor_or_admin, :only => :index
   before_filter :ensure_assignment_not_overdue, :only => [:new, :update, :create]
-  before_filter :check_for_existing_submission, :only => :new
+  before_filter :check_submittable, :only => :new
   
 
   def index
@@ -48,7 +48,12 @@ class SubmissionsController < ApplicationController
       end
     end
   
-    def check_for_existing_submission
+    def check_submittable
+      assignment = Assignment.find(params[:assignment_id])
+      redirect_to course_assignment_path(@current_course, params[:assignment_id]), :warning => "This assignment does not require a submission" if !assignment.accepting_submissions? and return
+      if @current_user == @current_course.professor && @current_course.students.all?{|s| assignment.submitted?(student) }
+        redirect_to course_assignment_path(@current_course, params[:assignment_id]), :notice => "All students have submitted this assignment" and return
+      end
       if submission = Submission.first(:conditions => {:student_id => current_user.id, :assignment_id => params[:assignment_id]})
         redirect_to edit_course_assignment_submission_path(@current_course, params[:assignment_id], submission), :notice => "Please update your submission below"
       end

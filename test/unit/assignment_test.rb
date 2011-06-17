@@ -10,4 +10,17 @@ class AssignmentTest < ActiveSupport::TestCase
     assert course.assignments.all?{ |a| a.weight == 50 }
   end
   
+  test "returns true if given student has turned in assignment" do
+    assignment = Factory(:assignment)
+    student = Factory(:student)
+    Factory(:submission, :student => student, :assignment => assignment)
+    assert assignment.submitted?(student)
+  end
+  
+  test "returns false if given student has not turned in assignment" do
+    assignment = Factory(:assignment)
+    student = Factory(:student)
+    assert !assignment.submitted?(student)
+  end
+  
 end
