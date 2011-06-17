@@ -14,7 +14,7 @@ class GradesController < ApplicationController
   def create
     @grade = Grade.new(params[:grade])
     respond_to do |format|
-      format.js do
+      format.json do
         if @grade.save
           render :json => @grade.attributes.merge(:update_url => course_grade_path(@current_course, @grade, :format => :js))
         else
@@ -27,7 +27,7 @@ class GradesController < ApplicationController
   def update
     @grade = Grade.find(params[:id])
     respond_to do |format|
-      format.js do
+      format.json do
         if @grade.update_attributes(params[:grade])
           render :json => @grade
         else

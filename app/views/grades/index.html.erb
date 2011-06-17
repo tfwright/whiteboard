@@ -51,22 +51,20 @@
       });
     }
 
-    function newGradeSuccessHandler(event, grade, status) {
-      var gradeJSON = $.parseJSON(grade)
-      hideGradeForm(event.target, gradeJSON.score);
-      $(event.target).attr("action", gradeJSON.update_url)
-      $(event.target).attr("method", "put")
-      $("input[type=hidden]", event.target).remove();
-      $(event.target).unbind("ajax:success")
+    function newGradeSuccessHandler(status, grade, request) {
+      hideGradeForm(this, grade.score);
+      $(event.target).attr("action", grade.update_url);
+      $(event.target).attr("method", "put");
+      $("input[type=hidden]", this).remove();
+      $(event.target).unbind("ajax:success");
       $(event.target).bind("ajax:success", updateGradeSuccessHandler);
     };
 
-    function updateGradeSuccessHandler(event, grade, status){
-      hideGradeForm(event.target, $.parseJSON(grade).score);
+    function updateGradeSuccessHandler(status, grade, request){
+      hideGradeForm(this, grade.score);
     };
 
     $(document).ready(function() {
-      
       $(".grade-form").hide();
       $("td.editable").each(function(i, td){
         $(td).click(function(event){
@@ -77,8 +75,8 @@
         } else {
           $("form", td).bind("ajax:success", updateGradeSuccessHandler);
         };
-        $("form", td).bind("ajax:failure", function(event, grade, status){
-          alert("There was an error: " + grade.responseText);
+        $("form", td).bind("ajax:error", function(request, status, error){
+          alert("There was an error: " + error);
           $("input", td).focus();
         });
       });
@@ -100,6 +98,8 @@
         }});
         event.preventDefault();
       });
+      
+      $('#grade-table').sorttable({items: '>:not(.nosort)'}).disableSelection();
       
     });
     
@@ -124,9 +124,10 @@
     </div>
   <% end %>
   <div style="width:100%;overflow-x:auto">
-    <table class="draggable" id="grade-table">
+    <table id="grade-table">
+      <tbody>
       <tr>
-        <th class="student">Student</th>
+        <th class="student nosort">Student</th>
         <% @current_course.assignments.each do |assignment| %>
           <th class="assignment" title="<%= assignment.name %>"><%= assignment.name %></th>
         <% end %>
@@ -141,12 +142,12 @@
             <td id="student-<%= student.id %>-assign-<%= assignment.id %>" class="editable">
                 <% if grade = student.grades.first(:conditions => {:assignment_id => assignment.id}) %>
                   <span class="grade"><%= grade.score %></span>
-                  <%= form_for(grade, :url => course_grade_path(@current_course, grade, :format => :js), :remote => true, :html => {:class => "grade-form"}) do |f| %>
+                  <%= form_for(grade, :url => course_grade_path(@current_course, grade, :format => :json), :remote => true, :html => {:class => "grade-form"}) do |f| %>
                     <%= f.text_field :score, :size => 3, :style => "width:auto" %>
                   <% end %>
                 <% else %>
                   <span class="grade">--</span>
-                  <%= form_for(Grade.new, :url => course_grades_path(@current_course, :format => :js), :remote => true, :html => {:class => "grade-form"}) do |f| %>
+                  <%= form_for(Grade.new, :url => course_grades_path(@current_course, :format => :json), :remote => true, :html => {:class => "grade-form"}) do |f| %>
                     <%= f.text_field :score, :size => 3, :style => "width:auto" %>
                     <%= f.hidden_field :assignment_id, :value => assignment.id %>
                     <%= f.hidden_field :student_id, :value => student.id %>
@@ -159,6 +160,7 @@
           <% end %>
         </tr>
       <% end %>
+      </tbody>
     </table>
   </div>
 <% else %>
