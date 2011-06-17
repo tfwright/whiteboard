@@ -53,7 +53,7 @@ Whiteboard::Application.configure do
 end
 
 Whiteboard::Application.config.middleware.use ExceptionNotifier,
-  :email_prefix => "[Whiteboard Error]",
+  :email_prefix => "[Whiteboard Error] ",
   :sender_address => %{"DO NOT REPLY" <notifier@#{DOMAIN}>},
   :exception_recipients => %w{tfwright@gmail.com}
   
