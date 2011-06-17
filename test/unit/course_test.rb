@@ -42,4 +42,14 @@ class CourseTest < ActiveSupport::TestCase
     assert course.active?
   end
   
+  test "should be active if ends today" do
+    course = Factory(:course, :begins_on => Date.today-5, :ends_on => Date.today)
+    assert course.active?
+  end
+  
+  test "should be active if begins today" do
+    course = Factory(:course, :begins_on => Date.today, :ends_on => Date.today+5)
+    assert course.active?
+  end
+  
 end

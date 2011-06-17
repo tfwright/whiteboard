@@ -16,7 +16,7 @@
     <% end %>
   </tr>
 
-<% (@courses.active+@courses.inactive).each do |course| %>
+<% (@courses.select(&:active?)+@courses.reject(&:active?)).each do |course| %>
   <tr class="<%= !course.active? ? 'inactive' : nil %>">
     <td><%= link_to course.title, course %></td>
     <td><%= course.begins_on %></td>

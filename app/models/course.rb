@@ -13,15 +13,12 @@ class Course < ActiveRecord::Base
     errors.add :base, 'End date cannot precede start date' unless (begins_on.blank? || ends_on.blank?) || ends_on > begins_on
   end
   
-  scope :active, lambda { where("begins_on < ? AND ends_on > ?", Date.today, Date.today) }
-  scope :inactive, lambda { where("begins_on > ? OR ends_on < ?", Date.today, Date.today) }
-  
   def grade(student)
     grades.where(:student_id => student.id).to_a.sum{ |g| g.score * (g.assignment.weight/total_weight(student)) }
   end
   
   def active?
-    begins_on < Date.today && ends_on > Date.today
+    begins_on <= Date.today && ends_on >= Date.today
   end
   
   private
