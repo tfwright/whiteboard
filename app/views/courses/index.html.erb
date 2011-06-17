@@ -49,7 +49,7 @@
     <% end %>
   </tr>
 <% end %>
-  <tr id="toggler"><td colspan="5" align="center"><%= link_to_function raw("Show all courses &#9650;"), "$('tr.inactive').toggle(); $(this).html(($(this).text() == 'Show all courses ▲') ? 'Show active courses &#9660;' : 'Show all courses &#9650;');" %></td></tr>
+  <tr id="toggler"><td colspan="5" align="center"><%= link_to_function raw("Show all courses &#9660;"), "$('tr.inactive').toggle(); $(this).html(($(this).text() == 'Show all courses ▼') ? 'Show active courses &#9650;' : 'Show all courses &#9660;');" %></td></tr>
 </table>
 
 
