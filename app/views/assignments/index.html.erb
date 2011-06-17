@@ -9,7 +9,7 @@
     <th></th>
   </tr>
 
-<% @assignments.each do |assignment| %>
+<% @assignments.order("name ASC").each do |assignment| %>
   <tr>
     <td><%= assignment.name %></td>
     <td><%= link_to 'Show', course_assignment_path(Course.find(params[:course_id]), assignment) %></td>
