@@ -10,6 +10,7 @@ gem 'truncate_html', '0.4.0'
 gem 'fastercsv', '1.5.3'
 gem 'grit'
 gem 'high_voltage'
+gem 'exception_notification'
 
 group :development do 
   gem 'heroku'

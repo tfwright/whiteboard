@@ -49,8 +49,14 @@ Whiteboard::Application.configure do
   config.active_support.deprecation = :notify
   
   config.action_mailer.default_url_options = { :host => DOMAIN }
+
 end
 
+Whatever::Application.config.middleware.use ExceptionNotifier,
+  :email_prefix => "[Whiteboard Error]",
+  :sender_address => %{"DO NOT REPLY" <notifier@#{DOMAIN}>},
+  :exception_recipients => %w{tfwright@gmail.com}
+  
 PAPERCLIP_OPTIONS = {:storage => :s3,
   :s3_credentials => {:access_key_id => '0141VS3DG9BCVMMS9W82', :secret_access_key => 'i70QHTiCvBVBPoJwzs91B6zzStWQ14wsreTCmsY+'},
   :path => ":attachment/:id/:s3_safe_filename",
