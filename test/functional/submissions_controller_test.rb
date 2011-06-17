@@ -27,4 +27,11 @@ class SubmissionsControllerTest < ActionController::TestCase
     end
   end
   
+  test "redirects professor away from new if no students need to sumbit assignment" do
+    assignment = Factory(:assignment, :accepting_submissions => true)
+    sign_in assignment.course.professor
+    get :new, :assignment_id => assignment.id, :course_id => assignment.course.id
+    assert_response :redirect
+  end
+  
 end

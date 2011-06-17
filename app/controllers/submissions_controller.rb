@@ -51,7 +51,7 @@ class SubmissionsController < ApplicationController
     def check_submittable
       assignment = Assignment.find(params[:assignment_id])
       redirect_to course_assignment_path(@current_course, params[:assignment_id]), :warning => "This assignment does not require a submission" if !assignment.accepting_submissions? and return
-      if @current_user == @current_course.professor && @current_course.students.all?{|s| assignment.submitted?(student) }
+      if current_user == @current_course.professor && @current_course.students.all?{|s| assignment.submitted?(s) }
         redirect_to course_assignment_path(@current_course, params[:assignment_id]), :notice => "All students have submitted this assignment" and return
       end
       if submission = Submission.first(:conditions => {:student_id => current_user.id, :assignment_id => params[:assignment_id]})
