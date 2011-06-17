@@ -5,7 +5,7 @@ class CoursesController < ApplicationController
   before_filter :ensure_enrolled, :except => [:new, :create, :index]
   
   def index
-    @courses = current_user.courses
+    @courses = current_user.courses.order("begins_on DESC")
   end
 
   def show
