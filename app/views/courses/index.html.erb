@@ -8,6 +8,11 @@
     color:#000;
   }
   
+  table#course-listing tr#toggler td {
+    border-bottom:none;
+    padding:10px;
+  }
+  
   a.course-link {
     padding-left:10px;
     font-weight:bold; 
@@ -44,10 +49,10 @@
     <% end %>
   </tr>
 <% end %>
-
+  <tr id="toggler"><td colspan="5" align="center"><%= link_to_function raw("Show all courses &#9650;"), "$('tr.inactive').toggle(); $(this).html(($(this).text() == 'Show all courses ▲') ? 'Show active courses &#9660;' : 'Show all courses &#9650;');" %></td></tr>
 </table>
 
-<p align="center"><%= link_to_function "Show all courses", "$('tr.inactive').toggle(); $(this).text(($(this).text() == 'Show all courses') ? 'Show active courses' : 'Show all courses');" %></p>
+
 
 <br />
 
