@@ -1,8 +1,9 @@
 require 'test_helper'
 
 class GradeTest < ActiveSupport::TestCase
-  # Replace this with your real tests.
-  test "the truth" do
-    assert true
+
+  test "allows blank grades" do
+    Factory(:grade, :score => "")
   end
+  
 end

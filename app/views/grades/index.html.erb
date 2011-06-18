@@ -61,7 +61,7 @@
     };
 
     function updateGradeSuccessHandler(status, grade, request){
-      hideGradeForm(this, grade.score);
+      hideGradeForm(this, grade.score || '--');
     };
 
     $(document).ready(function() {
@@ -141,7 +141,7 @@
           <% @current_course.assignments.each do |assignment| %>
             <td id="student-<%= student.id %>-assign-<%= assignment.id %>" class="editable">
                 <% if grade = student.grades.first(:conditions => {:assignment_id => assignment.id}) %>
-                  <span class="grade"><%= grade.score %></span>
+                  <span class="grade"><%= grade.score || "--" %></span>
                   <%= form_for(grade, :url => course_grade_path(@current_course, grade, :format => :json), :remote => true, :html => {:class => "grade-form"}) do |f| %>
                     <%= f.text_field :score, :size => 3, :style => "width:auto" %>
                   <% end %>
