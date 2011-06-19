@@ -12,9 +12,9 @@
 <% @assignments.order("name ASC").each do |assignment| %>
   <tr>
     <td><%= assignment.name %></td>
-    <td><%= link_to 'Show', course_assignment_path(Course.find(params[:course_id]), assignment) %></td>
-    <td><%= link_to 'Edit', edit_course_assignment_path(Course.find(params[:course_id]), assignment) %></td>
-    <td><%= link_to 'Destroy', course_assignment_path(Course.find(params[:course_id]), assignment), :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%= link_to 'Show', course_assignment_path(@current_course, assignment) %></td>
+    <td><%= link_to 'Edit', edit_course_assignment_path(@current_course, assignment) %></td>
+    <td><%= link_to 'Destroy', course_assignment_path(@current_course, assignment), :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>
 </table>
