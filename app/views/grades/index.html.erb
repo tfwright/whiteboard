@@ -3,6 +3,13 @@
     min-width:100px;
     border-right:dotted 1px black;
   }
+  .total {
+    min-width:30px;
+    max-width:30px;
+    border-left:dotted 1px black;
+    padding:0 10px;
+    font-weight:bold;
+  }
   .assignment {
     min-width:60px;
     max-width:60px;
@@ -160,7 +167,7 @@
             </td>
           <% end %>
           <% if current_user.is_a?(Professor) %>
-            <td><%= number_with_precision(@current_course.grade(student), :precission => 2, :strip_insignificant_zeros => true) %></td>
+            <td class="total"><%= number_with_precision(@current_course.grade(student), :precission => 2, :strip_insignificant_zeros => true) %></td>
           <% end %>
         </tr>
       <% end %>
