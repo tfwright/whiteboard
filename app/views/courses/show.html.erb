@@ -76,13 +76,16 @@
   <% else %>
     <div style="margin:20px 50px">No announcements have been posted yet.</div>
   <% end %>
+  <div>
   <% if %(Admin Professor).include?(current_user.type) %>
-    <div>
       <%= link_to new_course_announcement_path(@course), :class => "green-button pcb" do %>
         <span>Make an announcement</span>
       <% end %>
-    </div>
   <% end %>
+  <%= link_to course_announcements_path(@course), :class => "grey-button pcb" do %>
+    <span>All announcements</span>
+  <% end %>
+  </div>
 </div>
 
 <div style="margin-top:20px">

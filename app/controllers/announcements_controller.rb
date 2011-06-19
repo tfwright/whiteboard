@@ -4,15 +4,8 @@ class AnnouncementsController < ApplicationController
   before_filter :ensure_professor_or_admin, :except => :show
   before_filter :ensure_enrolled
   
-  # GET /announcements
-  # GET /announcements.xml
   def index
-    @announcements = Announcement.all
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @announcements }
-    end
+    @announcements = @current_course.announcements
   end
 
   # GET /announcements/1

@@ -26,4 +26,11 @@ class AnnouncementsControllerTest < ActionController::TestCase
     end
   end
   
+  test "lists announcements" do
+    course = Factory(:course)
+    sign_in course.professor
+    get :index, :course_id => course.id
+    assert_not_nil assigns(:announcements)
+  end
+  
 end
