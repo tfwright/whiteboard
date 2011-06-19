@@ -1,7 +1,7 @@
 <%= form_for(@document, :html => {:multipart => true}, :url => url) do |f| %>
   <% if @document.errors.any? %>
   <div class="error">
-    <h3><%= pluralize(@document.errors.count, "error") %> prevented this document from being saved:</h3>
+    <h3><%= pluralize(@document.errors.count, "error") %> prevented this document from being saved</h3>
     <% @document.errors[:base].each do |error| %>
       <%= error %>
     <% end %>
@@ -25,7 +25,7 @@
     <li class="file required"> 
       <%= f.label :attached, raw("Attachment<abbr>*</abbr>") %>
       <%= f.file_field :attached %>
-      <p class="inline-hints">Currently <b>only</b> Word documents and PDFs are allowed</p> 
+      <p class="inline-hints">Currently <b>only</b> OpenOffice, Word and PDF documents are allowed</p> 
       <% @document.errors[:attached_file_name].each do |error| %>
          <p class="inline-errors">File <%= error %></p> 
       <% end %>
