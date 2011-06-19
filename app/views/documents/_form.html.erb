@@ -9,23 +9,23 @@
   <% end %>
   <ol>
     <li class="string required <%= "error" if @document.errors[:name].any? %>"> 
-      <%= f.label :name, raw("Name<abbr>*</abbr>") %><br />
+      <%= f.label :name, raw("Name<abbr>*</abbr>") %>
       <%= f.text_field :name %>
       <% @document.errors[:name].each do |error| %>
          <p class="inline-errors"><%= error %></p> 
       <% end %>
     </li>
     <li class="string required <%= "error" if @document.errors[:description].any? %>"> 
-      <%= f.label :description, raw("Description<abbr>*</abbr>") %><br />
+      <%= f.label :description, raw("Description<abbr>*</abbr>") %>
       <%= f.text_field :description %>
       <% @document.errors[:description].each do |error| %>
          <p class="inline-errors"><%= error %></p> 
       <% end %>
     </li>
     <li class="file required"> 
-      <%= f.label :attached, raw("Attachment<abbr>*</abbr>") %><br />
+      <%= f.label :attached, raw("Attachment<abbr>*</abbr>") %>
       <%= f.file_field :attached %>
-      <p class="inline-hints">currently only word documents and pdfs are allowed</p> 
+      <p class="inline-hints">Currently <b>only</b> Word documents and PDFs are allowed</p> 
       <% @document.errors[:attached_file_name].each do |error| %>
          <p class="inline-errors">File <%= error %></p> 
       <% end %>
