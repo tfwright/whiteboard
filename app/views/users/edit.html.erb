@@ -12,21 +12,25 @@
   <% end %>
   <ol>
     <li class="string <%= "error" if @user.errors[:name].any? %>"> 
-      <%= f.label :name, raw("Name<abbr></abbr>") %><br />
+      <%= f.label :name, "Name" %>
       <%= f.text_field :name %>
       <% @user.errors[:name].each do |error| %>
          <p class="inline-errors"><%= error %></p> 
       <% end %>
     </li>
     <li class="string required <%= "error" if @user.errors[:email].any? %>"> 
-      <%= f.label :email, raw("Email<abbr>*</abbr>") %><br />
+      <%= f.label :email, raw("Email<abbr>*</abbr>") %>
       <%= f.text_field :email %>
       <% @user.errors[:email].each do |error| %>
          <p class="inline-errors"><%= error %></p> 
       <% end %>
     </li>
+    <li class="select">
+      <%= f.label :time_zone, "Time Zone" %>
+      <%= f.time_zone_select :time_zone, ActiveSupport::TimeZone.us_zones, :include_blank => true %>
+    </li>
     <li class="string required <%= "error" if @user.errors[:password].any? %>"> 
-      <%= f.label :password, raw("Password<abbr>*</abbr>") %><br />
+      <%= f.label :password, raw("Password<abbr>*</abbr>") %>
       <%= f.password_field :password %>
       <% @user.errors[:password].each do |error| %>
          <p class="inline-errors"><%= error %></p> 

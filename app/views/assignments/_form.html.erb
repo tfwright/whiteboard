@@ -43,6 +43,7 @@
       <fieldset>
         <h5 class="legend"><span class="label">Due date*</span></h5> 
         <%= f.datetime_select :due_at, :default => 1.week.from_now %>
+        <p class="inline-hints"><%= Time.zone %></p>
         <% @assignment.errors[:due_at].each do |error| %>
         <p class="inline-errors"><%= error %></p> 
         <% end %>

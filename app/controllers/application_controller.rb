@@ -1,8 +1,13 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
   before_filter :authenticate_user!
+  before_filter :set_timezone
   
   private
+  
+    def set_timezone
+      Time.zone = current_user.time_zone
+    end
   
     def ensure_professor_or_admin
       unless %w(Professor Admin).include?(current_user.type)
