@@ -1,6 +1,6 @@
 <%= form_for(@assignment, :url => url) do |f| %>
   <% if @assignment.errors.any? %>
-    <div  class="error">
+    <div class="error">
       <h2><%= pluralize(@assignment.errors.count, "error") %> prevented this assignment from being saved:</h2>
       <% @assignment.errors[:base].each do |error| %>
         <%= error %>
@@ -39,11 +39,13 @@
       </script>
     </li>
     <li class="date required" id="due_date_box"> 
-      <h5 class="legend"><span class="label">Due date*</span></h5> 
-      <%= f.datetime_select :due_at, :default => 1.week.from_now %>
-      <% @assignment.errors[:due_at].each do |error| %>
-         <p class="inline-errors"><%= error %></p> 
-      <% end %>
+      <fieldset>
+        <h5 class="legend"><span class="label">Due date*</span></h5> 
+        <%= f.datetime_select :due_at, :default => 1.week.from_now %>
+        <% @assignment.errors[:due_at].each do |error| %>
+        <p class="inline-errors"><%= error %></p> 
+        <% end %>
+      </fieldset>
     </li>
   </ol>
   <div class="actions">
