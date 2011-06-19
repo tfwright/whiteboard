@@ -1,10 +1,8 @@
 <style>
   .filelist {
-    padding: 20px 0 0 20px;
+    padding: 20px 0 0 10px;
   }
-  .filelist dd {
-    margin-left: 40px;
-  }
+  
   .filelist dd.top {
     padding: 10px 0 0 10px;
   }
@@ -12,48 +10,11 @@
     padding: 0 0 5px 10px;
   }
   .filelist dt {
-    text-align:center;
   	clear: left;
   	float: left;
   	margin-right: 5px;
-  }
-  
-  .filelist dt a.file-link {
-    font-size:15px;
-    font-weight:bold;
-    font-variant:small-caps;
-    font-size:15px;
-    font-weight:bold;
-    font-variant:small-caps;
-    text-decoration:none;
-    color:#fff;
-    display:block;
-    padding:5px 5px 15px 5px;
-    
-  }
-  
-  .filelist dt a.file-link:hover {
-    color:#fff;
-  }
-  
-  .filelist dt a.file-link:visited {
-    color:#fff;
-  }
-  
-  .editbox {
-    position:absolute;
-    z-index:1000;
-    left:-50px;
-    top:0px;
-    display:none;
-    padding:0px 30px 20px 0px;
-  }
-  
-  .doc, .docx {
-    background-color:#1E90FF;
-  }
-  .pdf {
-    background-color:#B22222;
+  	width: 45px;
+  	height: 45px;
   }
   
   .due-date {
@@ -95,9 +56,6 @@
     <% @course.assignments.written.active.order("due_at").each do |assignment| %>
       <dt>
         <%= link_to assignment.name, course_assignment_path(@course, assignment) %>
-        <span class="editbox" style="top:20px;padding-right:55px">
-          <%= link_to "Edit", edit_course_assignment_path(@course, assignment) %>
-        </span>
       </dt>
       <% if current_user.is_a?(Student) %>
         <% unless submission = current_user.submissions.where(:assignment_id => assignment.id).last %>
@@ -128,9 +86,8 @@
   <% if @course.documents.any? %>
     <dl class="filelist" id="course-file-list">
     <% @course.documents.order("created_at desc").each do |document| %>
-      <% ext = File.extname(document.attached.original_filename).gsub(/^\.+/, "") %>
-      <dt class="<%= ext %>" style="position:relative">
-        <%= link_to ext, document.attached.url, :class => "file-link" %>
+      <dt style="position:relative">
+        <%= link_to image_tag("doc.png", :width => "100%"), document.attached.url, :class => "file-link" %>
       </dt>
       <dd class="top">
         <h4 style="display:inline"><%= document.name %></h4>
@@ -152,14 +109,6 @@
     </div>
   <% end %>
 </div>
-<script>
-  $("#course-file-list dt").hover(function(event){
-    $(".editbox", $(event.target).closest("dt")).show();
-  }, function(event){
-    $(".editbox").hide();
-  });
-</script>
-
 <div style="margin-top:20px">
   <h3>Course links</h3>
   <% if @course.links.any? %>
