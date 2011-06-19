@@ -24,7 +24,7 @@ class Course < ActiveRecord::Base
   private
   
     def total_weight(student)
-      grades.where(:student_id => student.id).map(&:assignment).sum(&:weight)
+      grades.where(:student_id => student.id).where("score is not null").map(&:assignment).sum(&:weight)
     end
   
 end
