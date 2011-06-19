@@ -70,12 +70,13 @@
     }
 
     function newGradeSuccessHandler(status, grade, request) {
+      var form = $(this);
       hideGradeForm(this, grade.score);
-      $(event.target).attr("action", grade.update_url);
-      $(event.target).attr("method", "put");
+      form.attr("action", grade.update_url);
+      form.attr("method", "put");
       $("input[type=hidden]", this).remove();
-      $(event.target).unbind("ajax:success");
-      $(event.target).bind("ajax:success", updateGradeSuccessHandler);
+      form.unbind("ajax:success");
+      form.bind("ajax:success", updateGradeSuccessHandler);
     };
 
     function updateGradeSuccessHandler(status, grade, request){
@@ -93,8 +94,8 @@
         } else {
           $("form", td).bind("ajax:success", updateGradeSuccessHandler);
         };
-        $("form", td).bind("ajax:error", function(request, status, error){
-          alert("There was an error: " + error);
+        $("form", td).bind("ajax:error", function(event, request, status){
+          alert("There was an error: " + request.responseText);
           $("input", td).focus();
         });
       });
