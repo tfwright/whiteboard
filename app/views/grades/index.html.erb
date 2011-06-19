@@ -168,7 +168,7 @@
             </td>
           <% end %>
           <% if current_user.is_a?(Professor) %>
-            <td class="total"><%= number_with_precision(@current_course.grade(student), :precission => 2, :strip_insignificant_zeros => true) %></td>
+            <td class="total"><%= number_with_precision(@current_course.grade(student), :precision => 1, :strip_insignificant_zeros => true) %></td>
           <% end %>
         </tr>
       <% end %>
