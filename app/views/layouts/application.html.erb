@@ -20,6 +20,8 @@
 
   body { background-color: #222;}
   
+  #main div {margin-bottom:10px;}
+  
   #content {
     background: #fff;
     padding: 25px 40px;
@@ -127,7 +129,7 @@
         </div>
       <% end %>
     </div>
-    <div style="padding-left:160px"><%= yield %></div>
+    <div style="padding-left:160px" id="main"><%= yield %></div>
   </div>
   <div id="footer">
     <span class="site-pages"><%= link_to "ABOUT", page_path("about") %> // <%= link_to "FAQ", page_path("faq") %> // <%= link_to_function "FEEDBACK", "feedbackForm()" %></span>
