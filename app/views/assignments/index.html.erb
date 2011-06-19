@@ -4,17 +4,20 @@
 <table>
   <tr>
     <th>Name</th>
-    <th></th>
-    <th></th>
-    <th></th>
+    <th>Manage</th>
   </tr>
 
 <% @assignments.order("name ASC").each do |assignment| %>
   <tr>
-    <td><%= assignment.name %></td>
-    <td><%= link_to 'Show', course_assignment_path(@current_course, assignment) %></td>
-    <td><%= link_to 'Edit', edit_course_assignment_path(@current_course, assignment) %></td>
-    <td><%= link_to 'Destroy', course_assignment_path(@current_course, assignment), :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%= link_to assignment.name, course_assignment_path(@current_course, assignment) %></td>
+    <td>
+      <%= link_to edit_course_assignment_path(@current_course, assignment), :class => "grey-button pcb" do %>
+        <span>Edit</span>
+      <% end %>
+      <%= link_to course_assignment_path(@current_course, assignment), :method => :delete, :confirm => "Are you sure you want to delete this assignment?  This cannot be undone!", :class => "red-button pcb" do %>
+        <span>Delete</span>
+      <% end %>
+    </td>
   </tr>
 <% end %>
 </table>
