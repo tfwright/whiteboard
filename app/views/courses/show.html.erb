@@ -89,7 +89,7 @@
 </div>
 
 <div style="margin-top:20px">
-  <h3>Assignments</h3>
+  <h3>Active assignments</h3>
   <% if @course.assignments.written.active.any? %>
   <dl style="padding:15px;position:relative" id="course-assignment-list">
     <% @course.assignments.written.active.order("due_at").each do |assignment| %>
