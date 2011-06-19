@@ -19,13 +19,24 @@
     text-align:center;
   }
   <% if current_user.is_a?(Professor) %>
-    .editable:hover {
-      background-color:yellow;
-    }
-    #chart {
-      width:300px;
-      margin:auto;
-    }
+  .editable:hover {
+    background-color:yellow;
+  }
+  #chart {
+    width:300px;
+    margin:auto;
+    overflow:hidden;
+  }
+  #simplemodal-container a.modalCloseImg {
+  	z-index:3200;
+  }
+  #weighting-popup input[type="text"] {
+    width:30px;
+  }
+  #weighting-form-container {
+    height:200px;
+    overflow:auto;
+  }
   <% end %>
   tr {
     height:40px;
@@ -83,12 +94,12 @@
       
       $("#weighting-form").bind("ajax:success", function(event){
         window.location.reload();
-      }).bind("ajax:failure", function(event){
-        alert("Could not save weighting.")
+      }).bind("ajax:error", function(event, request, status){
+        alert("Could not save weighting: " + request.responseText)
       });
       
       $('#weighting-button').click(function(event){
-        $("#weighting-popup").modal({containerCss: {'background-color':'#fff',height:"80%",'overflow-y':'scroll'}});
+        $("#weighting-popup").modal({containerCss: {'background-color':'#fff',height:"80%",'overflow-y':'visible','overflow-x':'visible'}});
         var values = <%= @current_course.assignments.map(&:weight).to_json %>;
         r = Raphael("chart", 300, 300);
         chart = r.piechart(150, 150, 125, values, {color:"blue",onchange:function(values){
@@ -116,13 +127,6 @@
   <p>
     All assignments are listed below.
   </p>
-  <% if current_user.is_a?(Professor) %>
-    <div style="margin:10px 0">
-      <%= link_to "#", :class => "grey-button pcb", :id => "weighting-button" do %>
-        <span>Change grade weighting</span>
-      <% end %>
-    </div>
-  <% end %>
   <div style="width:100%;overflow-x:auto">
     <table id="grade-table">
       <tbody>
@@ -132,7 +136,7 @@
           <th class="assignment" title="<%= assignment.name %>"><%= assignment.name %></th>
         <% end %>
         <% if current_user.is_a?(Professor) %>
-          <th class="total">Overall</th>
+          <th class="total nosort">Overall</th>
         <% end %>
       </tr>
       <% @students.each do |student| %>
@@ -168,22 +172,34 @@
   You don't have any graded assignments yet.  Would you like to <%= link_to "add one", new_course_assignment_path(@current_course) %>?
 </p>
 <% end %>
+<% if current_user.is_a?(Professor) %>
+  <div>
+    <%= link_to new_course_assignment_path(@course), :class => "green-button pcb" do %>
+      <span>Post an assignment</span>
+    <% end %>
+    <%= link_to "#", :class => "grey-button pcb", :id => "weighting-button" do %>
+      <span>Change grade weighting</span>
+    <% end %>
+  </div>
+<% end %>
 <div id="weighting-popup" style="display:none">
   <h3>Grade weighting</h3>
   <div id="chart"></div>
   <%= form_tag adjust_weighting_course_assignments_path(@current_course), :method => "put", :remote => true, :id => "weighting-form" do %>
-    <table>
-      <tr>
-        <th>Assignment</th>
-        <th>Weight</th>
-      </tr>
-      <% @current_course.assignments.each do |assignment| %>
+    <div id="weighting-form-container">
+      <table>
         <tr>
-          <td><%= assignment.name %></td>
-          <td><%= text_field_tag "weighting[#{assignment.id}]", assignment.weight %></td>
+          <th>Assignment</th>
+          <th>Weight</th>
         </tr>
-      <% end %>
-    </table>
+        <% @current_course.assignments.each do |assignment| %>
+          <tr>
+            <td><%= assignment.name %></td>
+            <td><%= text_field_tag "weighting[#{assignment.id}]", assignment.weight %></td>
+          </tr>
+        <% end %>
+      </table>
+    </div>
     <div align="center">
       <%= submit_tag "Save" %>
     </div>
