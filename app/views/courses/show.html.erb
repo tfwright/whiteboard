@@ -123,14 +123,6 @@
     </div>
   <% end %>
 </div>
-<script>
-  $("#course-assignment-list dt").hover(function(event){
-    $(".editbox", $(event.target).closest("dt")).show();
-  }, function(event){
-    $(".editbox").hide();
-  });
-</script>
-
 <div style="margin-top:20px">
   <h3>Course files</h3>
   <% if @course.documents.any? %>
@@ -139,9 +131,6 @@
       <% ext = File.extname(document.attached.original_filename).gsub(/^\.+/, "") %>
       <dt class="<%= ext %>" style="position:relative">
         <%= link_to ext, document.attached.url, :class => "file-link" %>
-        <span class="editbox">
-          <%= link_to "Edit", edit_course_document_path(@course, document) %>
-        </span>
       </dt>
       <dd class="top">
         <h4 style="display:inline"><%= document.name %></h4>
