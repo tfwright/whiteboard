@@ -1,5 +1,5 @@
 class Admin < User
   def courses
-    Course.all
+    Course.order
   end
 end
