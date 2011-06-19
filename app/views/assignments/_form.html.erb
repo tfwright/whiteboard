@@ -26,6 +26,7 @@
       <label for="assignment_accepting_submissions">
         <%= f.check_box :accepting_submissions, :checked => true %>  Students will submit work.
       </label>
+      <p class="inline-hints">Checking this box will show a link to the assignment information on the course home page until the specified due date, and prompt students to submit work.</p>
       <script>
         $("#assignment_accepting_submissions").click(function(event){
           if($(event.target).attr("checked")) {
