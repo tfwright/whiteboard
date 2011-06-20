@@ -1,5 +1,4 @@
 class GradesController < ApplicationController
-  
   before_filter :set_current_course
   before_filter :ensure_professor_or_admin, :except => [:index]
   before_filter :ensure_enrolled
@@ -16,7 +15,7 @@ class GradesController < ApplicationController
     respond_to do |format|
       format.json do
         if @grade.save
-          render :json => @grade.attributes.merge(:update_url => course_grade_path(@current_course, @grade, :format => :js))
+          render :json => @grade.attributes.merge(:update_url => course_grade_path(@current_course, @grade, :format => :json))
         else
           render :json => @grade.errors, :status => 406
         end
