@@ -65,7 +65,7 @@ class LinksController < ApplicationController
 
     respond_to do |format|
       if @link.update_attributes(params[:link])
-        format.html { redirect_to(@link, :notice => 'Link was successfully updated.') }
+        format.html { redirect_to(@current_course, :notice => 'Link was successfully updated.') }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
