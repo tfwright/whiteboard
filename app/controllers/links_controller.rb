@@ -7,7 +7,7 @@ class LinksController < ApplicationController
   # GET /links
   # GET /links.xml
   def index
-    @links = Link.all
+    @links = @current_course.links
 
     respond_to do |format|
       format.html # index.html.erb

@@ -126,6 +126,9 @@
       <%= link_to new_course_link_path(@course), :class => "green-button pcb" do %>
         <span>Post a link</span>
       <% end %>
+      <%= link_to course_links_path(@course), :class => "grey-button pcb" do %>
+        <span>All links</span>
+      <% end %>
     </div>
   <% end %>
 </div>
