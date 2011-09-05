@@ -18,7 +18,7 @@ class SubmissionsController < ApplicationController
          Zip::ZipOutputStream.open(t.path) do |zip|
            @submissions.each do |submission|
              zip.put_next_entry(submission.upload.original_filename)
-             zip.print(open(submission.upload.url).read)
+             zip.print(open(URI.escape(submission.upload.url)).read)
            end
          end
          send_file t.path, :filename => "assignment_#{params[:assignment_id]}_submissions.zip"
