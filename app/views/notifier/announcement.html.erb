@@ -1,1 +1,11 @@
+Hi!
+
+Your professor for "<%= @announcement.course.title %>" posted a new announcement:
+
+<hr/>
+
 <%= simple_format(@announcement.body) %>
+
+<hr/>
+
+<%= link_to "Click here", course_announcement_url(@announcement.course, @announcement) %> to view this announcement on the site.

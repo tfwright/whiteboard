@@ -1,7 +1,7 @@
-A <%= link_to "new account", user_url(@student) %> has been created for you on Whiteboard.  
+Welcome!
 
-You should also receive an email notifying you of your enrollment in a course. <%= link_to "Go here", courses_url %> To see all the courses in which you are enrolled.
+An <%= link_to "account", user_url(@student) %> has been created for you on Whiteboard.  This is most likely because your professor added you to a course you're enrolled in this term.  You should also receive an email notifying you of your enrollment in that course. <%= link_to "Go here", courses_url %> To see all the courses in which you are enrolled.
 
 To sign in, use this email address (<%= @student.email %>) and this password: <%= @student.password %> (Note: both are case sensitive).  
 
-It is highly recommended that you <%= link_to "change this password", edit_user_url(@student) %> as soon as possible!)
+It is highly recommended that you <%= link_to "change this password", edit_user_url(@student) %> as soon as possible!
