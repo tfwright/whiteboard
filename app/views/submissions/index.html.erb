@@ -89,6 +89,11 @@
     </tr>
   <% end %>
 </table>
+<p>
+  <%= link_to course_assignment_submissions_path(@current_course, Assignment.find(params[:assignment_id]), :format => :zip), :class => "grey-button pcb" do %>
+    <span>Download all submissions</span>
+  <% end %>
+</p>
 <% unless @current_course.students.all?{|s| Assignment.find(params[:assignment_id]).submitted?(s) } %>
 <div>
   <p>Submit assignment on behalf of a student:</p>

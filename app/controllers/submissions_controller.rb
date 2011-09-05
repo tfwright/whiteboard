@@ -1,4 +1,5 @@
 class SubmissionsController < ApplicationController
+  require 'zip/zipfilesystem'
   
   before_filter :set_current_course
   before_filter :ensure_enrolled
@@ -9,6 +10,21 @@ class SubmissionsController < ApplicationController
 
   def index
     @submissions = Assignment.find(params[:assignment_id]).submissions
+    respond_to do |format|
+      format.html
+      format.zip do
+        filename = "assignment_#{params[:assignment_id]}_submissions_#{Time.now.to_i}.zip"
+        t = Tempfile.new(filename)
+         Zip::ZipOutputStream.open(t.path) do |zip|
+           @submissions.each do |submission|
+             zip.put_next_entry(submission.upload.original_filename)
+             zip.print(submission.upload.url)
+           end
+         end
+         send_file t.path, :filename => "assignment_#{params[:assignment_id]}_submissions.zip"
+         t.close
+      end
+    end
   end
   
   def new

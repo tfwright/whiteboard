@@ -11,6 +11,7 @@ gem 'fastercsv', '1.5.3'
 gem 'grit'
 gem 'high_voltage'
 gem 'exception_notification'
+gem 'rubyzip'
 
 group :development do 
   gem 'heroku'
