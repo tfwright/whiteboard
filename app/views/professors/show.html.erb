@@ -3,4 +3,6 @@
 <dl>
   <dt>Email</dt>
   <dd><%= mail_to @professor.email %></dd>
+  <dt>Teaching</dt>
+  <dd><%= @professor.courses.select(&:active?).map(&:title).to_sentence %></dd>
 </dl>
