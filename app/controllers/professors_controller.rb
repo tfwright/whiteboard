@@ -1,6 +1,6 @@
 class ProfessorsController < ApplicationController
   
-  before_filter :ensure_admin
+  before_filter :ensure_admin, :except => :show
   
   # GET /professors
   # GET /professors.xml
@@ -12,16 +12,9 @@ class ProfessorsController < ApplicationController
       format.xml  { render :xml => @professors }
     end
   end
-
-  # GET /professors/1
-  # GET /professors/1.xml
+  
   def show
     @professor = Professor.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @professor }
-    end
   end
 
   # GET /professors/new

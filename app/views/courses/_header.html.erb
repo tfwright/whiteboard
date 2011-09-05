@@ -3,6 +3,7 @@
 
 <div style="margin:5px 0">
   <%= link_to "Course home", course_path(@course) %>
+  <%= link_to "Professor", professor_path(@course.professor) %>
   <%= link_to "Students", course_students_path(@course) %>
   <%= link_to "Grades", course_grades_path(@course) %>
 </div>
