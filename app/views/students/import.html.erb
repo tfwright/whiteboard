@@ -78,15 +78,10 @@ $(document).ready(function(){
         $("#csv td.selected").each(function(i,l){
           $.manageAjax.add("studentImporter", {
             type: "POST",
-            url:"<%= enroll_course_students_url(@current_course, :format => "js") %>",
+            url:"<%= enroll_course_students_url(@current_course, :format => :js) %>",
             data:{student:{email:$(l).text().trim()}},
-            success:function(data) {
+            complete:function(data) {
               $("#progressbar").progressbar("value", $("#progressbar").progressbar("value")+increment);
-            },
-            error:function(data) {
-              $.manageAjax.clear("studentImporter", true);
-              alert("There was an error importing a student.  Be sure you have selected a column with a complete list of student emails.");
-              $.modal.close();
             }
           });
         });
