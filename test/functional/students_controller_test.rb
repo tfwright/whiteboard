@@ -53,6 +53,16 @@ class StudentsControllerTest < ActionController::TestCase
     end
   end
   
+  test "does not send email if a student is already enrolled" do
+    course = Factory(:course)
+    student = Factory(:student)
+    student.courses << course
+    sign_in course.professor
+    assert_no_difference "ActionMailer::Base.deliveries.size" do
+      post :enroll, :student => {:email => student.email}, :course_id => course.id
+    end
+  end
+  
   test "removes student from course" do
     course = Factory(:course)
     student = Factory(:student)

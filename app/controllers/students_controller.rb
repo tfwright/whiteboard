@@ -14,10 +14,12 @@ class StudentsController < ApplicationController
   
   def enroll
     @student = Student.find_by_email(params[:student][:email]) || Student.new(params[:student].merge(:password => Devise.friendly_token))
-    @student.courses << @current_course
     respond_to do |format|
       if @student.save
-        Notifier.enrollment_notification(@student, @current_course).deliver
+        unless @student.courses.include?(@current_course)
+          @student.courses << @current_course
+          Notifier.enrollment_notification(@student, @current_course).deliver
+        end
         format.html { redirect_to(course_students_path(@current_course), :notice => 'Student was successfully added.') }
         format.js { render :json => @student, :status => 200 }
       else
