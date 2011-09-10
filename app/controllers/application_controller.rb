@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
-  before_filter :authenticate_user!
-  before_filter :set_timezone, :unless => Proc.new { devise_controller? }
+  before_filter :authenticate_user!, :unless => Proc.new { high_voltage_controller? }
+  before_filter :set_timezone, :unless => Proc.new { devise_controller? || high_voltage_controller? }
   
   private
   
@@ -25,6 +25,10 @@ class ApplicationController < ActionController::Base
       unless current_user.is_a?(Admin)
         redirect_to root_url, :warning => "You do not have permission."
       end
+    end
+    
+    def high_voltage_controller?
+      params["controller"] == "high_voltage/pages"
     end
     
 end

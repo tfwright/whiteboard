@@ -1,2 +1,7 @@
 <h1>FAQ</h1>
-<p>Someone needs to ask me a question before there can be "frequently asked questions."</p>
+<h3>My email isn't working, even though I know it's right.</h3>
+<p>Emails are case sensitive.  Make sure you enter it exactly as it was printed in your new account email.</p>
+<h3>The system keeps telling me my password is incorrect, what can I do?</h3>
+<p>You can <%= link_to "reset your password", new_user_password_url %> at any time.  Just enter your email address and you should receive an email with a new password shortly.</p>
+<h3>My professor said I was added to the system but I didn't get an email.  What should I do?</h3>
+<p>First, try checking your spam folder as many email services are over-vigilant about screening emails from unknown emails.  If you can't find it there, find out what email your account was registered with and use the <%= link_to "reset your password", new_user_password_url %>.</p>
