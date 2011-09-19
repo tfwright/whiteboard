@@ -9,6 +9,7 @@
       <tr>
         <th>Name</th>
         <% if %(Admin Professor).include?(current_user.type) %>
+          <th>Email</th>
           <th>Last sign in</th>
           <th>Manage</th>
         <% end %>
@@ -20,10 +21,11 @@
         <td><%= student.name %></td>
         <% if %(Admin Professor).include?(current_user.type) %>
           <td>
+            <%= mail_to student.email %>
+          <td>
             <%= student.last_sign_in_at.nil? ? "Never" : time_ago_in_words(student.last_sign_in_at) %>
           </td>
           <td>
-            <%= mail_to student.email, "Email" %>
             <%= link_to "Unenroll", unenroll_course_student_path(@current_course, student), :method => :delete %>
           </td>
         <% end %>
