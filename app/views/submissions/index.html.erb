@@ -65,12 +65,14 @@
   <tr>
     <th>Student</th>
     <th>Submission</th>
+    <th>Submitted at</th>
     <th>Grade</th>
   </tr>
   <% @submissions.each do |submission| %>
     <tr>
       <td><%= submission.student.name %></td>
       <td><%= link_to submission.upload.original_filename, submission.upload.url %></td>
+      <td><%= submission.created_at.to_s(:short) %></td>
       <td class="editable">
         <% if grade = submission.student.grades.first(:conditions => {:assignment_id => submission.assignment.id}) %>
           <span class="grade"><%= grade.score %></span>
