@@ -49,87 +49,26 @@
     height:40px;
   }
 </style>
-<script>
-  <% if current_user.is_a?(Professor) %>
+<%= javascript_include_tag 'grade-ajax' %>
+<% content_for :ready do %>
+  $('#weighting-button').click(function(event){
+    $("#weighting-popup").modal({containerCss: {'background-color':'#fff',height:"80%",'overflow-y':'visible','overflow-x':'visible'}});
+    var values = <%= @current_course.assignments.map(&:weight).to_json %>;
+    r = Raphael("chart", 300, 300);
+    chart = r.piechart(150, 150, 125, values, {color:"blue",onchange:function(values){
+      $.each(values, function(key, value){
+        $($('#weighting-form input[type=text]')[key]).val(value);
+      });
+    }});
+    event.preventDefault();
+  });
   
-    function hideGradeForm(form, score){
-      $(form).hide();
-      $("input", form).unbind("blur");
-      $("input", form).blur();
-      $("span.grade", $(form).parents("td")).text(score);
-      $("span.grade", $(form).parents("td")).show();
-    }
-
-    function showGradeForm(form){
-      $(form).show();
-      $("span", $(form).parents("td")).hide();
-      $("input", form).focus();
-      $("input", form).blur(function(event){
-        $(form).submit();
-      });
-    }
-
-    function newGradeSuccessHandler(status, grade, request) {
-      var form = $(this);
-      hideGradeForm(this, grade.score);
-      form.attr("action", grade.update_url);
-      form.attr("method", "put");
-      $("input[type=hidden]", this).remove();
-      form.unbind("ajax:success");
-      form.bind("ajax:success", updateGradeSuccessHandler);
-    };
-
-    function updateGradeSuccessHandler(status, grade, request){
-      hideGradeForm(this, grade.score || '--');
-    };
-
-    $(document).ready(function() {
-      $(".grade-form").hide();
-      $("td.editable").each(function(i, td){
-        $(td).click(function(event){
-          showGradeForm($("form", td));
-        });
-        if($("span.grade", td).text() == "--") { 
-          $("form", td).bind("ajax:success", newGradeSuccessHandler);
-        } else {
-          $("form", td).bind("ajax:success", updateGradeSuccessHandler);
-        };
-        $("form", td).bind("ajax:error", function(event, request, status){
-          alert("There was an error: " + request.responseText);
-          $("input", td).focus();
-        });
-      });
-      
-      $("#weighting-form").bind("ajax:success", function(event){
-        window.location.reload();
-      }).bind("ajax:error", function(event, request, status){
-        alert("Could not save weighting: " + request.responseText)
-      });
-      
-      $('#weighting-button').click(function(event){
-        $("#weighting-popup").modal({containerCss: {'background-color':'#fff',height:"80%",'overflow-y':'visible','overflow-x':'visible'}});
-        var values = <%= @current_course.assignments.map(&:weight).to_json %>;
-        r = Raphael("chart", 300, 300);
-        chart = r.piechart(150, 150, 125, values, {color:"blue",onchange:function(values){
-          $.each(values, function(key, value){
-            $($('#weighting-form input[type=text]')[key]).val(value);
-          });
-        }});
-        event.preventDefault();
-      });
-      
-      $('#grade-table').sorttable({items: '>:not(.nosort)'}).disableSelection();
-      
-    });
-    
-  <% else %>
-
-    $(document).ready(function() {
-      $("form").remove();
-    });
-  
-  <% end %>
-</script>
+  $("#weighting-form").bind("ajax:success", function(event){
+    window.location.reload();
+  }).bind("ajax:error", function(event, request, status){
+    alert("Could not save weighting: " + request.responseText)
+  });
+<% end %>
 <%= render :partial => "courses/header" %>
 <% if @current_course.assignments.any? %>
   <p>
