@@ -5,7 +5,7 @@
 <%= form_for(@student, :url => enroll_course_students_path(@current_course)) do |f| %>
   <% if @student.errors.any? %>
     <div class="error">
-      <h3><%= pluralize(@student.errors.count, "error") %> prevented this course from being saved:</h3>
+      <h3><%= pluralize(@student.errors.count, "error") %> prevented this student from being enrolled:</h3>
       <% @student.errors[:base].each do |error| %>
         <%= error %>
       <% end %>
@@ -23,7 +23,7 @@
   </ol>
 
   <div class="actions">
-    <%= f.submit %>
+    <%= submit_tag "Add student" %>
   </div>
 <% end %>
 

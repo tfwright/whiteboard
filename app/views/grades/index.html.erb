@@ -51,23 +51,27 @@
 </style>
 <%= javascript_include_tag 'grade-ajax' %>
 <% content_for :ready do %>
-  $('#weighting-button').click(function(event){
-    $("#weighting-popup").modal({containerCss: {'background-color':'#fff',height:"80%",'overflow-y':'visible','overflow-x':'visible'}});
-    var values = <%= @current_course.assignments.map(&:weight).to_json %>;
-    r = Raphael("chart", 300, 300);
-    chart = r.piechart(150, 150, 125, values, {color:"blue",onchange:function(values){
-      $.each(values, function(key, value){
-        $($('#weighting-form input[type=text]')[key]).val(value);
-      });
-    }});
-    event.preventDefault();
-  });
+  <% if current_user.is_a?(Professor) %>
+    $('#weighting-button').click(function(event){
+      $("#weighting-popup").modal({containerCss: {'background-color':'#fff',height:"80%",'overflow-y':'visible','overflow-x':'visible'}});
+      var values = <%= @current_course.assignments.map(&:weight).to_json %>;
+      r = Raphael("chart", 300, 300);
+      chart = r.piechart(150, 150, 125, values, {color:"blue",onchange:function(values){
+        $.each(values, function(key, value){
+          $($('#weighting-form input[type=text]')[key]).val(value);
+        });
+      }});
+      event.preventDefault();
+    });
   
-  $("#weighting-form").bind("ajax:success", function(event){
-    window.location.reload();
-  }).bind("ajax:error", function(event, request, status){
-    alert("Could not save weighting: " + request.responseText)
-  });
+    $("#weighting-form").bind("ajax:success", function(event){
+      window.location.reload();
+    }).bind("ajax:error", function(event, request, status){
+      alert("Could not save weighting: " + request.responseText)
+    });
+  <% else %>
+    $('form').remove()
+  <% end %>
 <% end %>
 <%= render :partial => "courses/header" %>
 <% if @current_course.assignments.any? %>
