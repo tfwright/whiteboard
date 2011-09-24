@@ -10,6 +10,7 @@ class ApplicationController < ActionController::Base
   
     def ensure_professor_or_admin
       unless %w(Professor Admin).include?(current_user.type)
+        render :json => {:error => "You do not have the right to do this to me!"}.to_json, :status => 403 and return if request.format.json?
         flash[:warning] = "You do not have the right to do this to me!"
         redirect_to root_url
       end
