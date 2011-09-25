@@ -13,7 +13,7 @@ class SubmissionTest < ActiveSupport::TestCase
     student = Factory(:student, :name => "Test")
     assignment = Factory(:assignment, :name => "Toast")
     submission = Factory(:submission, :student => student, :assignment => assignment)
-    assert_equal "Test-Toast", submission.normalized_file_name
+    assert_equal "Test-Toast.pdf", submission.normalized_file_name
   end
 
 end
