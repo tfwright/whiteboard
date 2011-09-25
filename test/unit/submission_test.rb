@@ -8,5 +8,12 @@ class SubmissionTest < ActiveSupport::TestCase
     submission.upload = fixture_file_upload('/files/syllabus.pdf', 'application/pdf')
     assert !submission.valid?
   end
+  
+  test "returns amalgram of submitter name and assignment name" do
+    student = Factory(:student, :name => "Test")
+    assignment = Factory(:assignment, :name => "Toast")
+    submission = Factory(:submission, :student => student, :assignment => assignment)
+    assert_equal "Test-Toast", submission.normalized_file_name
+  end
 
 end

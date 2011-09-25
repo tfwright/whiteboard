@@ -8,4 +8,9 @@ class Document < ActiveRecord::Base
   validates_attachment_size :attached, :less_than => 4.megabytes 
   
   validates_presence_of :name, :description, :attachable_id
+  
+  def normalized_file_name
+    attached_file_name.gsub( /[^a-zA-Z0-9_\.]/, '_')
+  end
+  
 end

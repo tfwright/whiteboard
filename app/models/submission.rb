@@ -14,6 +14,10 @@ class Submission < ActiveRecord::Base
   
   validate :enforce_due_date, :on => :update
   
+  def normalized_file_name
+    "#{student.name}-#{assignment.name}"
+  end
+  
   private
   
     def enforce_due_date
