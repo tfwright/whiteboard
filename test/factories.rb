@@ -28,6 +28,7 @@ Factory.define :course do |course|
   course.begins_on Date.today
   course.ends_on 3.months.from_now
   course.association :professor
+  course.time_zone "Pacific Time (US & Canada)"
 end
 
 Factory.define :document do |document|

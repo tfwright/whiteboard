@@ -8,7 +8,8 @@ class Course < ActiveRecord::Base
   has_and_belongs_to_many :students, :association_foreign_key => "user_id", :join_table => "courses_users", :uniq => true
   belongs_to :professor, :foreign_key => "user_id"
   
-  validates_presence_of :user_id, :title, :begins_on, :ends_on
+  validates_presence_of :user_id, :title, :begins_on, :ends_on, :time_zone
+  validates_inclusion_of :time_zone, :in => ActiveSupport::TimeZone.us_zones.map(&:name)
   validate do
     errors.add :base, 'End date cannot precede start date' unless (begins_on.blank? || ends_on.blank?) || ends_on > begins_on
   end

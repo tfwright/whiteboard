@@ -72,4 +72,12 @@ class StudentsControllerTest < ActionController::TestCase
       delete :unenroll, :id => student.id, :course_id => course.id
     end 
   end
+  
+  test "sets new students time zone to course time zone by default" do
+    course = Factory(:course, :time_zone => "Indiana (East)")
+    sign_in course.professor
+    post :enroll, :student => {:email => "test@example.com"}, :course_id => course.id
+    assert_equal "Indiana (East)", assigns(:student).time_zone
+  end
+  
 end

@@ -14,6 +14,7 @@ class StudentsController < ApplicationController
   
   def enroll
     @student = Student.find_by_email(params[:student][:email]) || Student.new(params[:student].merge(:password => Devise.friendly_token))
+    @student.time_zone ||= @current_course.time_zone
     respond_to do |format|
       if @student.save
         unless @student.courses.include?(@current_course)
