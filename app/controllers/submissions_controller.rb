@@ -17,7 +17,7 @@ class SubmissionsController < ApplicationController
         t = Tempfile.new(filename)
          Zip::ZipOutputStream.open(t.path) do |zip|
            @submissions.each do |submission|
-             zip.put_next_entry(submission.upload.original_filename)
+             zip.put_next_entry(submission.upload.normalized_file_name)
              zip.print(open(URI.escape(submission.upload.url)).read)
            end
          end
