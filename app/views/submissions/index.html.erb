@@ -30,7 +30,7 @@
       <td><%= submission.created_at.to_s(:short) %></td>
       <td class="editable">
         <% if grade = submission.student.grades.first(:conditions => {:assignment_id => submission.assignment.id}) %>
-          <span class="grade"><%= grade.score %></span>
+          <span class="grade"><%= grade.score || "--" %></span>
           <%= form_for(grade, :url => course_grade_path(@current_course, grade, :format => :json), :remote => true) do |f| %>
             <%= f.text_field :score, :size => 3, :style => "width:auto" %>
           <% end %>
