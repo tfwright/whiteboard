@@ -4,6 +4,7 @@
 <table>
   <tr>
     <th>Name</th>
+    <th>Description</th>
     <th>Due</th>
     <th>Manage</th>
   </tr>
@@ -11,6 +12,7 @@
 <% @assignments.order("name ASC").each do |assignment| %>
   <tr>
     <td><%= link_to assignment.name, course_assignment_path(@current_course, assignment) %></td>
+    <td><%= assignment.description %></td>
     <td><%= assignment.due_at.try(:strftime, "Due %m/%d/%Y") || "N/A" %></td>
     <td>
       <%= link_to edit_course_assignment_path(@current_course, assignment), :class => "grey-button pcb" do %>
