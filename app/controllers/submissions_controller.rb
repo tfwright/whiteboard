@@ -59,7 +59,7 @@ class SubmissionsController < ApplicationController
   def destroy
     @submission = Submission.find(params[:id])
     @submission.destroy
-    redirect_to course_assignment_submissions_path(@current_course, @submission.assignment, :notice => 'Submission was removed.')
+    redirect_to course_assignment_submissions_path(@current_course, @submission.assignment), :notice => 'Submission was removed.'
   end
   
   private
