@@ -3,7 +3,7 @@ class SubmissionsController < ApplicationController
   
   before_filter :set_current_course
   before_filter :ensure_enrolled
-  before_filter :ensure_professor_or_admin, :only => :index
+  before_filter :ensure_professor_or_admin, :only => [:index, :destroy]
   before_filter :ensure_assignment_not_overdue, :only => [:new, :update, :create]
   before_filter :check_submittable, :only => :new
   
@@ -54,6 +54,12 @@ class SubmissionsController < ApplicationController
     else
       render :action => "edit"
     end
+  end
+  
+  def destroy
+    @submission = Submission.find(params[:id])
+    @submission.destroy
+    redirect_to course_assignment_submissions_path(@current_course, @submission.assignment, :notice => 'Submission was removed.')
   end
   
   private

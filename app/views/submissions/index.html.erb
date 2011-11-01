@@ -21,6 +21,7 @@
     <th>Submission</th>
     <th>Submitted at</th>
     <th>Grade</th>
+    <th>Manage</th>
   </tr>
   <% @submissions.each do |submission| %>
     <tr>
@@ -40,6 +41,11 @@
             <%= f.hidden_field :assignment_id, :value => submission.assignment.id %>
             <%= f.hidden_field :student_id, :value => submission.student.id %>
           <% end %>
+        <% end %>
+      </td>
+      <td>
+        <%= link_to course_assignment_submission_path(@current_course, submission.assignment, submission), :method => :delete, :confirm => "Are you sure you want to delete this assignment?  This cannot be undone!", :class => "red-button pcb" do %>
+          <span>Delete</span>
         <% end %>
       </td>
     </tr>

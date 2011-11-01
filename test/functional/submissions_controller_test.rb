@@ -34,4 +34,13 @@ class SubmissionsControllerTest < ActionController::TestCase
     assert_response :redirect
   end
   
+  test "deletes submission" do
+    assignment = Factory(:assignment, :accepting_submissions => true)
+    submission = Factory(:submission, :assignment => assignment)
+    sign_in assignment.course.professor
+    assert_difference "Submission.count", -1 do
+      delete :destroy, :assignment_id => assignment.id, :course_id => assignment.course.id, :id => submission.id
+    end
+  end
+  
 end
