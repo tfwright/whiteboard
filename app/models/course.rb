@@ -27,7 +27,8 @@ class Course < ActiveRecord::Base
   private
   
     def total_weight(student)
-      grades.where(:student_id => student.id).where("score is not null").map(&:assignment).sum(&:weight)
+      # This means weighting can be greater than 100, but there's no technical reason not to do that
+      grades.where(:student_id => student.id).where("score is not null").to_a.sum(&:weight)
     end
   
 end
