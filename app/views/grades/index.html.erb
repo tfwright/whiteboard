@@ -120,7 +120,10 @@
   </div>
 <% else %>
 <p>
-  You don't have any graded assignments yet.  Would you like to <%= link_to "add one", new_course_assignment_path(@current_course) %>?
+  You don't have any graded assignments yet.  
+  <% if current_user.is_a?(Professor) %>
+    Would you like to <%= link_to "add one", new_course_assignment_path(@current_course) %>?
+  <% end %>
 </p>
 <% end %>
 <% if current_user.is_a?(Professor) %>
