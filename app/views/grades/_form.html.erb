@@ -1,28 +1,33 @@
-<%= form_for(@grade) do |f| %>
+<%= form_for(@grade, :url => course_grade_path(@current_course, @grade)) do |f| %>
   <% if @grade.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@grade.errors.count, "error") %> prohibited this grade from being saved:</h2>
-
-      <ul>
-      <% @grade.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
+    <div class="error">
+      <h3><%= pluralize(@grade.errors.count, "error") %> prevented this grade from being saved:</h3>
+      <% @grade.errors[:base].each do |error| %>
+        <%= error %>
       <% end %>
-      </ul>
     </div>
   <% end %>
+  
+  <ol> 
+    <li class="string required <%= "error" if @grade.errors[:title].any? %>" id="grade_score"> 
+      <label for="course_title">Score<abbr title="required">*</abbr></label> 
+      <%= f.text_field :score %>
+      <p class="inline-hints">student's score out of 100</p> 
+      <% @grade.errors[:score].each do |error| %>
+         <p class="inline-errors"><%= error %></p> 
+      <% end %>
+    </li> 
+    
+    <li class="string <%= "error" if @grade.errors[:weight].any? %>" id="grade_score"> 
+      <label for="course_title">Weight<abbr title="required">*</abbr></label> 
+      <%= f.text_field :weight %>
+      <p class="inline-hints">set a weight to be applied to this student's grade <em>only</em></p> 
+      <% @grade.errors[:weight].each do |error| %>
+         <p class="inline-errors"><%= error %></p> 
+      <% end %>
+    </li>
+  </ol>
 
-  <div class="field">
-    <%= f.label :student_id %><br />
-    <%= f.text_field :student_id %>
-  </div>
-  <div class="field">
-    <%= f.label :assignment_id %><br />
-    <%= f.text_field :assignment_id %>
-  </div>
-  <div class="field">
-    <%= f.label :score %><br />
-    <%= f.text_field :score %>
-  </div>
   <div class="actions">
     <%= f.submit %>
   </div>

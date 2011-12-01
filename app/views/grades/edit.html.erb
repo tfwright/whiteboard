@@ -1,6 +1,3 @@
-<h1>Editing grade</h1>
+<h3>Editing <%= @grade.student.name %>'s grade for <i><%= @grade.assignment.name %></i></h3>
 
 <%= render 'form' %>
-
-<%= link_to 'Show', @grade %> |
-<%= link_to 'Back', grades_path %>

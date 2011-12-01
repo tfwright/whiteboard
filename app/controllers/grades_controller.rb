@@ -22,16 +22,20 @@ class GradesController < ApplicationController
       end
     end
   end
+  
+  def edit
+    @grade = @current_course.grades.find(params[:id])
+  end
 
   def update
     @grade = Grade.find(params[:id])
     respond_to do |format|
-      format.json do
-        if @grade.update_attributes(params[:grade])
-          render :json => @grade
-        else
-          render :json => @grade.errors, :status => 406
-        end
+      if @grade.update_attributes(params[:grade])
+        format.html { redirect_to course_student_path(@current_course, @grade.student), :notice => "Grade successfully updated" }
+        format.json { render :json => @grade }
+      else
+        format.html { render :action => :edit }
+        format.json { render :json => @grade.errors, :status => 406 }
       end
     end
   end

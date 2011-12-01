@@ -8,6 +8,10 @@ class StudentsController < ApplicationController
     @students = @current_course.students
   end
   
+  def show
+    @student = @current_course.students.find(params[:id])
+  end
+  
   def new
     @student = Student.new
   end

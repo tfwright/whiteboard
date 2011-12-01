@@ -23,4 +23,22 @@ class GradesControllerTest < ActionController::TestCase
     assert_response :forbidden
   end
   
+  test "renders edit form" do
+    course = Factory(:course)
+    assignment = Factory(:assignment, :course => course)
+    grade = Factory(:grade, :assignment => assignment)
+    sign_in course.professor
+    get :edit, :course_id => course.id, :id => grade.id
+    assert_response :success
+  end
+  
+  test "redirects to student page" do
+    course = Factory(:course)
+    assignment = Factory(:assignment, :course => course)
+    grade = Factory(:grade, :assignment => assignment)
+    sign_in course.professor
+    put :update, :course_id => course.id, :id => grade.id, :grade => Factory.attributes_for(:grade)
+    assert_redirected_to course_student_url(course, grade.student)
+  end
+  
 end

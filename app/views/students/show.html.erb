@@ -1,0 +1,29 @@
+<h1><%= @student.name %></h1>
+  
+<dl>
+  <dt>Last sign in</dt>
+  <dd><%= @student.last_sign_in_at || "Never" %></dd>
+  <dt>Email</dt>
+  <dd><%= @student.email %></dd>
+</dl>
+
+<h3>Grades:</h3>
+<table id="grade-table">
+  <tbody>
+  <tr>
+    <th>Assignment</th>
+    <th>Grade</th>
+    <th>Weight</th>
+    <th>Manage</th>
+  </tr>
+  <tr>
+    <% @current_course.assignments.each do |assignment| %>
+      <% grade = assignment.grades.find_by_student_id(@student.id)%>
+      <td><%= assignment.name %></td>
+      <td><%= grade.try(:score) || "--" %></span></td>
+      <td><%= grade.try(:weight) || "--" %></td>
+      <td><%= link_to "Edit", edit_course_grade_path(@current_course, grade) if grade %></td>
+    <% end %>
+  </tr>
+  </tbody>
+</table>
