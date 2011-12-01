@@ -15,7 +15,9 @@ class Course < ActiveRecord::Base
   end
   
   def grade(student)
-    grades.where(:student_id => student.id).where("score is not null").to_a.sum{ |g| g.score * (g.assignment.weight/total_weight(student)) }
+    grades.where(:student_id => student.id).where("score is not null").to_a.sum do |grade| 
+      grade.score * (grade.weight/total_weight(student))
+    end
   end
   
   def active?

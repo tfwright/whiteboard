@@ -51,6 +51,17 @@ class CourseTest < ActiveSupport::TestCase
     assert_equal 30.0, course.grade(student)
   end
   
+  test "uses grade weight if set" do
+    course = Factory(:course)
+    student = Factory(:student)
+    2.times do |n|
+      assignment = Factory(:assignment, :course => course, :weight => 20*(n+1)+20) # 40/60
+      course.assignments << assignment
+      Factory(:grade, :student => student, :assignment => assignment, :score => 20*(n+1), :weight => 50) # 20, 40
+    end
+    assert_equal 30.0, course.grade(student)
+  end
+  
   test "returns true for an active course" do
     course = Factory(:course, :begins_on => Date.today-1, :ends_on => Date.today+1)
     assert course.active?

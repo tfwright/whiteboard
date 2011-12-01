@@ -7,4 +7,8 @@ class Grade < ActiveRecord::Base
   validates_numericality_of :score, :greater_than_or_equal_to => 0, :allow_blank => true
   validates_uniqueness_of :assignment_id, :scope => :student_id
   
+  def weight
+    super || assignment.weight
+  end
+  
 end

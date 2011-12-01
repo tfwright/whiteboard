@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110930182821) do
+ActiveRecord::Schema.define(:version => 20111201191650) do
 
   create_table "announcements", :force => true do |t|
     t.integer  "course_id"
@@ -65,6 +65,7 @@ ActiveRecord::Schema.define(:version => 20110930182821) do
     t.integer  "score"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.float    "weight"
   end
 
   create_table "links", :force => true do |t|
