@@ -16,14 +16,14 @@
     <th>Weight</th>
     <th>Manage</th>
   </tr>
-  <tr>
     <% @current_course.assignments.each do |assignment| %>
       <% grade = assignment.grades.find_by_student_id(@student.id)%>
-      <td><%= assignment.name %></td>
-      <td><%= grade.try(:score) || "--" %></span></td>
-      <td><%= grade.try(:weight) || "--" %></td>
-      <td><%= link_to "Edit", edit_course_grade_path(@current_course, grade) if grade %></td>
+      <tr>
+        <td><%= assignment.name %></td>
+        <td><%= grade.try(:score) || "--" %></span></td>
+        <td><%= grade.try(:weight) || "--" %></td>
+        <td><%= link_to "Edit", edit_course_grade_path(@current_course, grade) if grade %></td>
+      </tr>
     <% end %>
-  </tr>
   </tbody>
 </table>
