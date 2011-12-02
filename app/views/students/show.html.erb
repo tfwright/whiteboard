@@ -6,6 +6,8 @@
   <dd><%= @student.last_sign_in_at || "Never" %></dd>
   <dt>Email</dt>
   <dd><%= @student.email %></dd>
+  <dt>Current overall grade</dt>
+  <dd><%= @current_course.grade(@student) %></dd>
 </dl>
 
 <h3>Grades:</h3>
