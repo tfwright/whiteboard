@@ -18,7 +18,7 @@
     <tbody>
     <% @students.each do |student| %>
       <tr>
-        <td><%= link_to student.name, course_student_path(@current_course, student) %></td>
+        <td><%= link_to_if current_user.is_a?(Professor), student.name, course_student_path(@current_course, student) %></td>
         <% if %(Admin Professor).include?(current_user.type) %>
           <td>
             <%= mail_to student.email %>
