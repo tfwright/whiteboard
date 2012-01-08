@@ -8,7 +8,7 @@ class SubmissionsControllerTest < ActionController::TestCase
     assignment.course.students << student
     sign_in student
     assert_difference "Submission.count", 1 do
-      post :create, :assignment_id => assignment.id, :course_id => assignment.course.id, :submission => Factory.attributes_for(:submission, :assignment => assignment)
+      post :create, :assignment_id => assignment.id, :course_id => assignment.course.id, :submission => Factory.attributes_for(:submission, :assignment_id => assignment.id)
     end
   end
   
@@ -23,7 +23,7 @@ class SubmissionsControllerTest < ActionController::TestCase
     assignment = Factory(:assignment, :due_at => Date.yesterday)
     sign_in assignment.course.professor
     assert_difference "Submission.count", 1 do
-      post :create, :assignment_id => assignment.id, :course_id => assignment.course.id, :submission => Factory.attributes_for(:submission, :assignment => assignment, :student => Factory(:student))
+      post :create, :assignment_id => assignment.id, :course_id => assignment.course.id, :submission => Factory.attributes_for(:submission, :assignment_id => assignment.id, :student_id => Factory(:student).id)
     end
   end
   

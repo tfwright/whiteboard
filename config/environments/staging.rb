@@ -49,9 +49,15 @@ Whiteboard::Application.configure do
   config.active_support.deprecation = :notify
   
   config.action_mailer.default_url_options = { :host => DOMAIN }
-  
+
   config.action_mailer.delivery_method = :file
+
 end
+
+Whiteboard::Application.config.middleware.use ExceptionNotifier,
+  :email_prefix => "[Whiteboard Error (Staging)] ",
+  :sender_address => %{"DO NOT REPLY" <notifier@#{DOMAIN}>},
+  :exception_recipients => %w{tfwright@gmail.com}
 
 PAPERCLIP_OPTIONS = {:storage => :s3,
   :s3_credentials => {:access_key_id => '0141VS3DG9BCVMMS9W82', :secret_access_key => 'i70QHTiCvBVBPoJwzs91B6zzStWQ14wsreTCmsY+'},

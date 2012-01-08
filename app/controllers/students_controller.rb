@@ -1,3 +1,5 @@
+require 'csv'
+
 class StudentsController < ApplicationController
   
   before_filter :set_current_course
