@@ -69,3 +69,9 @@ Factory.define :grade do |grade|
   grade.association :student
   grade.score 75
 end
+
+Factory.define :post do |post|
+  post.association :course
+  post.association :author, :factory => :student
+  post.body "This is some body text"
+end

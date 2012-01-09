@@ -1,0 +1,25 @@
+<%= form_for(post, :url => course_posts_path(Course.find(params[:course_id]))) do |f| %>
+  <% if post.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(post.errors.count, "error") %> prevented this post from being saved:</h2>
+
+      <ul>
+      <% post.errors[:base].each do |error| %>
+        <li><%= error %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <ol> 
+    <li class="string required <%= "error" if post.errors[:body].any? %>"> 
+      <%= f.text_area :body %>
+      <% post.errors[:body].each do |error| %>
+         <p class="inline-errors"><%= error %></p> 
+      <% end %>
+    </li>
+  </ol>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+  <%= f.hidden_field :post_id %>
+<% end %>

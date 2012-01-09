@@ -1,0 +1,52 @@
+<style>
+.posts div.preview {
+  font-size:1.2em;
+}
+
+.posts td.reply_count {
+  font-size:3em;
+}
+
+.posts td.reply_count a {
+  text-decoration:none;
+  color:#000;
+}
+
+.posts td.reply_count a:hover, .posts td.reply_count a:visited {
+  color:#000;
+}
+</style>
+
+<%= render :partial => "courses/header" %>
+<h3>Discussion posts</h3>
+
+<table class="posts">
+  <thead>
+    <tr>
+      <th>Post</th>
+      <th>Replies</th>
+    </tr>
+  </thead>
+  <tbody>
+  </tbody>
+  <% @posts.each do |post| %>
+    <tr>
+      <td>
+        <div class="preview"><%= truncate(post.body, :length => 600) %></div>
+        <div>posted by <%= post.author.name %> <%= time_ago_in_words(post.created_at) %> ago</div>
+      </td>
+      <td class="reply_count">
+        <% unless post.replies.count == 0 %>
+          <%= link_to(post.replies.count, course_post_path(@current_course, post)) %></td>
+        <% else %>
+          <%= link_to course_post_path(@current_course, post), :class => "green-button pcb" do %>
+            <span>Reply</span>
+          <% end %>
+        <% end %>
+    </tr>
+  <% end %>
+</table>
+
+<%= link_to new_course_post_path(@course), :class => "green-button pcb" do %>
+  <span>Add a post</span>
+<% end %>

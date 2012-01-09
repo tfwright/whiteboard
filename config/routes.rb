@@ -22,6 +22,7 @@ Whiteboard::Application.routes.draw do
       end
     end
     resources :grades
+    resources :posts
   end
   
   resources :professors

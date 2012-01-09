@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111201191650) do
+ActiveRecord::Schema.define(:version => 20120109024549) do
 
   create_table "announcements", :force => true do |t|
     t.integer  "course_id"
@@ -73,6 +73,15 @@ ActiveRecord::Schema.define(:version => 20111201191650) do
     t.string   "name"
     t.string   "description"
     t.string   "url"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "posts", :force => true do |t|
+    t.integer  "course_id"
+    t.integer  "user_id"
+    t.integer  "post_id"
+    t.text     "body"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

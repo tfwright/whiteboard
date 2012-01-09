@@ -1,0 +1,9 @@
+<%= render :partial => "courses/header" %>
+<% @post.replies.unshift(@post).each do |post| %>
+  <div>
+    <div><%= time_ago_in_words(post.created_at) %> ago <%= post.author.name %> wrote</div>
+    <div><%= simple_format(post.body) %></div>
+    <div></div>
+  </div>
+<% end %>
+<%= render 'form', :post => Post.new(:parent => @post) %>
