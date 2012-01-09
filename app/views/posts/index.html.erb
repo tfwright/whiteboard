@@ -3,8 +3,13 @@
   font-size:1.2em;
 }
 
+.posts div.byline {
+  color: #bbb;
+}
+
 .posts td.reply_count {
   font-size:3em;
+  text-align:center;
 }
 
 .posts td.reply_count a {
@@ -33,7 +38,7 @@
     <tr>
       <td>
         <div class="preview"><%= truncate(post.body, :length => 600) %></div>
-        <div>posted by <%= post.author.name %> <%= time_ago_in_words(post.created_at) %> ago</div>
+        <div class="byline">posted by <%= post.author.name %> <%= time_ago_in_words(post.created_at) %> ago</div>
       </td>
       <td class="reply_count">
         <% unless post.replies.count == 0 %>
