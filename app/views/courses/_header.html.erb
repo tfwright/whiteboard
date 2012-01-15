@@ -1,10 +1,39 @@
+<style>
+/* make sure the element has position: relative */
+[data-notifications] {
+  position: relative;
+}
+
+/* append the notification badge after it */
+[data-notifications]:after {
+
+  /* the burger */
+  content: attr(data-notifications);
+
+  /* the fries */
+  position: absolute;
+  background: red;
+  border-radius: 50%;
+  display: inline-block;
+  padding: 3px;
+  color: #f2f2f2;
+  right: -10px;
+  top: -10px;
+  font-weight:bold;
+  color:#fff;
+  min-width:10px;
+  text-align:center;
+  font-size:10px;
+}
+</style>
+
 <% @course ||= Course.find(params[:course_id])%>
 <h1 style="display:inline"><%= @course.title %></h1>
 
-<div style="margin:5px 0 15px 0">
+<div class="course-nav">
   <%= link_to "Course home", course_path(@course) %>
   <%= link_to "Professor", professor_path(@course.professor) %>
   <%= link_to "Students", course_students_path(@course) %>
   <%= link_to "Grades", course_grades_path(@course) %>
-  <%= link_to "Discussion", course_posts_path(@course) %>
+  <%= link_to "Discussion", course_posts_path(@course), "data-notifications" => (current_user.number_of_unread_posts_in(@course) > 0 ? current_user.number_of_unread_posts_in(@course) : nil) %>
 </div>

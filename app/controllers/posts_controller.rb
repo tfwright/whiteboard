@@ -9,6 +9,9 @@ class PostsController < ApplicationController
   
   def show
     @post = @current_course.posts.find(params[:id])
+    @post.replies.to_a.unshift(@post).each do |post|
+      View.find_or_create_by_post_id_and_user_id(:post_id => post.id, :user_id => current_user.id)
+    end
   end
   
   def new
