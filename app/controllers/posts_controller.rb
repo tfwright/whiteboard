@@ -4,7 +4,7 @@ class PostsController < ApplicationController
   before_filter :ensure_enrolled
   
   def index
-    @posts = @current_course.posts
+    @posts = @current_course.posts.by_last_reply_time
   end
   
   def show

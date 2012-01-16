@@ -9,6 +9,8 @@ class Post < ActiveRecord::Base
   
   validates_presence_of :body
   
+  scope :by_last_reply_time, select("posts.*, MAX(replies.created_at) AS last_replied_to_at").joins("LEFT OUTER JOIN posts replies ON replies.post_id = posts.id").group("posts.id").order("(CASE WHEN last_replied_to_at IS NULL THEN posts.created_at ELSE last_replied_to_at END) DESC")
+  
   def reply?
     !parent.nil?
   end
