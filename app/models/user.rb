@@ -15,10 +15,9 @@ class User < ActiveRecord::Base
   before_create :set_default_name
   
   def number_of_unread_posts_in(course)
-    posts = course.posts.map(&:id)
-    replies = course.posts.map(&:replies).flatten.map(&:id)
-    viewed_posts = View.where(:user_id => self.id).map(&:post).map(&:id)
-    ((posts+replies) - viewed_posts).size
+    Post.count_by_sql("SELECT COUNT(*) FROM posts 
+      WHERE (posts.course_id = #{course.id} OR posts.id IN (SELECT posts.id from posts INNER JOIN posts parents ON posts.post_id = parents.id AND parents.course_id = #{course.id}))
+        AND posts.id NOT IN (SELECT posts.id FROM posts INNER JOIN views ON views.post_id = posts.id and views.user_id = #{self.id}) AND posts.user_id != #{self.id}")
   end
   
   private
