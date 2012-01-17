@@ -9,7 +9,7 @@ class Post < ActiveRecord::Base
   
   validates_presence_of :body
   
-  scope :by_last_reply_time, select("posts.*, MAX(replies.created_at) as last_reply_time").joins("LEFT JOIN posts replies ON replies.post_id = posts.id").group("posts.id").order("(CASE WHEN MAX(replies.created_at) IS NULL THEN posts.created_at ELSE MAX(replies.created_at) END) DESC")
+  scope :by_last_reply_time, select("posts.*, MAX(replies.created_at) as last_reply_time").joins("LEFT JOIN posts replies ON replies.post_id = posts.id").group("posts.id, posts.course_id").order("(CASE WHEN MAX(replies.created_at) IS NULL THEN posts.created_at ELSE MAX(replies.created_at) END) DESC")
   
   def reply?
     !parent.nil?
