@@ -21,11 +21,40 @@
   color:#000;
 }
 </style>
+<% content_for :ready do %>
 
+  PostRow = ActiveView.create(function(builder,dom){  
+    var post = this.get('post');
+    return builder.tr(  
+      builder.td(
+          builder.div({className:"preview"}, post["body"]),
+          builder.div({className:"byline"}, post["author"]["name"])
+      ),
+      builder.td(
+        {className:"reply_count"},
+        builder.a({href:post["url"], className:post["reply-count"] == 0 ? "green-button pcb": ""}, post["reply-count"] != 0 ? post["reply-count"] : builder.span("Reply"))
+      )
+    );  
+  });
+  
+  $("#more-posts-link").bind("ajax:success", function(event, request){
+    $(request["posts"]).each(function(i, post){
+      var rowHtml = (new PostRow({post:post})).getElement();
+      $("#posts-table tbody").append(rowHtml);
+    });
+    if(request["next-page"] != null){
+      $("#more-posts-link").attr("href", request["next-page"]);
+    }else{
+      $("#more-posts-link").remove();
+    }
+  }).bind("ajax:error", function(event, request, status){
+    alert("There was an error load additional posts.  We have been notified and it should be fixed shortly.")
+  });
+<% end %>
 <%= render :partial => "courses/header" %>
 <h3>Discussion posts</h3>
 
-<table class="posts">
+<table class="posts" id="posts-table">
   <thead>
     <tr>
       <th>Post</th>
@@ -33,7 +62,6 @@
     </tr>
   </thead>
   <tbody>
-  </tbody>
   <% @posts.each do |post| %>
     <tr>
       <td>
@@ -50,7 +78,13 @@
         <% end %>
     </tr>
   <% end %>
+  </tbody>
 </table>
+
+<div style="text-align:center">
+  <%= link_to "Older posts...", course_posts_url(@course, :page => 2, :format => :json), :remote => true, :class => "more", :id => "more-posts-link" %>
+</div>
+
 
 <%= link_to new_course_post_path(@course), :class => "green-button pcb" do %>
   <span>Add a post</span>

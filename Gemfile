@@ -11,6 +11,7 @@ gem 'high_voltage'
 gem 'exception_notification'
 gem 'rubyzip'
 gem 'fastercsv'
+gem 'will_paginate'
 
 group :production, :staging do
  gem 'pg'

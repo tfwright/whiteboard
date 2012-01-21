@@ -1,10 +1,18 @@
 class PostsController < ApplicationController
+  include ActionView::Helpers::TextHelper
   
   before_filter :set_current_course
   before_filter :ensure_enrolled
   
   def index
-    @posts = @current_course.posts.by_last_reply_time
+    @posts = @current_course.posts.by_last_reply_time.paginate(:page => params[:page])
+    respond_to do |format|
+      format.html
+      format.json do 
+        render :json => {:posts => @posts.map{|p| p.attributes.merge("body" => truncate(p.body, :length => 600), "url" => course_post_url(@current_course, p), "reply-count" => p.replies.count, :author => p.author)}, 
+          "next-page" => @posts.all.next_page ? course_posts_url(@current_course, :page => @posts.next_page, :format => :json) : nil }
+      end
+    end
   end
   
   def show
