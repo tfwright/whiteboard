@@ -1,4 +1,9 @@
 <style>
+
+.posts td {
+  padding:5px;
+}
+
 .posts div.preview {
   font-size:1.2em;
 }
@@ -10,6 +15,7 @@
 .posts td.reply_count {
   font-size:3em;
   text-align:center;
+  width:100px;
 }
 
 .posts td.reply_count a {
@@ -20,13 +26,17 @@
 .posts td.reply_count a:hover, .posts td.reply_count a:visited {
   color:#000;
 }
+
+.posts tr.unviewed {
+  background-color:#FCFFC4;
+}
 </style>
 <% content_for :ready do %>
 
   PostRow = ActiveView.create(function(builder,dom){  
     var post = this.get('post');
     return builder.tr(
-      {name:"post-"+post["id"]},
+      {name:"post-"+post["id"], className:post["unviewed"] ? "unviewed": ""},
       builder.td(
           builder.div({className:"preview"}, post["body"]),
           builder.div({className:"byline"}, post["author"]["name"])
@@ -70,19 +80,20 @@
   </thead>
   <tbody>
   <% @posts.each do |post| %>
-    <tr name="post-<%= post.id %>">
+    <tr name="post-<%= post.id %>" class="<%= View.exists?(:user_id => current_user.id, :post_id => post.id) ? nil : "unviewed" %>">
       <td>
         <div class="preview"><%= truncate(post.body, :length => 600) %></div>
         <div class="byline">posted by <%= post.author.name %> <%= time_ago_in_words(post.created_at) %> ago</div>
       </td>
       <td class="reply_count">
         <% unless post.replies.count == 0 %>
-          <%= link_to(post.replies.count, course_post_path(@current_course, post)) %></td>
+          <%= link_to(post.replies.count, course_post_path(@current_course, post)) %>
         <% else %>
           <%= link_to course_post_path(@current_course, post), :class => "green-button pcb" do %>
             <span>Reply</span>
           <% end %>
         <% end %>
+      </td>
     </tr>
   <% end %>
   </tbody>

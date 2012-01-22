@@ -9,7 +9,7 @@ class PostsController < ApplicationController
     respond_to do |format|
       format.html
       format.json do 
-        render :json => {:posts => @posts.map{|p| p.attributes.merge("body" => truncate(p.body, :length => 600), "url" => course_post_url(@current_course, p), "reply-count" => p.replies.count, :author => p.author)}, 
+        render :json => {:posts => @posts.map{|p| p.attributes.merge(:unviewed => !View.exists?(:user_id => current_user.id, :post_id => p.id), "body" => truncate(p.body, :length => 600), "url" => course_post_url(@current_course, p), "reply-count" => p.replies.count, :author => p.author)}, 
           "next-page" => @posts.all.next_page ? course_posts_url(@current_course, :page => @posts.next_page, :format => :json) : nil }
       end
     end
