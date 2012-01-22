@@ -49,9 +49,11 @@
       var rowHtml = (new PostRow({post:post})).getElement();
       $("#posts-table tbody").append(rowHtml);
     });
-    var first_new_post = $("tr[name=post-"+$(request["posts"])[0]["id"]+"]")
-    window.scrollTo(first_new_post.offset().left, first_new_post.offset().top);
-    first_new_post.effect("highlight", {}, 3000)
+    var newPosts = $(request["posts"]).map(function(i, p){
+      return $("tr[name=post-"+p["id"]+"]");
+    });
+    window.scrollTo(newPosts[0].offset().left, newPosts[0].offset().top);
+    newPosts.effect("highlight", {}, 3000);
   }).bind("ajax:error", function(event, request, status){
     alert("There was an error load additional posts.  We have been notified and it should be fixed shortly.")
   });
