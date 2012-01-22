@@ -86,9 +86,11 @@
   </tbody>
 </table>
 
-<div style="text-align:center">
-  <%= link_to "Older posts...", course_posts_url(@course, :page => 2, :format => :json), :remote => true, :class => "more", :id => "more-posts-link" %>
-</div>
+<% if @posts.size > 5 %>
+  <div style="text-align:center">
+    <%= link_to "Older posts...", course_posts_url(@course, :page => 2, :format => :json), :remote => true, :class => "more", :id => "more-posts-link" %>
+  </div>
+<% end %>
 
 
 <%= link_to new_course_post_path(@course), :class => "green-button pcb" do %>
