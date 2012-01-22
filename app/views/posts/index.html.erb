@@ -25,7 +25,8 @@
 
   PostRow = ActiveView.create(function(builder,dom){  
     var post = this.get('post');
-    return builder.tr(  
+    return builder.tr(
+      {name:"post-"+post["id"]},
       builder.td(
           builder.div({className:"preview"}, post["body"]),
           builder.div({className:"byline"}, post["author"]["name"])
@@ -38,15 +39,19 @@
   });
   
   $("#more-posts-link").bind("ajax:success", function(event, request){
-    $(request["posts"]).each(function(i, post){
-      var rowHtml = (new PostRow({post:post})).getElement();
-      $("#posts-table tbody").append(rowHtml);
-    });
+    P = $(request["posts"]);
     if(request["next-page"] != null){
       $("#more-posts-link").attr("href", request["next-page"]);
     }else{
       $("#more-posts-link").remove();
     }
+    $(request["posts"]).each(function(i, post){
+      var rowHtml = (new PostRow({post:post})).getElement();
+      $("#posts-table tbody").append(rowHtml);
+    });
+    var first_new_post = $("tr[name=post-"+$(request["posts"])[0]["id"]+"]")
+    window.scrollTo(first_new_post.offset().left, first_new_post.offset().top);
+    first_new_post.effect("highlight", {}, 3000)
   }).bind("ajax:error", function(event, request, status){
     alert("There was an error load additional posts.  We have been notified and it should be fixed shortly.")
   });
@@ -63,7 +68,7 @@
   </thead>
   <tbody>
   <% @posts.each do |post| %>
-    <tr>
+    <tr name="post-<%= post.id %>">
       <td>
         <div class="preview"><%= truncate(post.body, :length => 600) %></div>
         <div class="byline">posted by <%= post.author.name %> <%= time_ago_in_words(post.created_at) %> ago</div>
