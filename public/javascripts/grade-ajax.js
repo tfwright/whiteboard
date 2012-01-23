@@ -23,12 +23,12 @@ function newGradeSuccessHandler(status, grade, request) {
  $("input[type=hidden]", this).remove();
  form.unbind("ajax:success");
  form.bind("ajax:success", updateGradeSuccessHandler);
- updateGradeTotal($(this).parent().next(".total"));
+ updateGradeTotal($(this).parent().nextAll(".total"));
 };
 
 function updateGradeSuccessHandler(status, grade, request){
  hideGradeForm(this, grade.score || '--');
- updateGradeTotal($(this).parent().next(".total"));
+ updateGradeTotal($(this).parent().nextAll(".total"));
 };
 
 function updateGradeTotal(gradeEl){
