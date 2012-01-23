@@ -12,6 +12,10 @@ class StudentsController < ApplicationController
   
   def show
     @student = @current_course.students.find(params[:id])
+    respond_to do |format|
+      format.html
+      format.json { render :json => @student.attributes.merge(:grade => @current_course.grade(@student)) }
+    end
   end
   
   def new

@@ -91,7 +91,7 @@
         <% end %>
       </tr>
       <% @students.each do |student| %>
-        <tr>
+        <tr id="student-<%= student.id %>">
           <td class="student"><%= student.name %></td>
           <% @current_course.assignments.each do |assignment| %>
             <td id="student-<%= student.id %>-assign-<%= assignment.id %>" class="editable">
@@ -111,7 +111,7 @@
             </td>
           <% end %>
           <% if current_user.is_a?(Professor) %>
-            <td class="total"><%= number_with_precision(@current_course.grade(student), :precision => 1, :strip_insignificant_zeros => true) %></td>
+            <td class="total" student-url="<%= course_student_url(@current_course, student, :format => :json) %>"><%= number_with_precision(@current_course.grade(student), :precision => 1, :strip_insignificant_zeros => true) %></td>
           <% end %>
         </tr>
       <% end %>
