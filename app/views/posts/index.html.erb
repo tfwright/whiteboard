@@ -48,12 +48,14 @@
     );  
   });
   
-  $("#more-posts-link").bind("ajax:success", function(event, request){
+  $("#more-posts-link").bind("ajax:beforeSend", function(){
+    $(this).spinner({position:"center", hide:"true", img:"/images/spinner-large.gif", height:25, width:25});
+  }).bind("ajax:success", function(event, request){
     P = $(request["posts"]);
     if(request["next-page"] != null){
       $("#more-posts-link").attr("href", request["next-page"]);
     }else{
-      $("#more-posts-link").remove();
+      $("#more-posts-link").hide();
     }
     $(request["posts"]).each(function(i, post){
       var rowHtml = (new PostRow({post:post})).getElement();
@@ -66,6 +68,8 @@
     newPosts.effect("highlight", {}, 3000);
   }).bind("ajax:error", function(event, request, status){
     alert("There was an error load additional posts.  We have been notified and it should be fixed shortly.")
+  }).bind("ajax:complete", function(){
+    $(this).spinner('remove');
   });
 <% end %>
 <%= render :partial => "courses/header" %>
