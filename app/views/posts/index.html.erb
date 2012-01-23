@@ -84,7 +84,7 @@
   </thead>
   <tbody>
   <% @posts.each do |post| %>
-    <tr name="post-<%= post.id %>" class="<%= View.exists?(:user_id => current_user.id, :post_id => post.id) ? nil : "unviewed" %>">
+    <tr name="post-<%= post.id %>" class="<%= post.author == current_user || View.exists?(:user_id => current_user.id, :post_id => post.id) ? nil : "unviewed" %>">
       <td>
         <div class="preview"><%= truncate(post.body, :length => 600) %></div>
         <div class="byline">posted by <%= post.author.name %> <%= time_ago_in_words(post.created_at) %> ago</div>
