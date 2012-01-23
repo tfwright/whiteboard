@@ -34,14 +34,9 @@ function updateGradeSuccessHandler(status, grade, request){
 function updateGradeTotal(gradeEl){
 	if($(gradeEl).length == 0)
 	  return false
-	$.ajax({
-	  url: $(gradeEl).attr("student-url"),
-	  dataType: 'json',
-		beforeSend: function(){ $(gradeEl).spinner({position:"center", hide:true, img: "/images/spinner.gif"}) },
-	  success: function(response){ 
+	$.getJSON($(gradeEl).attr("student-url"), function(response){ 
 		  $(gradeEl).text(response["grade"]);
-			$(gradeEl).spinner("remove");
-		}
+			$(gradeEl).effect("highlight", {}, 3000);
 	});
 }
 
