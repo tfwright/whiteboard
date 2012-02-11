@@ -15,4 +15,11 @@ class Post < ActiveRecord::Base
     !parent.nil?
   end
   
+  def new_for?(user)
+    replies.unshift(self).any? do |post|  
+      post.author != user &&
+      !View.exists?(:user_id => user.id, :post_id => post.id)
+    end
+  end
+  
 end

@@ -1,4 +1,9 @@
 <style>
+
+.posts td {
+  padding:5px;
+}
+
 .posts div.preview {
   font-size:1.2em;
 }
@@ -10,6 +15,7 @@
 .posts td.reply_count {
   font-size:3em;
   text-align:center;
+  width:100px;
 }
 
 .posts td.reply_count a {
@@ -20,13 +26,17 @@
 .posts td.reply_count a:hover, .posts td.reply_count a:visited {
   color:#000;
 }
+
+.posts tr.unviewed {
+  background-color:#FCFFC4;
+}
 </style>
 <% content_for :ready do %>
 
   PostRow = ActiveView.create(function(builder,dom){  
     var post = this.get('post');
     return builder.tr(
-      {name:"post-"+post["id"]},
+      {name:"post-"+post["id"], className:post["unviewed"] ? "unviewed": ""},
       builder.td(
           builder.div({className:"preview"}, post["body"]),
           builder.div({className:"byline"}, post["author"]["name"])
@@ -38,22 +48,28 @@
     );  
   });
   
-  $("#more-posts-link").bind("ajax:success", function(event, request){
+  $("#more-posts-link").bind("ajax:beforeSend", function(){
+    $(this).spinner({position:"center", hide:"true", img:"/images/spinner-large.gif", height:25, width:25});
+  }).bind("ajax:success", function(event, request){
     P = $(request["posts"]);
     if(request["next-page"] != null){
       $("#more-posts-link").attr("href", request["next-page"]);
     }else{
-      $("#more-posts-link").remove();
+      $("#more-posts-link").hide();
     }
     $(request["posts"]).each(function(i, post){
       var rowHtml = (new PostRow({post:post})).getElement();
       $("#posts-table tbody").append(rowHtml);
     });
-    var first_new_post = $("tr[name=post-"+$(request["posts"])[0]["id"]+"]")
-    window.scrollTo(first_new_post.offset().left, first_new_post.offset().top);
-    first_new_post.effect("highlight", {}, 3000)
+    var newPosts = $(request["posts"]).map(function(i, p){
+      return $("tr[name=post-"+p["id"]+"]");
+    });
+    window.scrollTo(newPosts[0].offset().left, newPosts[0].offset().top);
+    newPosts.effect("highlight", {}, 3000);
   }).bind("ajax:error", function(event, request, status){
     alert("There was an error load additional posts.  We have been notified and it should be fixed shortly.")
+  }).bind("ajax:complete", function(){
+    $(this).spinner('remove');
   });
 <% end %>
 <%= render :partial => "courses/header" %>
@@ -68,27 +84,30 @@
   </thead>
   <tbody>
   <% @posts.each do |post| %>
-    <tr name="post-<%= post.id %>">
+    <tr name="post-<%= post.id %>" class="<%= post.new_for?(current_user) ? "unviewed" : nil %>">
       <td>
         <div class="preview"><%= truncate(post.body, :length => 600) %></div>
         <div class="byline">posted by <%= post.author.name %> <%= time_ago_in_words(post.created_at) %> ago</div>
       </td>
       <td class="reply_count">
         <% unless post.replies.count == 0 %>
-          <%= link_to(post.replies.count, course_post_path(@current_course, post)) %></td>
+          <%= link_to(post.replies.count, course_post_path(@current_course, post)) %>
         <% else %>
           <%= link_to course_post_path(@current_course, post), :class => "green-button pcb" do %>
             <span>Reply</span>
           <% end %>
         <% end %>
+      </td>
     </tr>
   <% end %>
   </tbody>
 </table>
 
-<div style="text-align:center">
-  <%= link_to "Older posts...", course_posts_url(@course, :page => 2, :format => :json), :remote => true, :class => "more", :id => "more-posts-link" %>
-</div>
+<% if @posts.total_entries > 5 %>
+  <div style="text-align:center">
+    <%= link_to "Older posts...", course_posts_url(@course, :page => 2, :format => :json), :remote => true, :class => "more", :id => "more-posts-link" %>
+  </div>
+<% end %>
 
 
 <%= link_to new_course_post_path(@course), :class => "green-button pcb" do %>

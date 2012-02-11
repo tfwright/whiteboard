@@ -23,11 +23,22 @@ function newGradeSuccessHandler(status, grade, request) {
  $("input[type=hidden]", this).remove();
  form.unbind("ajax:success");
  form.bind("ajax:success", updateGradeSuccessHandler);
+ updateGradeTotal($(this).parent().nextAll(".total"));
 };
 
 function updateGradeSuccessHandler(status, grade, request){
  hideGradeForm(this, grade.score || '--');
+ updateGradeTotal($(this).parent().nextAll(".total"));
 };
+
+function updateGradeTotal(gradeEl){
+	if($(gradeEl).length == 0)
+	  return false
+	$.getJSON($(gradeEl).attr("student-url"), function(response){ 
+		  $(gradeEl).text(response["grade"]);
+			$(gradeEl).effect("highlight", {}, 3000);
+	});
+}
 
 $(document).ready(function() {
  $(".grade-form").hide();
@@ -35,6 +46,9 @@ $(document).ready(function() {
    $(td).click(function(event){
      showGradeForm($("form", td));
    });
+	 $("form", td).bind("ajax:beforeSend", function(){
+		 $(this).spinner({position:"center", hide:true, img: "/images/spinner.gif"});
+	 });
    if($("span.grade", td).text() == "--") { 
      $("form", td).bind("ajax:success", newGradeSuccessHandler);
    } else {
@@ -44,6 +58,9 @@ $(document).ready(function() {
      alert("There was an error: " + request.responseText);
      $("input", td).focus();
    });
+	 $("form", td).bind("ajax:complete", function(){
+		 $(this).spinner("remove");
+	 });
  });
  
  $('#grade-table').sorttable({items: '>:not(.nosort)'}).disableSelection();

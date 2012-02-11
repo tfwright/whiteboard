@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   before_filter :authenticate_user!, :unless => Proc.new { high_voltage_controller? }
   before_filter :set_timezone, :unless => Proc.new { devise_controller? || high_voltage_controller? }
+  before_filter :set_real_last_sign_in
   
   private
   
@@ -30,6 +31,14 @@ class ApplicationController < ActionController::Base
     
     def high_voltage_controller?
       params["controller"] == "high_voltage/pages"
+    end
+    
+    # This forces the timestamp to update even if the user is already logged in via a stored cookie
+    def set_real_last_sign_in 
+      if user_signed_in? && !session[:logged_sign_in]
+        sign_in(current_user, :force => true)
+        session[:logged_sign_in] = true
+      end
     end
     
 end
