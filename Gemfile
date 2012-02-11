@@ -12,6 +12,7 @@ gem 'exception_notification'
 gem 'rubyzip'
 gem 'fastercsv'
 gem 'will_paginate'
+gem 'addressable'
 
 group :production, :staging do
  gem 'pg'
@@ -30,4 +31,5 @@ group :test do
   gem 'redgreen'
   gem 'single_test'
   gem 'ruby-debug'
+  gem 'rr'
 end

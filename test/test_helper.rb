@@ -4,6 +4,7 @@ require 'rails/test_help'
 
 class ActionController::TestCase
   include Devise::TestHelpers
+  include RR::Adapters::TestUnit
 end
 
 # For using test helper methods in factory definitions

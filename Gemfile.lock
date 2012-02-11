@@ -48,16 +48,16 @@ GEM
     erubis (2.7.0)
     exception_notification (2.5.2)
       actionmailer (>= 3.0.4)
-    factory_girl (2.3.2)
-      activesupport
-    factory_girl_rails (1.4.0)
-      factory_girl (~> 2.3.0)
+    factory_girl (2.5.2)
+      activesupport (>= 2.3.9)
+    factory_girl_rails (1.6.0)
+      factory_girl (~> 2.5.0)
       railties (>= 3.0.0)
-    fastercsv (1.5.3)
+    fastercsv (1.5.4)
     grit (2.4.1)
       diff-lcs (~> 1.1)
       mime-types (~> 1.15)
-    heroku (2.17.0)
+    heroku (2.20.0)
       launchy (>= 0.3.2)
       rest-client (~> 1.6.1)
       rubyzip
@@ -65,7 +65,7 @@ GEM
     high_voltage (1.0.1)
     hike (1.2.1)
     i18n (0.6.0)
-    json (1.6.4)
+    json (1.6.5)
     launchy (2.0.5)
       addressable (~> 2.2.6)
     linecache (0.46)
@@ -76,13 +76,13 @@ GEM
       treetop (~> 1.4.8)
     mime-types (1.17.2)
     multi_json (1.0.4)
-    orm_adapter (0.0.5)
+    orm_adapter (0.0.6)
     paperclip (2.4.4)
       activerecord (>= 2.3.0)
       activesupport (>= 2.3.2)
       cocaine (>= 0.0.2)
       mime-types
-    pg (0.12.2)
+    pg (0.13.0)
     polyglot (0.3.3)
     rack (1.3.6)
     rack-cache (1.0.3)
@@ -115,12 +115,13 @@ GEM
     redgreen (1.2.2)
     rest-client (1.6.7)
       mime-types (>= 1.16)
+    rr (1.0.4)
     ruby-debug (0.10.4)
       columnize (>= 0.1)
       ruby-debug-base (~> 0.10.4.0)
     ruby-debug-base (0.10.4)
       linecache (>= 0.3)
-    rubyzip (0.9.5)
+    rubyzip (0.9.6.1)
     single_test (0.4.4)
     sprockets (2.0.3)
       hike (~> 1.2)
@@ -139,13 +140,14 @@ GEM
     tzinfo (0.3.31)
     warden (1.1.0)
       rack (>= 1.0)
-    will_paginate (3.0.2)
+    will_paginate (3.0.3)
     xml-simple (1.1.1)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
+  addressable
   aws-s3
   devise (= 1.5)
   exception_notification
@@ -158,6 +160,7 @@ DEPENDENCIES
   pg
   rails (= 3.1.0)
   redgreen
+  rr
   ruby-debug
   rubyzip
   single_test
