@@ -27,7 +27,7 @@ group :development do
 end
 
 group :test do
-  gem 'factory_girl_rails'
+  gem 'factory_girl_rails', "~> 1.7.0"
   gem 'redgreen'
   gem 'single_test'
   gem 'ruby-debug'

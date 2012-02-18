@@ -152,7 +152,7 @@ DEPENDENCIES
   aws-s3
   devise (= 2.0)
   exception_notification
-  factory_girl_rails
+  factory_girl_rails (~> 1.7.0)
   fastercsv
   grit
   heroku
