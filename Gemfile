@@ -2,7 +2,7 @@ source 'http://rubygems.org'
 
 gem 'rails', '3.1.0'
 
-gem 'devise', '1.5'
+gem 'devise', '2.0'
 gem 'paperclip', '2.4.4'
 gem 'aws-s3', :require => 'aws/s3'
 gem 'truncate_html', '0.4.0'
