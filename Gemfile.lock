@@ -30,7 +30,7 @@ GEM
     activesupport (3.1.3)
       multi_json (~> 1.0)
     addressable (2.2.7)
-    arel (2.2.1)
+    arel (2.2.3)
     aws-s3 (0.6.2)
       builder
       mime-types
@@ -48,18 +48,21 @@ GEM
     erubis (2.7.0)
     exception_notification (2.5.2)
       actionmailer (>= 3.0.4)
-    factory_girl (2.6.0)
+    factory_girl (2.6.3)
       activesupport (>= 2.3.9)
+    factory_girl_rails (1.7.0)
+      factory_girl (~> 2.6.0)
+      railties (>= 3.0.0)
     fastercsv (1.5.4)
     grit (2.4.1)
       diff-lcs (~> 1.1)
       mime-types (~> 1.15)
-    heroku (2.20.1)
+    heroku (2.21.2)
       launchy (>= 0.3.2)
       rest-client (~> 1.6.1)
       rubyzip
       term-ansicolor (~> 1.0.5)
-    high_voltage (1.0.1)
+    high_voltage (1.1.1)
     hike (1.2.1)
     i18n (0.6.0)
     json (1.6.5)
@@ -67,22 +70,22 @@ GEM
       addressable (~> 2.2.6)
     linecache (0.46)
       rbx-require-relative (> 0.0.4)
-    mail (2.3.0)
+    mail (2.3.2)
       i18n (>= 0.4.0)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
     mime-types (1.17.2)
-    multi_json (1.0.4)
+    multi_json (1.1.0)
     orm_adapter (0.0.6)
     paperclip (2.4.4)
       activerecord (>= 2.3.0)
       activesupport (>= 2.3.2)
       cocaine (>= 0.0.2)
       mime-types
-    pg (0.13.1)
+    pg (0.13.2)
     polyglot (0.3.3)
     rack (1.3.6)
-    rack-cache (1.1)
+    rack-cache (1.2)
       rack (>= 0.4)
     rack-mount (0.8.3)
       rack (>= 1.0.0)
@@ -106,7 +109,7 @@ GEM
       rdoc (~> 3.4)
       thor (~> 0.14.6)
     rake (0.9.2.2)
-    rbx-require-relative (0.0.5)
+    rbx-require-relative (0.0.9)
     rdoc (3.12)
       json (~> 1.4)
     redgreen (1.2.2)
@@ -119,14 +122,13 @@ GEM
     ruby-debug-base (0.10.4)
       linecache (>= 0.3)
     rubyzip (0.9.6.1)
-    single_test (0.4.4)
+    single_test (0.5.1)
+      rake (> 0.9)
     sprockets (2.0.3)
       hike (~> 1.2)
       rack (~> 1.0)
       tilt (~> 1.1, != 1.3.0)
     sqlite3 (1.3.5)
-    sqlite3-ruby (1.3.3)
-      sqlite3 (>= 1.3.3)
     term-ansicolor (1.0.7)
     thor (0.14.6)
     tilt (1.3.3)
@@ -134,7 +136,7 @@ GEM
       polyglot
       polyglot (>= 0.3.1)
     truncate_html (0.4.0)
-    tzinfo (0.3.31)
+    tzinfo (0.3.32)
     warden (1.1.1)
       rack (>= 1.0)
     will_paginate (3.0.3)
@@ -144,23 +146,23 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  addressable
-  aws-s3
-  devise (= 2.0.4)
-  exception_notification
-  factory_girl
-  fastercsv
-  grit
+  addressable (~> 2.2.7)
+  aws-s3 (~> 0.6.2)
+  devise (~> 2.0.4)
+  exception_notification (~> 2.5.2)
+  factory_girl_rails
+  fastercsv (~> 1.5.4)
+  grit (~> 2.4.1)
   heroku
-  high_voltage
-  paperclip (= 2.4.4)
+  high_voltage (~> 1.1.1)
+  paperclip (~> 2.4.4)
   pg
   rails (= 3.1.3)
   redgreen
   rr
   ruby-debug
-  rubyzip
+  rubyzip (~> 0.9.6.1)
   single_test
-  sqlite3-ruby
-  truncate_html (= 0.4.0)
-  will_paginate
+  sqlite3
+  truncate_html (~> 0.4.0)
+  will_paginate (~> 3.0.3)

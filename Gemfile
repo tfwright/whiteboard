@@ -2,24 +2,24 @@ source 'http://rubygems.org'
 
 gem 'rails', '3.1.3'
 
-gem 'devise', '2.0.4'
-gem 'paperclip', '2.4.4'
-gem 'aws-s3', :require => 'aws/s3'
-gem 'truncate_html', '0.4.0'
-gem 'grit'
-gem 'high_voltage'
-gem 'exception_notification'
-gem 'rubyzip'
-gem 'fastercsv'
-gem 'will_paginate'
-gem 'addressable'
+gem 'devise', '~> 2.0.4'
+gem 'paperclip', '~> 2.4.4'
+gem 'aws-s3', '~> 0.6.2', :require => 'aws/s3'
+gem 'truncate_html', '~> 0.4.0'
+gem 'grit', '~> 2.4.1'
+gem 'high_voltage', '~> 1.1.1'
+gem 'exception_notification', '~> 2.5.2'
+gem 'rubyzip', '~> 0.9.6.1'
+gem 'fastercsv', '~> 1.5.4'
+gem 'will_paginate', '~> 3.0.3'
+gem 'addressable', '~> 2.2.7'
 
 group :production, :staging do
  gem 'pg'
 end
 
 group :development, :test do
-  gem 'sqlite3-ruby', :require => 'sqlite3'
+  gem 'sqlite3'
 end
 
 group :development do 
@@ -27,7 +27,7 @@ group :development do
 end
 
 group :test do
-  gem 'factory_girl'
+  gem 'factory_girl_rails'
   gem 'redgreen'
   gem 'single_test'
   gem 'ruby-debug'
