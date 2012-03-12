@@ -141,4 +141,5 @@ Devise.setup do |config|
   # end
   config.use_salt_as_remember_token = true
   config.reset_password_within = 6.hours
+  config.case_insensitive_keys = []
 end
