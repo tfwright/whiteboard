@@ -64,16 +64,10 @@ class AssignmentsController < ApplicationController
     end
   end
 
-  # DELETE /assignments/1
-  # DELETE /assignments/1.xml
   def destroy
     @assignment = Assignment.find(params[:id])
     @assignment.destroy
-
-    respond_to do |format|
-      format.html { redirect_to(assignments_url) }
-      format.xml  { head :ok }
-    end
+    redirect_to course_assignments_path(@current_course)
   end
   
   def adjust_weighting

@@ -16,5 +16,14 @@ class AssignmentsControllerTest < ActionController::TestCase
     put :update, :course_id => course.id, :id => assignment.id, :assignment => {:name => "New name!"}
     assert_equal "New name!", assignment.reload.name
   end
+  
+  test "deletes assignment" do
+    course = Factory(:course)
+    assignment = Factory(:assignment)
+    sign_in course.professor
+    assert_difference "Assignment.count", -1 do
+      delete :destroy, :course_id => course.id, :id => assignment.id
+    end
+  end
 
 end
