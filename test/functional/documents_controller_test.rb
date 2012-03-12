@@ -17,19 +17,19 @@ class DocumentsControllerTest < ActionController::TestCase
     end
   end
   
-  test "students can't access edit form" do
-    student = Factory(:student)
-    sign_in student
-    get :edit, :course_id => 1, :id => Factory(:document).id
-    assert_response :redirect
-  end
-  
-  test "updates document name" do
-    course = Factory(:course)
-    document = Factory(:document)
-    sign_in course.professor
-    put :update, :course_id => course.id, :id => document.id, :document => {:name => "New name!"}
-    assert_equal "New name!", document.reload.name
-  end
+  #test "students can't access edit form" do
+  #  student = Factory(:student)
+  #  sign_in student
+  #  get :edit, :course_id => 1, :id => Factory(:document).id
+  #  assert_response :redirect
+  #end
+  #
+  #test "updates document name" do
+  #  course = Factory(:course)
+  #  document = Factory(:document)
+  #  sign_in course.professor
+  #  put :update, :course_id => course.id, :id => document.id, :document => {:name => "New name!"}
+  #  assert_equal "New name!", document.reload.name
+  #end
   
 end
