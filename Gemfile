@@ -10,7 +10,6 @@ gem 'grit', '~> 2.4.1'
 gem 'high_voltage', '~> 1.1.1'
 gem 'exception_notification', '~> 2.5.2'
 gem 'rubyzip', '~> 0.9.6.1'
-gem 'fastercsv', '~> 1.5.4'
 gem 'will_paginate', '~> 3.0.3'
 gem 'addressable', '~> 2.2.7'
 
@@ -22,14 +21,13 @@ group :development, :test do
   gem 'sqlite3'
 end
 
-group :development do 
+group :development do
   gem 'heroku'
 end
 
 group :test do
   gem 'factory_girl_rails'
-  gem 'redgreen'
   gem 'single_test'
-  gem 'ruby-debug'
+  gem 'ruby-debug19'
   gem 'rr'
 end
