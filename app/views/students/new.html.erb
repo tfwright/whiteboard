@@ -11,34 +11,18 @@
       <% end %>
     </div>
   <% end %>
-  
-  <ol> 
-    <li class="string required <%= "error" if @student.errors[:email].any? %>"> 
-      <label for="student_email">Email<abbr title="required">*</abbr></label> 
+
+  <ol>
+    <li class="string required <%= "error" if @student.errors[:email].any? %>">
+      <label for="student_email">Email<abbr title="required">*</abbr></label>
       <%= f.text_field :email %>
       <% @student.errors[:email].each do |error| %>
-         <p class="inline-errors"><%= error %></p> 
+         <p class="inline-errors"><%= error %></p>
       <% end %>
-    </li> 
+    </li>
   </ol>
 
   <div class="actions">
     <%= submit_tag "Add student" %>
-  </div>
-<% end %>
-
-<p><h1 style="text-align:center">OR</h1></p>
-
-<h3 style="margin-top:15px">Import a roster of students</h3>
-<%= form_tag import_course_students_path(@current_course), :multipart => true do %>
-  <ol>
-    <li class="file required"> 
-      <%= label :roster, raw("Roster<abbr>*</abbr>") %><br />
-      <%= file_field_tag "roster" %>
-      <p class="inline-hints">csv file containing a list of students to add</p> 
-    </li>
-  </ol>
-  <div class="actions">
-    <%= submit_tag "Submit" %>
   </div>
 <% end %>

@@ -15,15 +15,15 @@
   <%= javascript_include_tag 'adjustable-pie-chart' %>
   <%= javascript_include_tag 'active_view' %>
   <%= javascript_include_tag 'jquery.spinner' %>
-  
+
   <%= csrf_meta_tag %>
-  <style type="text/css"> 
+  <style type="text/css">
   /* These are styles to make the page look nice */
 
   body { background-color: #222;}
-  
+
   #main div {margin-bottom:10px;}
-  
+
   #content {
     background: #fff;
     padding: 25px 40px;
@@ -34,7 +34,7 @@
     -moz-border-radius: 24px;
     -webkit-border-radius: 24px;
   }
-  
+
   #masthead {
     font-weight:bold;
     color:#ffffff;
@@ -64,19 +64,19 @@
     width:100px;
     border:dashed 2px #222;
   }
-  
+
   #sign-out-link:visited {
     background-color:#fff;
     color:#222;
     border:dashed 2px #222;
   }
-  
+
   #sitenav a:hover {
     background-color:#fff;
     color:#222;
     border:solid 2px #222;
   }
-  
+
   a.color-changer {
     padding:2px 5px;
     font-size:8px;
@@ -84,30 +84,30 @@
     margin-left:5px;
     text-decoration:none;
   }
-  
+
   #sitenav a, #sitenav a:hover, #sitenav a:visited, #sitenav a:active {
     text-decoration:none;
   }
-  
+
   .site-pages a, .site-pages a:hover, .site-pages a:visited, .site-pages a:active {
     text-decoration:none;
     color:#ccc;
   }
-  
+
   .course-nav {
     margin:5px 0 15px 0;
   }
-  
+
   .course-nav a, .course-nav a:hover,.course-nav a:visited,.course-nav a:active {
     text-decoration: none !important;
     color:#000;
     font-weight: bold;
   }
-  
+
   .course-nav a:hover{
     color:#ccc;
   }
-  
+
   .more {
   	background-color:#ededed;
   	-moz-border-radius:6px;
@@ -122,25 +122,43 @@
   	padding:6px 24px;
   	text-decoration:none !important;
   }
-  
+
   .more:hover {
   	background-color:#dfdfdf;
   }
-  
+
   .more:active {
   	position:relative;
   	top:1px;
   }
-  
+
   </style>
   <script>
     $(document).ready(function() {
       var color = $.cookies.get("bg-color");
       if(color)
         $(document.body).css({"background-color":color});
+
+      $("#join-course-trigger").click(function(event){
+        $("#join-course-popup").modal({containerCss: {'background-color':'#fff','width':350, 'height':180}});
+        event.preventDefault();
+      });
+
+      $('#join-course-form').bind('ajax:error', function(event, xhr) {
+        if(xhr.status == 500){
+          alert("There has been an error.  Please try again later.");
+        } else {
+          alert("Could not join course: " + $.parseJSON(xhr.responseText).error);
+        }
+      });
+
+      $('#join-course-form').bind('ajax:success', function(event, xhr) {
+        window.location.replace($.parseJSON(xhr.responseText));
+      });
+
       <%= yield :ready %>
     });
-    
+
     feedbackForm = function(){
 			$.get("<%= feedback_form_path %>", function(data){
 				$(data).modal({containerCss: {'background-color':'#fff','width':475, 'height':400}});
@@ -155,20 +173,38 @@
     <% if alert %><div class="error"><%= alert %></div><% end %>
     <div style="display:block;clear:both">&nbsp;</div>
     <div style="float:left;width:150px">
-      <% if user_signed_in? %>
-        <ul id="sitenav">
+      <ul id="sitenav">
+        <% if user_signed_in? %>
           <li><%= link_to "Your account", user_path(current_user) %></li>
           <li><%= link_to "Your courses", courses_path %></li>
           <li><%= link_to "Sign out", destroy_user_session_path, :id =>"sign-out-link" %></li>
           <% if current_user.is_a?(Admin) %>
             <li><%= link_to "Professors", professors_path %></li>
           <% end %>
-        </ul>
-      <% else %>
-        <div style="margin-top:5px">
-          <p>This is is currently in "private alpha mode," which sounds cool but pretty much means there is no way to register.  You have to already have an account.</p>
+        <% end %>
+        <li><%= link_to "Join course", "#", :id => "join-course-trigger" %></li>
+        <div id="join-course-popup" style="display:none">
+          <h3>Join a course</h3>
+          <div>
+            <%= form_tag(join_courses_path(format: :json), :remote => true, :method => :post, :id => "join-course-form") do |f| %>
+              <ol>
+                <li class="string">
+                  <label for="code">Code<abbr title="required">*</abbr></label>
+                  <%= text_field_tag "code" %>
+                </li>
+
+                <li class="string required">
+                  <label for="student_email">Email<abbr title="required">*</abbr></label>
+                  <%= text_field_tag "student[email]" %>
+                </li>
+
+              <div class="actions">
+                <%= submit_tag "Join" %>
+              </div>
+            <% end %>
+          </div>
         </div>
-      <% end %>
+      </ul>
     </div>
     <div style="padding-left:160px" id="main"><%= yield %></div>
   </div>

@@ -58,4 +58,33 @@ class CoursesControllerTest < ActionController::TestCase
     end
   end
 
+  test "creates the student" do
+    course = FactoryGirl.create(:course, code: "test")
+    assert_difference "Student.count", 1 do
+      post :join, student: {email: "new-student@example.com"}, code: "test", format: "json"
+    end
+  end
+
+  test "adds student to the course" do
+    course = FactoryGirl.create(:course, code: "test")
+    assert_difference "course.students.count", 1 do
+      post :join, student: {email: "new-student@example.com"}, code: "test", format: "json"
+    end
+  end
+
+  test "doesn't create new student" do
+    course = FactoryGirl.create(:course, code: "test")
+    FactoryGirl.create(:student, email: "new-student@example.com")
+    assert_no_difference "Student.count" do
+      post :join, student: {email: "new-student@example.com"}, code: "test", format: "json"
+    end
+  end
+
+  test "does not add the student if the code is incorrect" do
+    course = FactoryGirl.create(:course, code: "test")
+    assert_no_difference "course.students.count" do
+      put :join, student: {email: "new-student@example.com"}, code: "wrong-code", format: "json"
+    end
+  end
+
 end

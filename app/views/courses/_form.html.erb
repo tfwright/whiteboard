@@ -8,37 +8,44 @@
       <% end %>
     </div>
   <% end %>
-  
-  <ol> 
-    <li class="string required <%= "error" if @course.errors[:title].any? %>" id="course_title"> 
-      <label for="course_title">Title<abbr title="required">*</abbr></label> 
+
+  <ol>
+    <li class="string required <%= "error" if @course.errors[:title].any? %>" id="course_title">
+      <label for="course_title">Title<abbr title="required">*</abbr></label>
       <%= f.text_field :title %>
-      <p class="inline-hints">the name of the course you are teaching</p> 
+      <p class="inline-hints">the name of the course you are teaching</p>
       <% @course.errors[:title].each do |error| %>
-         <p class="inline-errors"><%= error %></p> 
+         <p class="inline-errors"><%= error %></p>
       <% end %>
-    </li> 
-  
-    <li class="date required" id="course_begins_on"> 
-      <h5 class="legend"><span class="label">Start date<abbr title="required">*</abbr></span></h5> 
+    </li>
+
+    <li class="date required" id="course_begins_on">
+      <h5 class="legend"><span class="label">Start date<abbr title="required">*</abbr></span></h5>
       <%= f.date_select :begins_on %>
       <% @course.errors[:begins_on].each do |error| %>
-         <p class="inline-errors"><%= error %></p> 
+         <p class="inline-errors"><%= error %></p>
       <% end %>
     </li>
-      
-    <li class="date required" id="course_ends_on"> 
-      <h5 class="legend"><span class="label">End date<abbr title="required">*</abbr></span></h5> 
+
+    <li class="date required" id="course_ends_on">
+      <h5 class="legend"><span class="label">End date<abbr title="required">*</abbr></span></h5>
       <%= f.date_select :ends_on %>
       <% @course.errors[:ends_on].each do |error| %>
-         <p class="inline-errors"><%= error %></p> 
+         <p class="inline-errors"><%= error %></p>
       <% end %>
     </li>
-    
+
     <li class="select required">
-      <h5 class="legend"><span class="label">Time zone<abbr title="required">*</abbr></span></h5> 
+      <h5 class="legend"><span class="label">Time zone<abbr title="required">*</abbr></span></h5>
       <%= f.time_zone_select :time_zone, ActiveSupport::TimeZone.us_zones, :include_blank => true %>
-      <p class="inline-errors"><%= @course.errors[:time_zone].to_sentence %></p> 
+      <p class="inline-errors"><%= @course.errors[:time_zone].to_sentence %></p>
+    </li>
+
+    <li class="select">
+      <h5 class="legend"><span class="label">Code<abbr title="required">*</abbr></span></h5>
+      <%= f.text_field :code %>
+      <p class="inline-hints">a unique code students can use to register</p>
+      <p class="inline-errors"><%= @course.errors[:code].to_sentence %></p>
     </li>
   </ol>
 
