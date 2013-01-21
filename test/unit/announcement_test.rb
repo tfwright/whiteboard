@@ -1,15 +1,15 @@
 require 'test_helper'
 
 class AnnouncementTest < ActiveSupport::TestCase
-  
+
   test "sends announcement to every student in the class" do
-    course = Factory(:course)
+    course = FactoryGirl.create(:course)
     3.times do
-      course.students << Factory(:student)
+      course.students << FactoryGirl.create(:student)
     end
     assert_difference "ActionMailer::Base.deliveries.size", 3 do
-      Factory(:announcement, :course => course)
+      FactoryGirl.create(:announcement, :course => course)
     end
   end
-  
+
 end

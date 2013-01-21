@@ -3,7 +3,7 @@ require 'test_helper'
 class GradeTest < ActiveSupport::TestCase
 
   test "allows blank grades" do
-    Factory(:grade, :score => "")
+    FactoryGirl.create(:grade, :score => "")
   end
-  
+
 end
