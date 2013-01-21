@@ -133,8 +133,6 @@ GEM
     ruby_core_source (0.1.5)
       archive-tar-minitar (>= 0.5.2)
     rubyzip (0.9.6.1)
-    single_test (0.5.1)
-      rake (> 0.9)
     sprockets (2.0.4)
       hike (~> 1.2)
       rack (~> 1.0)
@@ -170,7 +168,6 @@ DEPENDENCIES
   rr
   ruby-debug19
   rubyzip (~> 0.9.6.1)
-  single_test
   sqlite3
   truncate_html (~> 0.4.0)
   will_paginate (~> 3.0.3)
