@@ -48,7 +48,8 @@ class CoursesController < ApplicationController
 
   def join
     @course = Course.find_by_code(params[:code])
-    @student = Student.find_by_email(params[:student][:email]) || Student.new(params[:student].merge(:password => Devise.friendly_token))
+    @student = Student.find_by_email(params[:student][:email]) ||
+      Student.new(params[:student].merge(:password => Devise.friendly_token, time_zone: @course.try(:time_zone)))
     respond_to do |format|
       format.json do
         if @course.nil?

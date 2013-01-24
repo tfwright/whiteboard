@@ -87,4 +87,10 @@ class CoursesControllerTest < ActionController::TestCase
     end
   end
 
+  test "sets new students time zone to course as default" do
+    course = FactoryGirl.create(:course, code: "test")
+    post :join, student: {email: "new-student@example.com"}, code: "test", format: "json"
+    assert_equal course.time_zone, Student.find_by_email("new-student@example.com").time_zone
+  end
+
 end
