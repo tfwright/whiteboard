@@ -1,6 +1,6 @@
 <%= render :partial => "courses/header" %>
 <h1><%= @student.name %></h1>
-  
+
 <dl>
   <dt>Last sign in</dt>
   <dd><%= @student.last_sign_in_at || "Never" %></dd>
@@ -15,14 +15,17 @@
   <tbody>
   <tr>
     <th>Assignment</th>
+    <th>Submission</th>
     <th>Grade</th>
     <th>Weight</th>
     <th>Manage</th>
   </tr>
     <% @current_course.assignments.each do |assignment| %>
-      <% grade = assignment.grades.find_by_student_id(@student.id)%>
+      <% grade = assignment.grades.find_by_student_id(@student.id) %>
+      <% submission = @student.submissions.where(:assignment_id => assignment.id).last %>
       <tr>
-        <td><%= assignment.name %></td>
+        <td><%= assignment.name %>
+        <td><%= link_to submission.upload.original_filename, submission.upload.url if submission.present? %></td>
         <td><%= grade.try(:score) || "--" %></span></td>
         <td><%= grade.try(:weight) || "--" %></td>
         <td><%= link_to "Edit", edit_course_grade_path(@current_course, grade) if grade %></td>
